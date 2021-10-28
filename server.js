@@ -51,18 +51,18 @@ app.use(function(req, res, next) {
 
 function initial() {
   Role.create({
-    id: 1,
-    name: "user"
+    Id: 1,
+    Nombre: "user"
   });
  
   Role.create({
-    id: 2,
-    name: "moderator"
+    Id: 2,
+    Nombre: "moderator"
   });
  
   Role.create({
-    id: 3,
-    name: "admin"
+    Id: 3,
+    Nombre: "admin"
   });
 }
 
