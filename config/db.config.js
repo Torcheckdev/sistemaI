@@ -1,7 +1,7 @@
 module.exports = {
   HOST: process.env.HOSTDB,
   USER: process.env.USERDB,
-  PASSWORD: process.env.PWORDDB,
+  PASSWORD:process.env.PWORDDB,
     DB: "sistemainscripciones",
     dialect: "mysql",
     PORT: "3306" ,

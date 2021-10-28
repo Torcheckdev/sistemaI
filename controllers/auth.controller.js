@@ -72,15 +72,14 @@ exports.signin = (req, res) => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
-  res.cookie('x-access-token' , token ,{ withCredentials:true,httpOnly: true }).
-then(
+  res.cookie('x-access-token' , token ,{ withCredentials:true,httpOnly: true })
         res.status(200).send({
           id: user.id,
           usuario: user.usuario,
           email: user.email,
           roles: authorities,
           accessToken: token
-        }))
+        })
      
       });
     })
