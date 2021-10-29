@@ -15,7 +15,17 @@ const sequelize = new Sequelize(
       min: config.pool.min,
       acquire: config.pool.acquire,
       idle: config.pool.idle
+    },
+
+   
+    define :{
+      freezeTableName: true,
+      timestamps: true,
+    },
+    dialectOptions: {
+      multipleStatements: true
     }
+
   }
 );
 
@@ -23,6 +33,8 @@ const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+
+
 
 db.usuario = require("../models/usuario.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
@@ -43,6 +55,8 @@ db.jefedepto = require ("../models/jefedepto.model.js")(sequelize,Sequelize);
 db.planestudios = require ("../models/planestudios.model.js")(sequelize,Sequelize);
 db.profesor = require ("../models/profesor.model.js")(sequelize,Sequelize);
 db.segcarrera = require ("../models/segcarrera.model.js")(sequelize,Sequelize);
+
+
 
 //Relación usuario(idusuario) ->roles(idrole) muchos a muchos en nueva tabla "user_roles"
 db.role.belongsToMany(db.usuario, {
@@ -211,5 +225,8 @@ db.carreras.hasOne(db.materias,{
   })
   */
 db.ROLE = ["user", "admin", "moderator"];
+
+
+
 
 module.exports = db;

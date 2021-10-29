@@ -31,12 +31,13 @@ app.get("/main", (req, res) => {
 // Db models and roles
 const db = require("./models");
 const Role = db.role;
-db.sequelize.sync({force: false}).then(() => {
+db.sequelize.sync({force: true}).then(() => {
   
   //force: true 
   console.log('Drop and Resync Db');
   
   initial();
+
 }
 )
 ;
@@ -64,6 +65,13 @@ function initial() {
     Id: 3,
     Nombre: "admin"
   });
+  
+  const fs = require('fs');
+  var sql_string = fs.readFileSync('./models/sqlscripts/1insertCarrera.sql'.toString(), 'utf8');
+db.carrera.sequelize.query(sql_string)
+
+
+
 }
 
 //routes
