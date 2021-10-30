@@ -2,7 +2,7 @@ module.exports = (sequelize, Sequelize) => {
     const profesor = sequelize.define("profesor",{
         IDprofesor: {
             type: Sequelize.INTEGER,
-            primarykey: true
+            primaryKey: true
         },
         Nombre: {
             type: Sequelize.STRING
@@ -18,9 +18,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         IDdepto: {
             type: Sequelize.INTEGER,
-            primarykey: true
+            primaryKey: true
                 //poner un foreing key con IDdepto A depto(IDdepto)
         },
+
     });
     return profesor;
 };

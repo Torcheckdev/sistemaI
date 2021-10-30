@@ -2,7 +2,7 @@ module.exports = (sequelize, Sequelize) => {
     const segcarrera = sequelize.define("segcarrera", {
       NumCuenta: {
         type: Sequelize.INTEGER,
-        primarykey: true
+        primaryKey: true
       },
         IDcarrera: {
         type: Sequelize.INTEGER,

@@ -6,14 +6,14 @@ module.exports = (sequelize, Sequelize) => {
       },
       IDmateria: {
         type: Sequelize.INTEGER,
-        primarykey: true
+        primaryKey: true
       },
       Fecha: {
         type: Sequelize.DATE
       },
       IDprofesor: {
         type: Sequelize.INTEGER,
-        primarykey: true
+        primaryKey: true
       },
       TipoExamen: {
         type: Sequelize.STRING

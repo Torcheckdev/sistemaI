@@ -82,7 +82,13 @@ db.materia.belongsTo(db.planestudios,
 });
 
 
-/*Relacion de la primarykey idcarrera en la tabla materias 
+
+db.alumno.belongsTo(db.usuario,{
+through:"usuario",
+foreignKey:"NumCuenta"
+});
+
+/*Relacion de la primaryKey idcarrera en la tabla materias 
 con la columna idcarrera en la tabla carrera (belongsTo)*/
 
 

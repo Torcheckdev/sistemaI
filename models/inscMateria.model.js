@@ -2,11 +2,11 @@ module.exports = (sequelize, Sequelize) => {
     const inscMateria = sequelize.define("inscMateria",{
         NumCuenta: {
             type: Sequelize.INTEGER,
-            primarykey: true
+            primaryKey: true
         },
         IDhorario: {
             type: Sequelize.INTEGER,
-            primarykey: true
+            primaryKey: true
         },
         Calificacion: {
             type: Sequelize.INTEGER

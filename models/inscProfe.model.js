@@ -2,19 +2,19 @@ module.exports = (sequelize, Sequelize) => {
     const inscProfe = sequelize.define("inscProfe",{
         Grupo: {
             type: Sequelize.STRING,
-            primarykey: true
+            primaryKey: true
         },
         IDmateria: {
             type: Sequelize.INTEGER,
-            primarykey: true
+            primaryKey: true
         },
         IDprofesor: {
             type: Sequelize.INTEGER,
-            primarykey: true
+            primaryKey: true
         },
         IDhorario: {
             type: Sequelize.INTEGER,
-            primarykey: true
+            primaryKey: true
         },
         Periodo: {
             type: Sequelize.STRING

@@ -2,7 +2,7 @@ module.exports = (sequelize, Sequelize) => {
     const horario = sequelize.define("horario" ,{
         IDhorario: {
             type: Sequelize.INTEGER,
-            primarykey: true
+            primaryKey: true
         },
         Horario: {
             type: Sequelize.STRING

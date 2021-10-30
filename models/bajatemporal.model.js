@@ -6,7 +6,7 @@ module.exports = (sequelize, Sequelize) => {
          },
      IDcarrera: {
         type: Sequelize.INTEGER,
-        primarykey: true
+        primaryKey: true
         },
      AnioInscripcion: {
          type: Sequelize.STRING

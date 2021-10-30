@@ -31,7 +31,7 @@ app.get("/main", (req, res) => {
 // Db models and roles
 const db = require("./models");
 const Role = db.role;
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({force: false}).then(() => {
   
   //force: true 
   console.log('Drop and Resync Db');
@@ -51,6 +51,8 @@ app.use(function(req, res, next) {
 
 
 function initial() {
+  
+
   Role.create({
     Id: 1,
     Nombre: "user"
@@ -79,6 +81,7 @@ db.carrera.sequelize.query(sql_string)
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/product.routes')(app);
+require('./routes/alumno.routes')(app);
 
 
 // set port, listen for requests

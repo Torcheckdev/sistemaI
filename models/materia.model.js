@@ -18,11 +18,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       IDcarrera:{
           type:Sequelize.INTEGER,
-          primarykey: true
+          primaryKey: true
       },
       PlanEstudios:{
         type: Sequelize.STRING,
-        primarykey: true
+        primaryKey: true
       },
       //foreing key IDcarrera references carrera(IDcarrera)
     });

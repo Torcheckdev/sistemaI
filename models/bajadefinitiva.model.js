@@ -2,7 +2,7 @@ module.exports = (sequelize, Sequelize) => {
     const bajadefinitiva = sequelize.define("bajadefinitiva", {
       NumCuenta: {
         type: Sequelize.INTEGER,
-        primarykey: true 
+        primaryKey: true 
       },
       Nombre: {
         type: Sequelize.STRING
