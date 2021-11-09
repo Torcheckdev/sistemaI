@@ -14,6 +14,14 @@ module.exports = (sequelize, Sequelize) => {
       Modalidad: {
         type: Sequelize.STRING
       },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt:{
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
     //foreign key a numcuenta, Idcarrera, en Alumno,carrera(numcuenta,idcarrera)
     });
   

@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const examenex = sequelize.define("examenex", {
+    const examenextra = sequelize.define("examenextra", {
       NumCuenta: {
         type: Sequelize.INTEGER,
         primaryKey: true 
@@ -18,8 +18,16 @@ module.exports = (sequelize, Sequelize) => {
       TipoExamen: {
         type: Sequelize.STRING
     },
+    createdAt: {
+      type: Sequelize.DATE,
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    updatedAt:{
+      type: Sequelize.DATE,
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+    },
 //foreign key numcuenta,IDmateria,IDprofesor, en cursam , materia,profesor(IDprofesor,numcuenta,IDmateria)
     });
   
-    return examenex;
+    return examenextra;
   };

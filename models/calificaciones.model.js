@@ -10,6 +10,14 @@ module.exports = (sequelize, Sequelize) => {
       CreditosTotales: {
         type: Sequelize.INTEGER
       },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt:{
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
     });
   //foreign key con Numcuenta en cursa(NumCuenta) 
     return calificaciones;

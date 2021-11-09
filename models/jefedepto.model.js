@@ -8,6 +8,14 @@ const jefedepto = sequelize.define("jefedepto",{
         type: Sequelize.INTEGER,
         primaryKey: true
     },
+    createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt:{
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
 
     //agregar foreignkey a estos dos ID con profesor y carrera
 });

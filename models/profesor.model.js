@@ -21,6 +21,14 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
                 //poner un foreing key con IDdepto A depto(IDdepto)
         },
+        createdAt: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+          },
+          updatedAt:{
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+          },
 
     });
     return profesor;

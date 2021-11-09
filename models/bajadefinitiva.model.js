@@ -18,7 +18,15 @@ module.exports = (sequelize, Sequelize) => {
       },
       Telefono: {
         type: Sequelize.STRING
-      }
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt:{
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
     });
   //foreign key numcuenta, en cursa (numcuenta)
     return bajadefinitiva;

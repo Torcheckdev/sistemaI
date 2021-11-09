@@ -17,12 +17,20 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       IDcarrera:{
-          type:Sequelize.INTEGER,
+          type: Sequelize.INTEGER,
           primaryKey: true
       },
       PlanEstudios:{
         type: Sequelize.STRING,
         primaryKey: true
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt:{
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
       },
       //foreing key IDcarrera references carrera(IDcarrera)
     });

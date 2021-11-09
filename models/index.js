@@ -34,90 +34,89 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-
-
 db.usuario = require("../models/usuario.model.js")(sequelize, Sequelize);
-db.role = require("../models/role.model.js")(sequelize, Sequelize);
-db.alumno = require("../models/alumno.model.js")(sequelize,Sequelize);
+db.role = require("../models/role.model.js")(sequelize,Sequelize);
 db.carrera = require("../models/carrera.model.js")(sequelize,Sequelize);
-db.materia = require("../models/materia.model.js")(sequelize,Sequelize);
-db.bajadefinitiva = require ("../models/bajadefinitiva.model.js")(sequelize,Sequelize);
-db.bajatemporal = require ("../models/bajatemporal.model.js")(sequelize,Sequelize);
-db.calificaciones = require ("../models/calificaciones.model.js")(sequelize,Sequelize);
-db.cursa = require ("../models/cursa.model.js")(sequelize,Sequelize);
-db.departamento = require ("../models/departamento.model.js")(sequelize,Sequelize);
-db.egresado = require ("../models/egresado.model.js")(sequelize,Sequelize);
-db.examenExtra = require ("../models/examenextra.model.js")(sequelize,Sequelize);
-db.horario = require ("../models/horario.model.js")(sequelize,Sequelize);
-db.inscMateria = require ("../models/inscMateria.model.js")(sequelize,Sequelize);
-db.inscProfe = require ("../models/inscProfe.model.js")(sequelize,Sequelize);
-db.jefedepto = require ("../models/jefedepto.model.js")(sequelize,Sequelize);
 db.planestudios = require ("../models/planestudios.model.js")(sequelize,Sequelize);
+db.departamento = require ("../models/departamento.model.js")(sequelize,Sequelize);
 db.profesor = require ("../models/profesor.model.js")(sequelize,Sequelize);
+db.jefedepto = require ("../models/jefedepto.model.js")(sequelize,Sequelize);
+db.materia = require("../models/materia.model.js")(sequelize,Sequelize);
+db.horario = require ("../models/horario.model.js")(sequelize,Sequelize);
+db.alumno = require("../models/alumno.model.js")(sequelize,Sequelize);
+db.inscProfe = require ("../models/inscProfe.model.js")(sequelize,Sequelize);
+db.inscMateria = require ("../models/inscMateria.model.js")(sequelize,Sequelize);
+db.cursa = require ("../models/cursa.model.js")(sequelize,Sequelize);
+db.calificaciones = require ("../models/calificaciones.model.js")(sequelize,Sequelize);
+db.egresado = require ("../models/egresado.model.js")(sequelize,Sequelize);
+db.bajatemporal = require ("../models/bajatemporal.model.js")(sequelize,Sequelize);
+db.bajadefinitiva = require ("../models/bajadefinitiva.model.js")(sequelize,Sequelize);
 db.segcarrera = require ("../models/segcarrera.model.js")(sequelize,Sequelize);
-
+db.examenExtra = require ("../models/examenextra.model.js")(sequelize,Sequelize);
 
 
 //Relación usuario(idusuario) ->roles(idrole) muchos a muchos en nueva tabla "user_roles"
 db.role.belongsToMany(db.usuario, {
   through: "user_roles",
   foreignKey: "roleId",
-  otherKey: "userId"
+  otherKey: "userId",
 });
 db.usuario.belongsToMany(db.role, {
   through: "user_roles",
   foreignKey: "userId",
-  otherKey: "roleId"
+  otherKey: "roleId",
 });
 
-//materia
-db.materia.belongsTo(db.carrera,
-  {through:"carrera",
-  foreignKey:"IDcarrera",
-});
-
-db.materia.belongsTo(db.planestudios,
-  {through:"planestudios",
-  foreignKey:"Pestudios",
-});
-
-
-
-db.alumno.belongsTo(db.usuario,{
-through:"usuario",
-foreignKey:"NumCuenta"
-});
-
-/*Relacion de la primaryKey idcarrera en la tabla materias 
-con la columna idcarrera en la tabla carrera (belongsTo)*/
-
-
-db.planestudios.belongsTo(db.carrera,
-  {through:"carrera",
-  foreignKey:"IDcarrera",
-});
+/*
+Relacion de la primaryKey idcarrera en la tabla materias 
+con la columna idcarrera en la tabla carrera (belongsTo)
+*/
 
 db.departamento.belongsTo(db.carrera,
-  {through:"carrera",
-  foreignKey:"IDcarrera",
+  {through: "carrera",
+  foreignKey: "IDcarrera",
 });
 
+//profesor
 db.profesor.belongsTo(db.departamento,
-  {through:"departamento",
-  foreignKey:"IDprofesor",
+  {through: "departamento",
+  foreignKey: "IDdepto",
 });
+
+//planestudios
+db.planestudios.belongsToMany(db.carrera,
+  {
+    through:"carrera",
+    foreignKey:"IDcarrera",
+    otherKey:"IDcarrera",
+  });
+
+//materia
+db.materia.belongsToMany(db.carrera,
+  {through: "carrera",
+  foreignKey: "IDcarrera",
+  otherKey:"IDcarrera",
+});
+
+
+/*
+//alumno
+db.alumno.belongsTo(db.usuario,{
+through:"usuario",
+foreignKey:"NumCuenta",
+});*/
 
 //para jededepartamento
 db.departamento.belongsToMany(db.profesor,
   {through:"jefedepto",
-  foreignKey:"IDdepartamento",
+  foreignKey:"IDdepto",
   otherKey:"IDprofesor",
 });
 
 db.profesor.belongsToMany(db.departamento,
   {through:"jefedepto",
   foreignKey:"IDprofesor",
-  otherKey:"IDdepartamento",
+  otherKey:"IDdepto",
 });
 
 //para tabla inscripcion profe

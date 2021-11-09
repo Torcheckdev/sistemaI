@@ -18,8 +18,8 @@ module.exports = (sequelize, Sequelize) => {
       updatedAt:{
         type: Sequelize.DATE,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-
       },
+      
     });
   
     return carrera;
