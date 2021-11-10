@@ -1,10 +1,14 @@
-import Login from './Components/Login';
+/*import Login from './Components/Login';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Signup from './Components/Signup';
+import Signup from './Components/Signup';*/
+import { UserProvider } from './context/UserProvider';
+import Rutas from './Router/Rutas';
+
+
 function App() {
   return (
   <div> 
-  <Router>
+  {/*<Router>
     <Switch>
       <Route  exact path="/">
       <Login/> 
@@ -15,7 +19,12 @@ function App() {
        </Route>
 
     </Switch>
-  </Router>
+  </Router>*/}
+  
+<UserProvider>
+  <Rutas/>
+</UserProvider>
+
   </div>
   );
 }
