@@ -134,18 +134,18 @@ foreignKey:"NumCuenta",
 //profesor
 db.profesor.belongsTo(db.departamento,
   {through: "departamento",
-  foreignKey: "IDdepto",
+  foreignKey: "IDdepartamento",
 });
 
 //planestudios
 
 
-//materia
+/*en materia se hereda el IDcarrera de PlanEstudios
 db.materia.belongsToMany(db.carrera,
   {through: "carrera",
   foreignKey: "IDcarrera",
   otherKey:"IDcarrera",
-});
+});*/
 
 
 
@@ -153,14 +153,14 @@ db.materia.belongsToMany(db.carrera,
 //para jededepartamento
 db.departamento.belongsToMany(db.profesor,
   {through:"jefedepto",
-  foreignKey:"IDdepto",
+  foreignKey:"IDdepartamento",
   otherKey:"IDprofesor",
 });
 
 db.profesor.belongsToMany(db.departamento,
   {through:"jefedepto",
   foreignKey:"IDprofesor",
-  otherKey:"IDdepto",
+  otherKey:"IDdepartamento",
 });
 
 //para tabla inscripcion profe
