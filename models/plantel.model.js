@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       Direccion: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         type: Sequelize.DATE,

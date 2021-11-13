@@ -93,12 +93,12 @@ otherKey:"IDcarrera"
   }
 );*/
 
-
+/*
 db.cursa.belongsTo(db.carrera,
   {through:"carrera",
   foreignKey:"IDcarrera",
   otherKey:"IDcarrera",
-});
+});*/
 
 db.planestudios.belongsTo(db.carrera,
   {through:"carrera",
@@ -169,12 +169,12 @@ db.materia.belongsToMany(db.profesor,
   foreignKey:"IDmateria",
   otherKey:"IDprofesor",
 });
-
+/*
 db.profesor.belongsToMany(db.horario,
   {through:"inscProfe",
   foreignKey:"IDprofesor",
   otherKey:"IDhorario",
-});
+});*/
 
 // para cursa
 
@@ -191,7 +191,7 @@ db.carrera.belongsToMany(db.alumno,
 });
 
 //para iinscripcion materia
-
+/*
 db.cursa.belongsToMany(db.inscProfe,
   {through:"inscMateria",
   foreignKey:"NumCuenta",
@@ -202,7 +202,7 @@ db.inscProfe.belongsToMany(db.cursa,
   {through:"inscMateria",
   foreignKey:"IDhorario",
   otherKey:"NumCuenta",
-});
+});*/
 /* este siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 //calificaciones
 db.calificaciones.belongsTo(db.cursa,
@@ -256,7 +256,7 @@ otherKey:"NumCuenta"
 db.alumno.belongsToMany(db.planestudios,
   {through:"segcarrera",
   foreignKey:"NumCuenta",
-  otherKey:"PlanEstudio",
+  otherKey:"PlanEstudios",
 });
 
 db.planestudios.belongsToMany(db.alumno,
@@ -296,6 +296,14 @@ db.planestudios.belongsTo(db.carrera,
     foreignKey:"IDcarrera", 
     otherKey:"IDcarrera"
   });
+
+
+  //Historial recibe de alumno NumCuenta
+db.historialacademico.belongsTo(db.alumno,{
+through:"alumno",
+foreignKey:"NumCuenta",
+otherKey:"NumCuenta"
+});
 
 
 
