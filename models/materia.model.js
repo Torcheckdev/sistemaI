@@ -17,8 +17,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       PlanEstudios:{
-        type: Sequelize.STRING,
-        primaryKey: true
+        type: Sequelize.STRING
       },
       createdAt: {
         type: Sequelize.DATE,

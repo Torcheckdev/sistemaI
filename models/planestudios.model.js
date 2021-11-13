@@ -5,8 +5,7 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         IDcarrera: {
-            type: Sequelize.INTEGER,
-            primarykey: true
+            type: Sequelize.INTEGER
         },
         Descripcion: {
             type: Sequelize.STRING

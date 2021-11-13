@@ -178,17 +178,17 @@ db.profesor.belongsToMany(db.horario,
 
 // para cursa
 
-db.alumno.belongsToMany(db.carrera,
+db.cursa.belongsToMany(db.alumno,
   {through:"cursa",
   foreignKey:"NumCuenta",
-  otherKey:"IDcarrera",
+  otherKey:"NumCuenta",
 });
-
+/*
 db.carrera.belongsToMany(db.alumno,
   {through:"cursa",
   foreignKey:"IDcarrera",
   otherKey:"NumCuenta",
-});
+});*/
 
 //para iinscripcion materia
 /*
