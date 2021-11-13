@@ -1,24 +1,21 @@
 module.exports = (sequelize, Sequelize) => {
-    const profesor = sequelize.define("profesor",{
-        IDprofesor: {
+    const historialacademico = sequelize.define("historialacademico",{
+        NumCuenta: {  //esto hace referencia a cursa para tener los datos del alumno y carrera
             type: Sequelize.INTEGER,
             primaryKey: true
         },
-        Nombre: {
-            type: Sequelize.STRING
-        },
-
-        Telefono: {
-            type: Sequelize.STRING
-        },
-
-        Email: {
-            type: Sequelize.STRING
-
-        },
-        IDdepartamento: {
+        folioAsig: {
             type: Sequelize.INTEGER,
             primaryKey: true
+        },
+        Periodo: {
+            type: Sequelize.STRING
+        },
+        Calificacion: {
+            type: Sequelize.INTEGER
+        },
+        TipoExamen: {
+            type: Sequelize.STRING
         },
         createdAt: {
             type: Sequelize.DATE,
@@ -29,6 +26,6 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
           },
 
-    });
-    return profesor;
-};
+        });
+        return historialacademico;
+    };

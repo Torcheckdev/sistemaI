@@ -19,6 +19,5 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
       },
     });
-  //foreign key con Numcuenta en cursa(NumCuenta) 
-    return calificaciones;
+
   };

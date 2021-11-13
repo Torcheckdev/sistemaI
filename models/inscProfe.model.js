@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const inscProfe = sequelize.define("inscProfe",{
-        Grupo: {
-            type: Sequelize.STRING,
+        IDpm: {
+            type: Sequelize.INTEGER,
             primaryKey: true
         },
         IDmateria: {
@@ -12,13 +12,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             primaryKey: true
         },
-        IDhorario: {
-            type: Sequelize.INTEGER,
-            primaryKey: true
-        },
-        Periodo: {
-            type: Sequelize.STRING
-        },
         createdAt: {
             type: Sequelize.DATE,
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
@@ -27,7 +20,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
           },
-//foreing key IDmateria,IDprofesor,IDhoraro, en materia, profesor, horario(IDmateria,IDprofesor,IDhorario)
 
         });
         return inscProfe;

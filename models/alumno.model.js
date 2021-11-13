@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
       Domicilio: {
         type: Sequelize.STRING
       },
-      Correo: {
+      Email: {
         type: Sequelize.STRING
       },
       Telefono: {

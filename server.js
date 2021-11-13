@@ -69,23 +69,28 @@ function initial() {
   });
   
   const fs = require('fs');
-  var sql_string = fs.readFileSync('./models/sqlscripts/1insertCarrera.sql'.toString(), 'utf8');
-db.carrera.sequelize.query(sql_string);
 
-var sql_string1 = fs.readFileSync('./models/sqlscripts/2insertPestudios.sql'.toString(), 'utf8');
-db.planestudios.sequelize.query(sql_string1);
+  var sql_string = fs.readFileSync('./models/sqlscripts/1insertPlantel.sql'.toString(), 'utf8');
+db.plantel.sequelize.query(sql_string);
 
-var sql_string2 = fs.readFileSync('./models/sqlscripts/3insertMateria.sql'.toString(), 'utf8');
-db.materia.sequelize.query(sql_string2);
 
-var sql_string3 = fs.readFileSync('./models/sqlscripts/4insertDepartamento.sql'.toString(), 'utf8');
-db.departamento.sequelize.query(sql_string3);
+  var sql_string1 = fs.readFileSync('./models/sqlscripts/2insertCarrera.sql'.toString(), 'utf8');
+db.carrera.sequelize.query(sql_string1);
 
-var sql_string4 = fs.readFileSync('./models/sqlscripts/5insertProfesor.sql'.toString(), 'utf8');
-db.profesor.sequelize.query(sql_string4);
+var sql_string2 = fs.readFileSync('./models/sqlscripts/3insertPestudios.sql'.toString(), 'utf8');
+db.planestudios.sequelize.query(sql_string2);
 
-var sql_string5 = fs.readFileSync('./models/sqlscripts/6insertAlumno.sql'.toString(), 'utf8');
-db.alumno.sequelize.query(sql_string5);
+var sql_string3 = fs.readFileSync('./models/sqlscripts/4insertMateria.sql'.toString(), 'utf8');
+db.materia.sequelize.query(sql_string3);
+
+var sql_string4 = fs.readFileSync('./models/sqlscripts/5insertDepartamento.sql'.toString(), 'utf8');
+db.departamento.sequelize.query(sql_string4);
+
+var sql_string5 = fs.readFileSync('./models/sqlscripts/6insertProfesor.sql'.toString(), 'utf8');
+db.profesor.sequelize.query(sql_string5);
+
+var sql_string6 = fs.readFileSync('./models/sqlscripts/7insertAlumno.sql'.toString(), 'utf8');
+db.alumno.sequelize.query(sql_string6);
 }
 
 //routes

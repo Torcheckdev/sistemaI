@@ -6,36 +6,23 @@ checkDuplicateUsernameOrEmail =  (req, res, next) => {
   // Username
   User.findOne({
     where: {
-      Usuario: req.body.usuario
+      Email: req.body.Email
     }
   }).then(user => {
     if (user) {
       res.status(400).send({
-        message: "Failed! Username is already in use!"
+        message: "Failed! Email is already in use!"
       });
       return;
     }
-
-    // Email
-    User.findOne({
-      where: {
-        Email: req.body.email
-      }
-    }).then(user => {
-      if (user) {
-        res.status(400).send({
-          message: "Failed! Email is already in use!"
-        });
-        return;
-      }
-
-      next();
-    });
+    next();
+    
   });
 };
 
 checkRolesExisted =  (req, res, next) => {
   if (req.body.roles) {
+    console.log(req.body.roles)
     for (let i = 0; i < req.body.roles.length; i++) {
       if (!ROLES.includes(req.body.roles[i])) {
         res.status(400).send({
@@ -45,8 +32,8 @@ checkRolesExisted =  (req, res, next) => {
       }
     }
   }
-  
   next();
+
 };
 
 const verifySignUp = {

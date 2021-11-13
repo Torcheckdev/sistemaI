@@ -1,11 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
     const cursa = sequelize.define("cursa", {
-      NumCuenta: {
+      NumCuenta: {//referencia alumno
         type: Sequelize.INTEGER,
         primaryKey: true 
       },
-      IDcarrera: {
-        type: Sequelize.INTEGER,
+      PlanEstudios: {
+        type: Sequelize.STRING,
         primaryKey: true
       },
       AnioInscripcion: {

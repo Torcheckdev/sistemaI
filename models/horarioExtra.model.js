@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-    const horario = sequelize.define("horario" ,{
-   IDhorario: {
+    const horarioExtra = sequelize.define("horarioExtra" ,{
+   IDhorarioEx: {
             type: Sequelize.INTEGER,   
             primaryKey: true
         },
@@ -13,10 +13,10 @@ module.exports = (sequelize, Sequelize) => {
     Turno: {
             type: Sequelize.STRING
         },
-    Semestre: {
+    periodo: {
             type: Sequelize.STRING
         },
-    Grupo: {
+    salon: {
             type: Sequelize.STRING
         },
     createdAt: {
@@ -28,5 +28,5 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: sequelize.literal            ('CURRENT_TIMESTAMP')
           },
         });
-     return horario;
+     return horarioExtra;
 };

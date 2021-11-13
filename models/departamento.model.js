@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
         Nombre: {
             type: Sequelize.STRING
         },
-        Carrera: {
+        IDcarrera: {
             type: Sequelize.INTEGER,
             primaryKey: true
         },

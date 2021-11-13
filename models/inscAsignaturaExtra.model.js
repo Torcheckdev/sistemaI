@@ -1,22 +1,15 @@
 module.exports = (sequelize, Sequelize) => {
-    const profesor = sequelize.define("profesor",{
-        IDprofesor: {
+    const inscAsignaturaExtra = sequelize.define("inscAsignaturaExtra",{
+        folioEx: {
             type: Sequelize.INTEGER,
             primaryKey: true
         },
-        Nombre: {
-            type: Sequelize.STRING
+	IDpmEX: {
+            type: Sequelize.INTEGER,
+            primaryKey: true
         },
-
-        Telefono: {
-            type: Sequelize.STRING
-        },
-
-        Email: {
-            type: Sequelize.STRING
-
-        },
-        IDdepartamento: {
+//horarioExtra
+        IDhorarioEx: {
             type: Sequelize.INTEGER,
             primaryKey: true
         },
@@ -29,6 +22,6 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
           },
 
-    });
-    return profesor;
+        });
+        return inscAsignaturaExtra;
 };

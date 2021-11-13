@@ -1,29 +1,28 @@
 module.exports = (sequelize, Sequelize) => {
-    const bajatemporal = sequelize.define("bajatemporal", {
-     NumCuenta: {
-        type: Sequelize.INTEGER,
-        primaryKey: true 
-         },
-     IDcarrera: {
-        type: Sequelize.INTEGER,
-        primaryKey: true
+   const bajatemporal = sequelize.define("bajatemporal", {
+    NumCuenta: {
+       type: Sequelize.INTEGER,
+       primaryKey: true 
         },
-     AnioInscripcion: {
-         type: Sequelize.STRING
-         },
-     Modalidad: {
+    PlanEstudios: {
+       type: Sequelize.STRING
+       },
+    AnioInscripcion: {
         type: Sequelize.STRING
         },
-        createdAt: {
-         type: Sequelize.DATE,
-         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+    Modalidad: {
+       type: Sequelize.STRING
        },
-       updatedAt:{
-         type: Sequelize.DATE,
-         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-       },
-     //foreign key a numcuenta, Idcarrera, en Alumno,carrera(numcuenta,idcarrera)
-    });
-  
-    return bajatemporal;
-  };
+       createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt:{
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
+
+   });
+ 
+   return bajatemporal;
+ };

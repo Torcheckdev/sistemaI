@@ -4,9 +4,12 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             primaryKey: true
         },
-        IDhorario: {
+        folioAsig: {//sirve como folio
             type: Sequelize.INTEGER,
             primaryKey: true
+        },
+        Periodo: {
+            type: Sequelize.STRING
         },
         Calificacion: {
             type: Sequelize.INTEGER
@@ -22,7 +25,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
           },
-//foreing key Numcuenta,grpo en inscprofe, cursa(numcuenta,grupo)
+
         });
         return inscMateria;
     };

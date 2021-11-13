@@ -36,6 +36,7 @@ db.sequelize = sequelize;
 
 db.usuario = require("../models/usuario.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize,Sequelize);
+db.plantel = require("../models/plantel.model.js")(sequelize, Sequelize);
 db.carrera = require("../models/carrera.model.js")(sequelize,Sequelize);
 db.planestudios = require ("../models/planestudios.model.js")(sequelize,Sequelize);
 db.departamento = require ("../models/departamento.model.js")(sequelize,Sequelize);
@@ -43,27 +44,32 @@ db.profesor = require ("../models/profesor.model.js")(sequelize,Sequelize);
 db.jefedepto = require ("../models/jefedepto.model.js")(sequelize,Sequelize);
 db.materia = require("../models/materia.model.js")(sequelize,Sequelize);
 db.horario = require ("../models/horario.model.js")(sequelize,Sequelize);
+db.horarioExtra = require ("../models/horarioExtra.model.js")(sequelize,Sequelize);
 db.alumno = require("../models/alumno.model.js")(sequelize,Sequelize);
 db.inscProfe = require ("../models/inscProfe.model.js")(sequelize,Sequelize);
+db.inscProfeExtra = require ("../models/inscProfeExtra.model.js")(sequelize,Sequelize);
+db.inscAsignatura = require("../models/inscAsignatura.model.js")(sequelize,Sequelize);
+db.inscAsignaturaExtra = require("../models/inscAsignaturaExtra.model.js")(sequelize,Sequelize);
 db.inscMateria = require ("../models/inscMateria.model.js")(sequelize,Sequelize);
 db.cursa = require ("../models/cursa.model.js")(sequelize,Sequelize);
+db.examenExtra = require ("../models/examenExtra.model.js")(sequelize,Sequelize);
+db.historialacademico = require ("../models/historialacademico.model.js")(sequelize,Sequelize);
 db.calificaciones = require ("../models/calificaciones.model.js")(sequelize,Sequelize);
 db.egresado = require ("../models/egresado.model.js")(sequelize,Sequelize);
 db.bajatemporal = require ("../models/bajatemporal.model.js")(sequelize,Sequelize);
 db.bajadefinitiva = require ("../models/bajadefinitiva.model.js")(sequelize,Sequelize);
 db.segcarrera = require ("../models/segcarrera.model.js")(sequelize,Sequelize);
-db.examenExtra = require ("../models/examenextra.model.js")(sequelize,Sequelize);
 
 
 //Relación usuario(idusuario) ->roles(idrole) muchos a muchos en nueva tabla "user_roles"
 db.role.belongsToMany(db.usuario, {
   through: "user_roles",
   foreignKey: "roleId",
-  otherKey: "userId",
+  otherKey: "Email",
 });
 db.usuario.belongsToMany(db.role, {
   through: "user_roles",
-  foreignKey: "userId",
+  foreignKey: "Email",
   otherKey: "roleId",
 });
 
@@ -72,10 +78,58 @@ Relacion de la primaryKey idcarrera en la tabla materias
 con la columna idcarrera en la tabla carrera (belongsTo)
 */
 
+
+
 db.departamento.belongsTo(db.carrera,
   {through: "carrera",
   foreignKey: "IDcarrera",
 });
+
+/*db.cursa.belongsToMany(db.carrera,
+  {
+through:"carrera",
+foreignKey:"IDcarrera", 
+otherKey:"IDcarrera"
+  }
+);*/
+
+
+db.cursa.belongsTo(db.carrera,
+  {through:"carrera",
+  foreignKey:"IDcarrera",
+  otherKey:"IDcarrera",
+});
+
+db.planestudios.belongsTo(db.carrera,
+  {through:"carrera",
+  foreignKey:"IDcarrera",
+  otherKey:"IDcarrera",
+});
+
+db.cursa.belongsTo(db.planestudios,
+  {through:"planestudios",
+  foreignKey:"PlanEstudios",
+   otherKey:"PlanEstudios"
+
+});
+
+db.materia.belongsTo(db.planestudios,
+  {through:"planestudios",
+  foreignKey:"PlanEstudios",
+   otherKey:"PlanEstudios"
+
+});
+
+
+
+
+
+/*
+//alumno
+db.alumno.belongsTo(db.usuario,{
+through:"usuario",
+foreignKey:"NumCuenta",
+});*/
 
 //profesor
 db.profesor.belongsTo(db.departamento,
@@ -84,12 +138,7 @@ db.profesor.belongsTo(db.departamento,
 });
 
 //planestudios
-db.planestudios.belongsToMany(db.carrera,
-  {
-    through:"carrera",
-    foreignKey:"IDcarrera",
-    otherKey:"IDcarrera",
-  });
+
 
 //materia
 db.materia.belongsToMany(db.carrera,
@@ -99,12 +148,7 @@ db.materia.belongsToMany(db.carrera,
 });
 
 
-/*
-//alumno
-db.alumno.belongsTo(db.usuario,{
-through:"usuario",
-foreignKey:"NumCuenta",
-});*/
+
 
 //para jededepartamento
 db.departamento.belongsToMany(db.profesor,
@@ -159,27 +203,27 @@ db.inscProfe.belongsToMany(db.cursa,
   foreignKey:"IDhorario",
   otherKey:"NumCuenta",
 });
-
+/* este siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 //calificaciones
 db.calificaciones.belongsTo(db.cursa,
   {through:"cursa",
   foreignKey:"NumCuenta",
 });
-
+*/
 //egresado
 
-db.alumno.belongsToMany(db.carrera,
+db.egresado.belongsToMany(db.alumno,
   {through:"egresado",
   foreignKey:"NumCuenta",
-  otherKey:"IDcarrera",
-});
-
-db.carrera.belongsToMany(db.alumno,
-  {through:"egresado",
-  foreignKey:"IDcarrera",
   otherKey:"NumCuenta",
 });
 
+db.egresado.belongsTo(db.planestudios,
+  {through:"egresado",
+  foreignKey:"PlanEstudios",
+  otherKey:"PlanEstudios",
+});
+/*
 //baja temporal
 db.alumno.belongsToMany(db.carrera,
   {through:"bajatemporal",
@@ -191,24 +235,38 @@ db.carrera.belongsToMany(db.alumno,
   {through:"bajatemporal",
   foreignKey:"IDcarrera",
   otherKey:"NumCuenta",
+});*/
+
+
+db.bajatemporal.belongsTo(db.planestudios,{
+through:"planestudios",
+foreignKey:"PlanEstudios",
+otherKey:"PlanEstudios"
+});
+
+db.bajatemporal.belongsTo(db.alumno,{
+through:"alumno",
+foreignKey:"NumCuenta",
+otherKey:"NumCuenta"
+
 });
 
 //segunda carrera
 
-db.alumno.belongsToMany(db.carrera,
+db.alumno.belongsToMany(db.planestudios,
   {through:"segcarrera",
   foreignKey:"NumCuenta",
-  otherKey:"IDcarrera",
+  otherKey:"PlanEstudio",
 });
 
-db.carrera.belongsToMany(db.alumno,
+db.planestudios.belongsToMany(db.alumno,
   {through:"segcarrera",
-  foreignKey:"IDcarrera",
+  foreignKey:"PlanEstudios",
   otherKey:"NumCuenta",
 });
 
 //examenextra
-
+/*
 db.cursa.belongsToMany(db.materia,
   {through:"examenExtra",
   foreignKey:"NumCuenta",
@@ -220,16 +278,28 @@ db.materia.belongsToMany(db.profesor,
   foreignKey:"IDmateria",
   otherKey:"NumCuenta",
 });
+*/
+
+///PlANTEL A CARRERA
+
+db.carrera.belongsTo(db.plantel,
+  {through:"carrera",
+  foreignKey:"IDplantel",
+  otherKey:"IDplantel",
+});
 
 
 
-/*Lo mismo pero la referencia se hace alreves (hasOne) 
-db.carreras.hasOne(db.materias,{
-  through:"materias",
-  foreignKey:"idcarrera"
-  })
-  */
-db.ROLE = ["user", "admin", "moderator"];
+db.planestudios.belongsTo(db.carrera,
+  {
+    through:"carrera",
+    foreignKey:"IDcarrera", 
+    otherKey:"IDcarrera"
+  });
+
+
+
+db.ROLES = ["user", "admin", "moderator"];
 
 
 

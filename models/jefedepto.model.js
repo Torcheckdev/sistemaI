@@ -17,7 +17,6 @@ const jefedepto = sequelize.define("jefedepto",{
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
       },
 
-    //agregar foreignkey a estos dos ID con profesor y carrera
 });
 return jefedepto;
 };

@@ -13,6 +13,21 @@ module.exports = function(app) {
     controller.getdatosAlumno
   );
 
+  app.post(
+    "/api/alumno/materias",
+    [authJwt.verifyToken],
+    controller.listaMaterias
+  );
+
+
+
+
+  app.post(
+    "/api/alumno/dosificacion",
+    [authJwt.verifyToken],
+    controller.getdatosAlumno
+  );
+
   
   
 };
