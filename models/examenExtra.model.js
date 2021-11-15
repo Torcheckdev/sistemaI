@@ -8,8 +8,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       folioEx: {
-        type: Sequelize.STRING,
-        primaryKey: true //hace referencia a la tabla de inscAsignaturaExtra
+        type: Sequelize.INTEGER
       },
 
     createdAt: {

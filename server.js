@@ -92,6 +92,10 @@ await db.profesor.sequelize.query(sql_string5);
 var sql_string6 = fs.readFileSync('./models/sqlscripts/7insertAlumno.sql'.toString(), 'utf8');
 await db.alumno.sequelize.query(sql_string6);
 
+var sql_string7 = fs.readFileSync('./models/sqlscripts/8insertCursa.sql'.toString(), 'utf8');
+await db.cursa.sequelize.query(sql_string7).then(result=> {
+console.log(result)
+});
 
 }
 

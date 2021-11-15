@@ -5,12 +5,10 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         IDmateria: {
-            type: Sequelize.INTEGER,
-            primaryKey: true
+            type: Sequelize.INTEGER
         },
         IDprofesor: {
-            type: Sequelize.INTEGER,
-            primaryKey: true
+            type: Sequelize.INTEGER
         },
         createdAt: {
             type: Sequelize.DATE,

@@ -1,6 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
 const jefedepto = sequelize.define("jefedepto",{
-    IDdepto: {
+      IDjefedepartamento:{
+type: Sequelize.INTEGER,
+primaryKey: true
+
+      },
+  IDdepartamento: {
         type: Sequelize.INTEGER,
         primaryKey: true
     },

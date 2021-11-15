@@ -4,14 +4,12 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             primaryKey: true
         },
-	IDpmEX: {
-            type: Sequelize.INTEGER,
-            primaryKey: true
+	IDpmEx: {
+            type: Sequelize.INTEGER
         },
 //horarioExtra
         IDhorarioEx: {
-            type: Sequelize.INTEGER,
-            primaryKey: true
+            type: Sequelize.INTEGER
         },
         createdAt: {
             type: Sequelize.DATE,

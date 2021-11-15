@@ -31,8 +31,11 @@ const sequelize = new Sequelize(
 
 const db = {};
 
-db.Sequelize = Sequelize;
+ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+
+module.exports = Sequelize;
+module.exports=sequelize;
 
 db.usuario = require("../models/usuario.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize,Sequelize);
@@ -135,7 +138,9 @@ foreignKey:"NumCuenta",
 db.profesor.belongsTo(db.departamento,
   {through: "departamento",
   foreignKey: "IDdepartamento",
+  otherKey:"IDdepartamento"
 });
+
 
 //planestudios
 
@@ -305,6 +310,82 @@ foreignKey:"NumCuenta",
 otherKey:"NumCuenta"
 });
 
+//Relacion inscasignatura IDpm con InscProfe
+
+db.inscAsignatura.belongsTo(db.inscProfe,{
+through:"inscProfe",
+foreignKey:"IDpm",
+otherKey:"IDpm"
+})
+//Relacion inscAsignaturaExtra IDpmEx con inscProfeExtra
+
+
+db.inscAsignaturaExtra.belongsTo(db.inscProfeExtra,{
+  through:"inscProfeExtra",
+  foreignKey:"IDpmEx",
+  otherKey:"IDpmEx"
+})
+//Relacion horario IDhorario con insASignatura
+
+db.inscAsignatura.belongsTo(db.horario,{
+  through:"horario",
+  foreignKey:"IDhorario",
+  otherKey:"IDhorario"
+})
+
+
+//Relacion insMateria con inscAsignatura 
+db.inscMateria.belongsTo(db.inscAsignatura,{
+through:"inscAsignatura",
+foreignKey:"folioAsig",
+otherKey:"folioAsig"
+
+})
+
+
+//Relacion horarioExtra IDhorarioEx con inscAsignaturaExtra
+
+db.inscAsignaturaExtra.belongsTo(db.horarioExtra,{
+  through:"horarioExtra",
+  foreignKey:"IDhorarioEx",
+  otherKey:"IDhorarioEx"
+
+})
+
+//Relacion inscProfeExtra  IDmateria con materia 
+db.inscProfeExtra.belongsTo(db.materia,{
+  through:"materia",
+  foreignKey:"IDmateria",
+  otherKey:"IDmateria"
+})
+
+//Relacion inscProfeExtra  IDprofesor con profesor 
+db.inscProfeExtra.belongsTo(db.profesor,{
+  through:"profesor",
+  foreignKey:"IDprofesor",
+  otherKey:"IDprofesor"
+})
+
+//Relacion calificaciones NumCuenta con Alumno
+db.calificaciones.belongsTo(db.alumno,{
+through:"alumno",
+foreignKey:"NumCuenta",
+otherKey:"NumCuenta"
+})
+
+//Relacion 
+db.examenExtra.belongsTo(db.inscAsignaturaExtra,{
+  through:"insAsignaturaExtra",
+  foreignKey:"folioEx",
+  otherKey:"folioEx"
+
+})
+
+db.examenExtra.belongsTo(db.alumno,{
+through:"alumno",
+foreignKey:"NumCuenta",
+otherKey:"NumCuenta"
+})
 
 
 db.ROLES = ["user", "admin", "moderator"];

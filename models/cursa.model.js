@@ -5,8 +5,7 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true 
       },
       PlanEstudios: {
-        type: Sequelize.STRING,
-        primaryKey: true
+        type: Sequelize.STRING
       },
       AnioInscripcion: {
         type: Sequelize.STRING

@@ -19,5 +19,5 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
       },
     });
-
+return calificaciones;
   };
