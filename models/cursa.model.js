@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
       Modalidad: {
         type: Sequelize.STRING
       },
+      Semestre: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
