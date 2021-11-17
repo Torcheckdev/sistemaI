@@ -5,7 +5,9 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         folioAsig: {//sirve como folio
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            primaryKey: true
+
         },
         Periodo: {
             type: Sequelize.STRING

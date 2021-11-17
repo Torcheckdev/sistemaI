@@ -10,9 +10,18 @@ module.exports = (sequelize, Sequelize) => {
         IDhorario: {
             type: Sequelize.INTEGER
         },
+        Grupo:{
+            type: Sequelize.STRING
+  
+          },
         Cupo: {
             type: Sequelize.INTEGER
         },
+        Inscritos:{
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+        },
+        
         createdAt: {
             type: Sequelize.DATE,
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')

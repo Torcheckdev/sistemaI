@@ -93,12 +93,31 @@ var sql_string6 = fs.readFileSync('./models/sqlscripts/7insertAlumno.sql'.toStri
 await db.alumno.sequelize.query(sql_string6);
 
 var sql_string7 = fs.readFileSync('./models/sqlscripts/8insertCursa.sql'.toString(), 'utf8');
-await db.cursa.sequelize.query(sql_string7).then(result=> {
-console.log(result)
-});
+ await db.cursa.sequelize.query(sql_string7);
+
+ var sql_string8 = fs.readFileSync('./models/sqlscripts/9insertinscProfe.sql'.toString(), 'utf8');
+ await db.inscProfe.sequelize.query(sql_string8);
+
+ var sql_string9 = fs.readFileSync('./models/sqlscripts/10insertHorario.sql'.toString(), 'utf8');
+ await db.horario.sequelize.query(sql_string9);
+
+ var sql_string10 = fs.readFileSync('./models/sqlscripts/11insertinscAsig.sql'.toString(), 'utf8');
+ await db.inscAsignatura.sequelize.query(sql_string10);
+
+ var sql_triggerinscritos= fs.readFileSync('./models/sqlscripts/triggers/inscritos.sql'.toString(), 'utf8');
+ await db.sequelize.query('CREATE TRIGGER inscritos  AFTER INSERT ON inscMateria'+' '+ 
+ 'FOR EACH ROW'+' '+
+ 'BEGIN'+ ' '+
+ 'UPDATE inscAsignatura  SET Inscritos = Inscritos+1 WHERE folioAsig=NEW.folioAsig;'+' '+
+ 'END;');
+
+ var sql_string11 = fs.readFileSync('./models/sqlscripts/12insertinscMateria.sql'.toString(), 'utf8');
+ await db.inscMateria.sequelize.query(sql_string11);
+
+
+ 
 
 }
-
 //routes
 
 require('./routes/auth.routes')(app);

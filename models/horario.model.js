@@ -16,9 +16,6 @@ module.exports = (sequelize, Sequelize) => {
     Semestre: {
             type: Sequelize.STRING
         },
-    Grupo: {
-            type: Sequelize.STRING
-        },
     createdAt: {
             type: Sequelize.DATE,
             defaultValue: sequelize.literal            ('CURRENT_TIMESTAMP')

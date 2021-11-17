@@ -1,0 +1,9 @@
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad)VALUES(10001,"1119","2010","Presencial");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad)VALUES(10002,"1119","2011","Presencial");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad)VALUES(10003,"1119","2012","Presencial");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad)VALUES(10004,"1119","2013","Presencial");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad)VALUES(10005,"1119","2014","Presencial");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad)VALUES(10006,"1119","2015","Presencial");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad)VALUES(10007,"1119","2016","Presencial");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad)VALUES(10008,"1119","2017","Presencial");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad)VALUES(10009,"1119","2018","Presencial");
