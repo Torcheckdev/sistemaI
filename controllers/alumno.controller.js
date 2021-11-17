@@ -38,20 +38,17 @@ module.exports.getdatosAlumno = getdatosAlumno;
 
 
 exports.generaDosificacion=(req,res) => {
-  alumno.findAll({ 
-      where:{
-          NumCuenta:req.body.NumCuenta
-  }
-  }).then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
-      });
-  }
-    );
+  var datosalumno= await  
+  db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,a1.Fechanac, c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.Email="'+Email+'" && a1.NumCuenta = c1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta',
+   { raw: true })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+    });
+}
+  )
+
 
 
 }
@@ -141,7 +138,7 @@ console.log("Se inserto con exito"+ arrayMaterias[i][0]);
 }
 console.log("Se insertaron todas las materias"+arrayMaterias[0]);
 res.status(200).send ({
-  message:"Se insertaron todas las materias con exitación"
+  message:"Se insertaron todas las materias con exito"
 });
  }
 
