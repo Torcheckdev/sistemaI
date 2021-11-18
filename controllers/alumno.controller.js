@@ -38,8 +38,8 @@ module.exports.getdatosAlumno = getdatosAlumno;
 
 
 exports.generaDosificacion=(req,res) => {
-  var datosalumno= await  
-  db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,a1.Fechanac, c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.Email="'+Email+'" && a1.NumCuenta = c1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta',
+  var generacionmasReciente= await  
+  db.sequelize.query('',
    { raw: true })
   .catch(err => {
     res.status(500).send({
@@ -55,7 +55,8 @@ exports.generaDosificacion=(req,res) => {
 
 exports.listaMaterias=(req,res) => {
   var PlanEstudios=req.body.PlanEstudios
-   db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,h4.Semestre from inscAsignatura  a1,materia m2, inscProfe p3, horario h4  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario) ORDER BY folioAsig', { raw: true }).then(data => {
+  var NumCuenta=req.body.NumCuenta
+   db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,c5.Semestre as SemestreA from inscAsignatura  a1,materia m2, inscProfe p3, horario h4, cursa c5  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && m2.PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario &&c5.NumCuenta="'+NumCuenta+'" && m2.Semestre <= c5.Semestre) ORDER BY folioAsig;', { raw: true }).then(data => {
        res.send(data[0]);
      })
      .catch(err => {

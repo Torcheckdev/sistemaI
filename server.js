@@ -70,6 +70,18 @@ async function initial() {
   
   const fs = require('fs');
 
+  await db.sequelize.query('CREATE TRIGGER CREDITOS  AFTER INSERT ON historialacademico'+' '+ 
+  'FOR EACH ROW'+' '+ 
+  'BEGIN'+' '+  
+  'DECLARE sumcreditosobl INT;'+' '+ 
+  'DECLARE sumcreditosopt INT;'+' '+   
+  'SET sumcreditosobl = (select  SUM(m.Creditos)  from historialacademico h, materia m  where h.IDmateria=m.IDmateria && h.calificacion >5 &&m.Tipo="OBL" && h.NumCuenta=NEW.NumCuenta);'+' '+ 
+  'SET sumcreditosopt=(select  SUM(m.Creditos)  from historialacademico h, materia m  where h.IDmateria=m.IDmateria && h.calificacion >5 &&m.Tipo="OPT" && h.NumCuenta=NEW.NumCuenta);'+' '+ 
+  'iF (sumcreditosobl IS NULL ) THEN set sumcreditosobl = 0; END IF;'+' '+ 
+  'iF (sumcreditosopt IS NULL ) THEN set sumcreditosopt = 0; END IF;'+' '+ 
+  'UPDATE calificaciones  SET Cobligatorios = sumcreditosobl, Coptativos = sumcreditosopt, Ctotales=sumcreditosobl+sumcreditosopt WHERE NumCuenta=NEW.NumCuenta;'+' '+ 
+  'END;');
+
   var sql_string = fs.readFileSync('./models/sqlscripts/1insertPlantel.sql'.toString(), 'utf8');
 await db.plantel.sequelize.query(sql_string);
 
@@ -91,6 +103,12 @@ await db.profesor.sequelize.query(sql_string5);
 
 var sql_string6 = fs.readFileSync('./models/sqlscripts/7insertAlumno.sql'.toString(), 'utf8');
 await db.alumno.sequelize.query(sql_string6);
+
+await db.sequelize.query('CREATE TRIGGER cursacalif  AFTER INSERT ON cursa'+' '+ 
+'FOR EACH ROW'+' '+
+'BEGIN'+ ' '+ 
+'insert into calificaciones VALUES (NEW.NumCuenta,0,0,0,0,0,0,0,0,0,0,NOW(),NOW());'+' '+
+'END;');
 
 var sql_string7 = fs.readFileSync('./models/sqlscripts/8insertCursa.sql'.toString(), 'utf8');
  await db.cursa.sequelize.query(sql_string7);
@@ -114,8 +132,9 @@ var sql_string7 = fs.readFileSync('./models/sqlscripts/8insertCursa.sql'.toStrin
  var sql_string11 = fs.readFileSync('./models/sqlscripts/12insertinscMateria.sql'.toString(), 'utf8');
  await db.inscMateria.sequelize.query(sql_string11);
 
+ await db.sequelize.query('CREATE TRIGGER promedio  AFTER INSERT ON historialacademico FOR EACH ROW BEGIN DECLARE sumamaterias NUMERIC(10,2); DECLARE totalmaterias NUMERIC(10,2);  SET sumamaterias = (select SUM(oca) from (select h.IDmateria ,MAX(h.calificacion) as oca from historialacademico h where h.IDmateria= h.IDmateria && NumCuenta=NumCuenta GROUP BY h.IDmateria) as otro); SET totalmaterias=(select COUNT(oca) from (select h.IDmateria ,MAX(h.calificacion) as oca from historialacademico h where h.IDmateria= h.IDmateria && NumCuenta=NumCuenta GROUP BY h.IDmateria) as otro); UPDATE calificaciones  SET Promedio = sumamaterias/totalmaterias WHERE NumCuenta=NEW.NumCuenta; END;');
 
- 
+
 
 }
 //routes

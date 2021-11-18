@@ -8,6 +8,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             primaryKey: true
 
+        },IDmateria:{
+type:Sequelize.INTEGER
         },
         Periodo: {
             type: Sequelize.STRING
