@@ -389,6 +389,18 @@ foreignKey:"NumCuenta",
 otherKey:"NumCuenta"
 })
 
+db.historialacademico.belongsTo(db.materia,{
+  through:"materia",
+  foreignKey:"IDmateria",
+  otherKey:"IDmateria" 
+})
+
+db.inscMateria.belongsTo(db.materia,{
+  through:"materia",
+  foreignKey:"IDmateria",
+  otherKey:"IDmateria" 
+})
+
 
 db.ROLES = ["user", "admin", "moderator"];
 

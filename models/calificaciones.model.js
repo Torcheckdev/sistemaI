@@ -30,6 +30,9 @@ module.exports = (sequelize, Sequelize) => {
             Atotal:{
               type:Sequelize.NUMERIC
               },
+              Mtotal:{
+                type:Sequelize.INTEGER
+              },
               Promedio:{
                 type:Sequelize.NUMERIC(10,2)
                 },
