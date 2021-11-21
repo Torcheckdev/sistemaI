@@ -1,0 +1,195 @@
+body {
+    font-family: "Karla", sans-serif;
+    background-image: url("./fondos/Circuit\ Board.svg");
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+  
+  .brand-wrapper {
+    margin-bottom: 19px; }
+    .brand-wrapper .logo {
+      height: 37px; }
+  
+   .login-card {
+    border: 0;
+    border-radius: 27.5px;
+    box-shadow: 0 10px 30px 0 rgba(172, 168, 168, 0.43);
+   }
+    .login-card-img {
+      border-radius: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -o-object-fit: cover;
+         object-fit: cover; }
+    .login-card .card-body {
+      padding: 85px 60px 60px; }
+      @media (max-width: 750px) {
+        .login-card .card-body {
+          padding: 35px 24px; } }
+    .login-card-description {
+      font-size: 25px;
+      color: #000;
+      font-weight: normal;
+      margin-bottom: 23px; }
+    /*.login-card form {
+      max-width: 326px; }*/
+    .login-card .form-control {
+      border: 1px solid #d5dae2;
+      padding: 15px 25px;
+      margin-bottom: 20px;
+      min-height: 45px;
+      font-size: 13px;
+      line-height: 15;
+      font-weight: normal; }
+      .login-card .form-control::-webkit-input-placeholder {
+        color: #919aa3; }
+      .login-card .form-control::-moz-placeholder {
+        color: #919aa3; }
+      .login-card .form-control:-ms-input-placeholder {
+        color: #919aa3; }
+      .login-card .form-control::-ms-input-placeholder {
+        color: #919aa3; }
+      .login-card .form-control::placeholder {
+        color: #919aa3; }
+    .login-card .login-btn {
+      padding: 13px 20px 12px;
+      background-color: #0474B0;
+      border-radius: 4px;
+      font-size: 17px;
+      font-weight: bold;
+      line-height: 20px;
+      color: #fff;
+      margin-bottom: 24px; }
+      .login-card .login-btn:hover {
+        border: 1px solid #000;
+        background-color: transparent;
+        color: #000; }
+    .login-card .forgot-password-link {
+      font-size: 14px;
+      color: #919aa3;
+      margin-bottom: 12px; }
+    .login-card-footer-text {
+      font-size: 16px;
+      color: #0d2366;
+      margin-bottom: 60px; }
+      @media (max-width: 767px) {
+        .login-card-footer-text {
+          margin-bottom: 24px; } }
+    .login-card-footer-nav a {
+      font-size: 14px;
+      color: #919aa3; }
+  
+  /*# sourceMappingURL=login.css.map */
+  .container-modificacion{
+    margin-top: 25px;
+  }
+  
+  .centrado{
+    margin: 0 auto;
+  }
+
+  .recaptchawe{
+    transform: scale(.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*margin-right: 200px;
+   /* margin:0 auto;
+    z-index: 99999; */
+ }
+
+
+ .titulo{
+     text-align: center;
+ }
+
+ .error{
+     padding:20px;
+     font-size:18px;
+ }
+
+ .button {
+    position: relative;
+    padding: 10px 25px;
+    display: block;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: 200px;
+    overflow: hidden;
+    border-radius: 40px;
+    border: none;
+   }
+   
+   .button span {
+    position: relative;
+    color: #fff;
+    font-size: 12px;
+    font-family: Arial;
+    letter-spacing: 8px;
+    z-index: 1;
+   }
+   
+   .button .liquid {
+    position: absolute;
+    top: -80px;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background: #477eca;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, .5);
+    transition: .5s;
+   }
+   
+   .button .liquid::after,
+   .button .liquid::before {
+    content: '';
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    background: #fff;
+   }
+   
+   .button .liquid::before {
+    border-radius: 45%;
+    background: rgba(20, 20, 20, 1);
+    animation: animate 5s linear infinite;
+   }
+   
+   .button .liquid::after {
+    border-radius: 40%;
+    background: rgba(20, 20, 20, .5);
+    animation: animate 10s linear infinite;
+   }
+   
+   .button:hover .liquid {
+    top: -120px;
+   }
+   
+   @keyframes animate {
+    0% {
+     transform: translate(-50%, -75%) rotate(0deg);
+    }
+   
+    100% {
+     transform: translate(-50%, -75%) rotate(360deg);
+    }
+   }
+
+   .centrar{
+       width: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       margin-bottom: 5px;
+   }
+
+   .login-card{
+
+    transition: all 2s linear;
+   }
