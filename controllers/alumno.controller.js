@@ -1,14 +1,14 @@
 const db = require("../models");
 const alumno= db.alumno;
 const {Op} = require("sequelize");
-const { cursa } = require("../models");
+const { cursa, materia } = require("../models");
 
 
 
 async function getdatosAlumno(req,res){
   var Email = req.body.Email;
   var datosalumno= await  
-  db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,a1.Fechanac, c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.Email="'+Email+'" && a1.NumCuenta = c1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta',
+  db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,a1.Fechanac, c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,c1.Periodo,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.Email="'+Email+'" && a1.NumCuenta = c1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta',
    { raw: true })
   .catch(err => {
     res.status(500).send({
@@ -27,7 +27,7 @@ async function getdatosAlumno(req,res){
 
   console.log(datosalumno);
 
-  res.send(datosalumno);
+  res.send(datosalumno[0]);
 
 }
 module.exports.getdatosAlumno = getdatosAlumno;
@@ -37,10 +37,10 @@ module.exports.getdatosAlumno = getdatosAlumno;
 
 
 
-exports.generaDosificacion=(req,res) => {
-  var generacionmasReciente= await  
-  db.sequelize.query('',
-   { raw: true })
+async function consultaInscripcion(req,res) {
+  var NumCuenta=req.body.NumCuenta
+  var Periodo=req.body.Periodo
+  var datosalumno = await db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,c1.Periodo,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.NumCuenta="'+NumCuenta+'" &&  c1.NumCuenta=a1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta;',{ raw: true })
   .catch(err => {
     res.status(500).send({
       message:
@@ -49,9 +49,58 @@ exports.generaDosificacion=(req,res) => {
 }
   )
 
-
+  var materiasi= await db.sequelize.query('select c.IDcomprobante,c.Fecha,c.Periodo,m.IDmateria,m.nombre,m.Creditos,m.Semestre,a.Grupo,h.Dia,h.Horario from comprobanteinsc c inner join comprobantematerias cm ON c.NumCuenta="'+NumCuenta+'" && cm.IDcomprobante=c.IDcomprobante && c.Periodo="'+Periodo+'" inner join inscAsignatura a on cm.folioAsig=a.folioAsig inner join inscProfe ip on a.IDpm=ip.IDpm inner join materia m ON m.IDmateria=ip.Idmateria inner join horario h on h.IDhorario=a.IDhorario ;',
+   { raw: true })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+    });
+}
+  )
+var consultainscripcion = [{}]
+consultainscripcion[0]=datosalumno[0];
+consultainscripcion[1]=materiasi[0];
+{materiasi[0] == 0? res.status(404).send("No hay registro de inscripcion"):null}
+res.send(consultainscripcion);
 
 }
+module.exports.consultaInscripcion = consultaInscripcion;
+
+
+
+
+async function consultadosificacion(req,res) {
+  var NumCuenta=req.body.NumCuenta
+  var Periodo=req.body.Periodo
+  var datosalumno = await db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,c1.Periodo,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.NumCuenta="'+NumCuenta+'" &&  c1.NumCuenta=a1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta;',{ raw: true })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+    });
+}
+  )
+
+var dosificacion =await db.sequelize.query('select * from dosificacion where NumCuenta="'+NumCuenta+'" && Periodo="'+Periodo+'"',
+{ raw: true })
+.catch(err => {
+ res.status(500).send({
+   message:
+     err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+ });
+});  
+
+var resdosificacion = [{}]
+resdosificacion[0]=datosalumno[0];
+resdosificacion[1]=dosificacion[0];
+{dosificacion[0] == 0? res.status(404).send("No hay registro de inscripcion"):null}
+
+res.send(resdosificacion)
+}
+module.exports.consultadosificacion = consultadosificacion;
+
+
 
 exports.listaMaterias=(req,res) => {
   var PlanEstudios=req.body.PlanEstudios
@@ -123,24 +172,75 @@ if(data[0][0]['Cupo'] == data[0][0]['Inscritos']){
 */
  async function inscribirMateria(req,res){
   var arrayMaterias=req.body
-  var arraylength=arrayMaterias.length
-  ;
+  var arraylength=arrayMaterias.length;
+  var NumCuenta=arrayMaterias[0]['NumCuenta'];
   for(var i=0; i<arraylength; i++){
 console.log("me ejecute");
-   var materiaInscrita = await db.sequelize.query('insert into inscMateria (NumCuenta,folioAsig,Periodo,Calificacion,TipoExamen) values ("'+arrayMaterias[i]['NumCuenta']+'","'+arrayMaterias[i]['folioAsig']+'","'+arrayMaterias[i]['Periodo']+'","'+arrayMaterias[i]['Calificacion']+'","'+arrayMaterias[i]['TipoExamen']+'")',
+   var materiaInscrita = await db.materia.sequelize.query('insert into inscMateria (NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen) values ("'+arrayMaterias[i]['NumCuenta']+'","'+arrayMaterias[i]['folioAsig']+'","'+arrayMaterias[i]['IDmateria']+'","'+arrayMaterias[i]['Periodo']+'","'+arrayMaterias[i]['Calificacion']+'","'+arrayMaterias[i]['TipoExamen']+'")',
     { raw: true })
    .catch(err => {
      res.status(500).send({
        message:
-         err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+         err.message || "Algun error ocurrio durante la inserción de materias"
      });
  });
-console.log("Se inserto con exito"+ arrayMaterias[i][0]);
 }
-console.log("Se insertaron todas las materias"+arrayMaterias[0]);
-res.status(200).send ({
-  message:"Se insertaron todas las materias con exito"
+console.log("Se insertaron todas las materias");
+
+
+var datosalumno = await db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,c1.Periodo,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.NumCuenta="'+NumCuenta+'" &&  c1.NumCuenta=a1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta;');
+
+var materiasinscritas = [{}];
+
+for(var i=0; i<arraylength; i++){
+await db.sequelize.query('select a.IDmateria,a.Nombre,a.Creditos,a.Semestre,i.Grupo,h.Horario from materia a inner join inscAsignatura i  ON a.IDmateria="'+arrayMaterias[i]['IDmateria']+'" && i.folioAsig="'+arrayMaterias[i]['folioAsig']+'" inner join horario h ON i.IDhorario=h.IDhorario').then(data => {
+  materiasinscritas [i]= data[0]; 
+
 });
+}
+
+
+await db.sequelize.query('insert into comprobanteinsc (NumCuenta,Periodo,Fecha) values("'+NumCuenta+'","'+arrayMaterias[0]['Periodo']+'",NOW());',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+
+
+var IDcomprobante =await db.sequelize.query('SELECT IDcomprobante,Fecha FROM comprobanteinsc where NumCuenta="'+NumCuenta+'" && Periodo="'+arrayMaterias[0]['Periodo']+'";',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+console.log(IDcomprobante[0][0]['IDcomprobante']);
+for(var i=0; i<arraylength; i++){
+await db.sequelize.query('insert into comprobantematerias (IDcomprobante,folioAsig) values("'+IDcomprobante[0][0]['IDcomprobante']+'","'+arrayMaterias[i]['folioAsig']+'")',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+}
+
+
+var rescomprobante=[{}];
+rescomprobante[0]=datosalumno[0];
+rescomprobante[1]=IDcomprobante[0];
+for(var i=0; i<materiasinscritas.length; i++){
+rescomprobante[i+2]=materiasinscritas[i];
+}
+console.log(datosalumno[0]);
+console.log(materiasinscritas[1]);
+console.log(rescomprobante);
+
+
+res.send(rescomprobante);
+
  }
 
  module.exports.inscribirMateria = inscribirMateria;

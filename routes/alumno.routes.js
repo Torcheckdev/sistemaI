@@ -19,7 +19,7 @@ module.exports = function(app) {
 
   app.post(
     "/api/alumno/materias",
-    [authJwt.verifyToken],
+    [authJwt.verifyToken,validacionesAlumno.validaCupo,validacionesAlumno.validaHoraInscripcion],
     controller.listaMaterias
   );
 
@@ -34,17 +34,24 @@ module.exports = function(app) {
 
 
   app.post(
-    "/api/alumno/dosificacion",
+    "/api/alumno/consultaDosificacion",
     [authJwt.verifyToken],
-    controller.getdatosAlumno
+    controller.consultadosificacion
   );
 
   app.post(
     "/api/alumno/inscribirMateria",
-    [validacionesAlumno.validaCupo],
+    [authJwt.verifyToken,validacionesAlumno.validaCupo,validacionesAlumno.validaHoraInscripcion],
 controller.inscribirMateria    
     );
 
+
+
+    app.post(
+      "/api/alumno/consultaInscripcion",
+      [authJwt.verifyToken],
+      controller.consultaInscripcion
+    );
 
   
   

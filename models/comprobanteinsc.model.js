@@ -1,27 +1,20 @@
 module.exports = (sequelize, Sequelize) => {
-    const dosificacion = sequelize.define("dosificacion", {
-      NumCuenta: {
+    const comprobanteinsc = sequelize.define("comprobanteinsc", {
+        IDcomprobante: {
         type: Sequelize.INTEGER,
-        primaryKey: true 
+        primaryKey: true,
+        autoIncrement: true
       },
-      IDcarrera: {
+      NumCuenta: {
         type: Sequelize.INTEGER
-      },   Ncarrera: {
-        type: Sequelize.STRING
-      },
-      PlanEstudios: {
-        type: Sequelize.STRING
       },
       Periodo: {
-        type: Sequelize.STRING,
-        primaryKey: true
+        type: Sequelize.STRING
       },
       Fecha: {
-          type: Sequelize.STRING
+        type: Sequelize.STRING
       },
-      NumTurno: {
-          type: Sequelize.INTEGER
-      },
+ 
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
@@ -30,8 +23,8 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DATE,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
       },
+      
     });
-return dosificacion;
-  };
-
   
+    return comprobanteinsc;
+  };

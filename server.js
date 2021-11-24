@@ -134,11 +134,11 @@ var sql_string7 = fs.readFileSync('./models/sqlscripts/8insertCursa.sql'.toStrin
  'BEGIN'+ ' '+
  'UPDATE inscMateria SET Calificacion = Calificacion WHERE inscMateria.NumCuenta = historialacademico.NumCuenta AND inscMateria.folioAsig = historialacademico.folioAsing;'+' '+
  'END;');*/
-
+/*
  await db.sequelize.query('CREATE TRIGGER ha BEFORE INSERT ON inscMateria'+' '+ 
  'FOR EACH ROW'+' '+ 
  'INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(NEW.NumCuenta,NEW.folioAsig,NEW.IDmateria,NEW.Periodo,NEW.Calificacion,NEW.TipoExamen);');
- 
+ */
  await db.sequelize.query('CREATE TRIGGER promedio  AFTER INSERT ON historialacademico FOR EACH ROW BEGIN DECLARE sumamaterias NUMERIC(10,2); DECLARE totalmaterias NUMERIC(10,2);  SET sumamaterias = (select SUM(oca) from (select h.IDmateria ,MAX(h.calificacion) as oca from historialacademico h where h.IDmateria= h.IDmateria && NumCuenta=NEW.NumCuenta GROUP BY h.IDmateria) as otro); SET totalmaterias=(select COUNT(oca) from (select h.IDmateria ,MAX(h.calificacion) as oca from historialacademico h where h.IDmateria= h.IDmateria && NumCuenta=NEW.NumCuenta && h.Calificacion BETWEEN 5 AND 10 GROUP BY h.IDmateria) as otro); UPDATE calificaciones  SET Promedio = sumamaterias/totalmaterias WHERE NumCuenta=NEW.NumCuenta; END;');
 
 
@@ -167,9 +167,9 @@ await db.sequelize.query('CREATE TRIGGER eacademica AFTER INSERT ON historialaca
  'iF (totalaprobados = 0 ) THEN UPDATE calificaciones SET EficienciaAcademica=0 where NumCuenta=NEW.NumCuenta; ELSE  UPDATE calificaciones SET EficienciaAcademica=((sumaaprobadaso - sumaaprobadosext - totalrecurse) / totalaprobados) where NumCuenta=NEW.NumCuenta; END IF;'+' '+ 
 'END;');
 
- var sql_string11 = fs.readFileSync('./models/sqlscripts/12insertinscMateria.sql'.toString(), 'utf8');
+ /*var sql_string11 = fs.readFileSync('./models/sqlscripts/12insertinscMateria.sql'.toString(), 'utf8');
  await db.inscMateria.sequelize.query(sql_string11);
-
+*/
 
 }
 //routes
@@ -178,7 +178,7 @@ require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/product.routes')(app);
 require('./routes/alumno.routes')(app);
-
+require('./routes/admin.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

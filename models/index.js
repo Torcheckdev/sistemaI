@@ -64,6 +64,8 @@ db.egresado = require ("../models/egresado.model.js")(sequelize,Sequelize);
 db.bajatemporal = require ("../models/bajatemporal.model.js")(sequelize,Sequelize);
 db.bajadefinitiva = require ("../models/bajadefinitiva.model.js")(sequelize,Sequelize);
 db.segcarrera = require ("../models/segcarrera.model.js")(sequelize,Sequelize);
+db.comprobanteinsc = require ("../models/comprobanteinsc.model.js")(sequelize,Sequelize);
+db.comprobantematerias = require ("../models/comprobantematerias.model.js")(sequelize,Sequelize);
 
 
 //Relación usuario(idusuario) ->roles(idrole) muchos a muchos en nueva tabla "user_roles"
@@ -400,6 +402,30 @@ db.inscMateria.belongsTo(db.materia,{
   foreignKey:"IDmateria",
   otherKey:"IDmateria" 
 })
+db.dosificacion.belongsTo(db.alumno,{
+through:"alumno",
+foreignKey:"NumCuenta",
+otherKey:"NumCuenta"
+})
+db.dosificacion.belongsTo(db.carrera,{
+  through:"carrera",
+  foreignKey:"IDcarrera",
+  otherKey:"IDcarrera"
+  })
+
+  db.dosificacion.belongsTo(db.planestudios,{
+    through:"planestudios",
+    foreignKey:"PlanEstudios",
+    otherKey:"PlanEstudios"
+    })
+
+
+    db.comprobantematerias.belongsTo(db.comprobanteinsc,{
+      through:"comprobanteinsc",
+      foreignKey:"IDcomprobante",
+      otherKey:"IDcomprobante"
+      })
+  
 
 
 db.ROLES = ["user", "admin", "moderator"];
