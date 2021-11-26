@@ -114,7 +114,14 @@ async function listaMaterias(req,res) {
        });
    }
      );
+if (datos[0][0].SemestreA == 1){
+  datos[0].sort( function(a,b){ 
+    var x = a.IDmateria < b.IDmateria? -1:1; 
+    return x; 
+  });
+res.send(datos[0])
 
+}
 var materiaseriada=await db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,c5.Semestre as SemestreA , s6.IDmateria as IDseriada from inscAsignatura  a1,materia m2, inscProfe p3, horario h4, cursa c5 , seriada s6 where exists (select * from inscProfe  p3  where p3.IDmateria=m2.IDmateria   && m2.PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario &&c5.NumCuenta="'+NumCuenta+'" && m2.Semestre <= c5.Semestre && m2.IDmateria = s6.IDseriada &&p3.IDmateria = s6.IDseriada )  order by folioAsig;', { raw: true })
 .catch(err => {
   res.status(500).send({
@@ -136,6 +143,7 @@ console.log("SERIACIONES  IDMATERIA : "+seriaciones[0][i]['IDmateria'])
 
 var msa = [0]
  }
+ console.log(seriaciones[0].length)
 for (var i=0 ; i<seriaciones[0].length; i++){
     msa[i]=await db.sequelize.query('select count(*) as aprobada  from historialacademico where NumCuenta="'+NumCuenta+'" && IDmateria="'+seriaciones[0][i]['IDseriada']+'" && Calificacion >5;', { raw: true })
 .catch(err => {
@@ -147,8 +155,7 @@ for (var i=0 ; i<seriaciones[0].length; i++){
 );
 
 }
-console.log(msa[0][0][0].aprobada) 
-console.log(msa[1][0][0].aprobada) 
+
 
 //seriaciones , msa tienen su resultado en la misma posición 
 /*for (var i=0 ; i<seriaciones[0].length; i++){
