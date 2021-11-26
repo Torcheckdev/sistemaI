@@ -102,12 +102,11 @@ module.exports.consultadosificacion = consultadosificacion;
 
 
 
-exports.listaMaterias=(req,res) => {
+async function listaMaterias(req,res) {
   var PlanEstudios=req.body.PlanEstudios
   var NumCuenta=req.body.NumCuenta
-   db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,c5.Semestre as SemestreA from inscAsignatura  a1,materia m2, inscProfe p3, horario h4, cursa c5  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && m2.PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario &&c5.NumCuenta="'+NumCuenta+'" && m2.Semestre <= c5.Semestre) ORDER BY folioAsig;', { raw: true }).then(data => {
-       res.send(data[0]);
-     })
+ 
+  var datos= await db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,c5.Semestre as SemestreA from inscAsignatura  a1,materia m2, inscProfe p3, horario h4, cursa c5  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && m2.PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario &&c5.NumCuenta="'+NumCuenta+'" && m2.Semestre <= c5.Semestre) ORDER BY folioAsig;', { raw: true })
      .catch(err => {
        res.status(500).send({
          message:
@@ -115,10 +114,89 @@ exports.listaMaterias=(req,res) => {
        });
    }
      );
- 
+
+var materiaseriada=await db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,c5.Semestre as SemestreA , s6.IDmateria as IDseriada from inscAsignatura  a1,materia m2, inscProfe p3, horario h4, cursa c5 , seriada s6 where exists (select * from inscProfe  p3  where p3.IDmateria=m2.IDmateria   && m2.PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario &&c5.NumCuenta="'+NumCuenta+'" && m2.Semestre <= c5.Semestre && m2.IDmateria = s6.IDseriada &&p3.IDmateria = s6.IDseriada )  order by folioAsig;', { raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+  });
+}
+);
+var seriaciones =[[{}]];
+ for(var i=0; i< materiaseriada[0].length ; i++){
+  console.log("MATERIASERIADA : " + materiaseriada[0][i]['IDmateria'] )
+
+seriaciones[0][i]= await {
+  "IDseriada":materiaseriada[0][i]['IDseriada'],
+  "IDmateria":materiaseriada[0][i]['IDmateria']
+} ;
+console.log("SERIACIONES : "+seriaciones[0][i]['IDseriada'])
+console.log("SERIACIONES  IDMATERIA : "+seriaciones[0][i]['IDmateria'])
+
+var msa = [0]
+ }
+for (var i=0 ; i<seriaciones[0].length; i++){
+    msa[i]=await db.sequelize.query('select count(*) as aprobada  from historialacademico where NumCuenta="'+NumCuenta+'" && IDmateria="'+seriaciones[0][i]['IDseriada']+'" && Calificacion >5;', { raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+  });
+}
+);
+
+}
+console.log(msa[0][0][0].aprobada) 
+console.log(msa[1][0][0].aprobada) 
+
+//seriaciones , msa tienen su resultado en la misma posición 
+/*for (var i=0 ; i<seriaciones[0].length; i++){
+  console.log(seriaciones[0][i])
+}
+*/
+
+for (var i=0; i<msa.length; i++){
+  console.log(seriaciones[0][i]['IDseriada']) 
+console.log("TAMAÑO DE DATOS : "+datos[0].length)
+ if( msa[i][0][0].aprobada == 0) 
+{
+  for (var j=0 ; j<datos[0].length; j++){
+    if(   seriaciones[0][i]['IDmateria'] ==  datos[0][j].IDmateria){
+     await  datos[0].splice(j, 1); 
+
+     }
+   }
+
+  }
+}
+ datos[0].sort( function(a,b){ 
+  var x = a.IDmateria < b.IDmateria? -1:1; 
+  return x; 
+});
+res.send(datos[0])
+
+
+//seriaciones[0][i]['IDmateria']
+
+
+
+
+
+    // console.log(materiaseriada[0][0]['IDseriada'])
+
+     //console.log(datos[0].length)
+   /*  for (var i=0 ; i<datos[0].length; i++){
+      if(datos[0][i]["IDmateria"] == materiaseriada[0][0]['IDseriada']){
+       delete datos [0][i]
+       }
+     }
+*/
+
  
  }
 
+ module.exports.listaMaterias = listaMaterias;
 
  exports.consultaSaturacion=(req,res) => {
   
@@ -174,6 +252,29 @@ if(data[0][0]['Cupo'] == data[0][0]['Inscritos']){
   var arrayMaterias=req.body
   var arraylength=arrayMaterias.length;
   var NumCuenta=arrayMaterias[0]['NumCuenta'];
+var sumCreditosM = 0;
+  for (var i = 0; i<arraylength; i++){
+    
+    var creditos = await db.materia.sequelize.query('select Creditos from materia where IDmateria= "'+arrayMaterias[i]['IDmateria']+'";',
+    { raw: true })
+   .catch(err => {
+     res.status(500).send({
+       message:
+         err.message || "Algun error ocurrio durante la inserción de materias"
+     });
+ });
+    
+    sumCreditosM+=parseInt(creditos[0][0]['Creditos'])
+
+  }
+  //res.send(creditos[0])
+
+  {arraylength >8 ? res.status(500).send({ message:
+   "No puedes inscribir más de 8 materias"}) :null }
+{sumCreditosM>49 ? res.status(500).send({ message:
+  "La suma de creditos tiene que ser menor a 50"}) :null }
+
+  
   for(var i=0; i<arraylength; i++){
 console.log("me ejecute");
    var materiaInscrita = await db.materia.sequelize.query('insert into inscMateria (NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen) values ("'+arrayMaterias[i]['NumCuenta']+'","'+arrayMaterias[i]['folioAsig']+'","'+arrayMaterias[i]['IDmateria']+'","'+arrayMaterias[i]['Periodo']+'","'+arrayMaterias[i]['Calificacion']+'","'+arrayMaterias[i]['TipoExamen']+'")',

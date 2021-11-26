@@ -170,6 +170,10 @@ await db.sequelize.query('CREATE TRIGGER eacademica AFTER INSERT ON historialaca
  /*var sql_string11 = fs.readFileSync('./models/sqlscripts/12insertinscMateria.sql'.toString(), 'utf8');
  await db.inscMateria.sequelize.query(sql_string11);
 */
+var sql_string12 = fs.readFileSync('./models/sqlscripts/4-1insertSeriadas.sql'.toString(), 'utf8');
+ await db.seriada.sequelize.query(sql_string12)
+
+
 
 }
 //routes
