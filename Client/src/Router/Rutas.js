@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import BtnCerrarSeccion from '../Components/BtnCerrarSeccion';
 import Alumno from '../pages/Alumno';
 import Coordinacion from '../pages/Coordinacion';
 import Dashboard from '../pages/Dashboard';
@@ -18,8 +17,8 @@ function Rutas() {
     
             <Router>
 
-                <BtnCerrarSeccion/>
-
+               
+               
                 <Switch>
                 
                 <Route path="/" exact component={Home }/>

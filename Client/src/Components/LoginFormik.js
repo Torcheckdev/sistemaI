@@ -22,13 +22,8 @@ export default function Formulario() {
   }
 
   const formSchema = Yup.object().shape({
-    UserName: Yup.string()
-      .min(5, `Mínimo 5 caracteres`)
-      .max(25, `Máximo 25 caracteres`)
-      .required("Campo Requerido"),
-    Password: Yup.string()
-      .required("Campo Requerido")
-      .min(5, `Mínimo 5 caracteres`),
+    UserName: Yup.string().email().required("introduzca el email"),
+    Password: Yup.string().required("introduzca el usuario"),
   });
 
   return (
@@ -57,9 +52,9 @@ export default function Formulario() {
 
                   iniciarSeccion({name:'bran',id:1234,rol:2});
 
-                    if(true){//simulamos un error de catch en la peticion de login
+                  /*  if(true){//simulamos un error de catch en la peticion de login
                       setErrorLogin(true);
-                    }
+                    }*/
 
                   
                 }else{
@@ -67,9 +62,7 @@ export default function Formulario() {
                 }
               }
                 }
-
-                
-                
+  
             >
            {/* validationShema nos sirve para mandar las validadcion de cda input ojo debe ser los nombre igual a los de initialvalues*/}
             {/*el onsubmit nos sirve para el evento de submit, para mandar los datos al back-end */}
@@ -130,7 +123,7 @@ export default function Formulario() {
               
                 {verificacionCaptcha === false && <div className="field-error text-danger error">Porfavor completar el reCAPTCHA</div>}
 
-                {errorLogin&&<div className="field-error text-danger">Error de contaseñao usuario</div>}                
+                {errorLogin&&<div className="field-error text-danger error">Error de contaseñao usuario</div>}                
 
                 
               
