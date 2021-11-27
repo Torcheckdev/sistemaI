@@ -69,11 +69,37 @@ next();
 return;
 
 }
+validaComprobanteInscripcion=(req,res,next) => {
+  var NumCuenta = req.body.NumCuenta;
+  var Periodo = req.body.Periodo
 
+db.sequelize.query('select count(*) as existe from comprobanteinsc where NumCuenta="'+NumCuenta+'"&& Periodo="'+Periodo+'";', { raw: true })
+.then(data => {
+console.log(data[0][0])
+console.log(data[0][0].existe)
+if(data[0][0].existe == "1")
+{
+  res.status(403).send({
+    message: "Ya Existe una inscripcion en este periodo para ese numero de cuenta"
+  })
+
+}
+}).catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio validaComprobanteInscripcion"
+  })
+}
+)
+next();
+return;
+
+}
 
 const validacionesAlumno = {
     validaCupo: validaCupo,
-    validaHoraInscripcion: validaHoraInscripcion
+    validaHoraInscripcion: validaHoraInscripcion,
+    validaComprobanteInscripcion: validaComprobanteInscripcion
   }
   
 module.exports = validacionesAlumno;

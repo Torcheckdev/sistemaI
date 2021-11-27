@@ -19,7 +19,7 @@ module.exports = function(app) {
 
   app.post(
     "/api/alumno/materias",
-    [authJwt.verifyToken,validacionesAlumno.validaCupo,validacionesAlumno.validaHoraInscripcion],
+    [authJwt.verifyToken,validacionesAlumno.validaComprobanteInscripcion,validacionesAlumno.validaHoraInscripcion],
     controller.listaMaterias
   );
 
