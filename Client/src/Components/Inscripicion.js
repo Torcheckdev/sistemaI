@@ -22,7 +22,7 @@ function Inscripcion() {
             </div>
                 <div className="card mb-4 tablaOverflowe">
                 <div className="card-body">
-                    <table className="table table-hover">
+                    <table className="table table-hover table-bordered table-sm ">
                         <thead className="mdb-color darken-3 colorEncabezado">
                             <tr className="text-tabla">
                                 <th>#</th>
@@ -213,7 +213,7 @@ function Inscripcion() {
                             <button
                             color='primary'
                             type='submit'
-                            className="button"
+                            className="button inscripcion"
                             >
                                 <span>Agregar</span>
                                 <div className='liquid'></div>
@@ -225,7 +225,7 @@ function Inscripcion() {
             </Formik>
             <div className="central">
                 <button
-                        className="button"
+                        className="button inscripcion"
                         >
                             <span>Inscribirme</span>
                             <div className='liquid'></div>

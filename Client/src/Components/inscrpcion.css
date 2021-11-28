@@ -144,3 +144,12 @@
      /* transform: translateX(-135%);*/
     }
   }
+
+  .button.inscripcion{
+    padding:10px 10px;
+    width: 150px;
+    font-size: 14px;
+  }
+  .button.inscripcion span{
+    letter-spacing: 2px;
+}

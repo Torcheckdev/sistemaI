@@ -4,7 +4,7 @@ function Saturacion() {
     return ( <>
                 <div className="card mb-4 tablaOverflowe animate__animated animate__fadeInRight">
                 <div className="card-body">
-                    <table className="table table-hover">
+                    <table className="table table-hover table-bordered table-sm">
                         <thead className="mdb-color darken-3 colorEncabezado">
                             <tr className="text-tabla">
                                 <th>#</th>

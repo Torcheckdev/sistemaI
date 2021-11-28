@@ -12,7 +12,7 @@ function BtnCerrarSeccion() {
          <div className="central btnC">
                 <button
                         onClick={accionBoton}
-                        className="button"
+                        className="button inscripcion"
                         >
                             <span>Cerrar Sesion</span>
                             <div className='liquid'></div>

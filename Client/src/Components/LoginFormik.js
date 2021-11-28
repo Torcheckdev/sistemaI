@@ -63,6 +63,8 @@ export default function Formulario() {
               }
                 }
   
+
+                
             >
            {/* validationShema nos sirve para mandar las validadcion de cda input ojo debe ser los nombre igual a los de initialvalues*/}
             {/*el onsubmit nos sirve para el evento de submit, para mandar los datos al back-end */}
@@ -120,13 +122,11 @@ export default function Formulario() {
                 sitekey="6LfQSJwcAAAAAOr34C4XM7LO3H4oORErkePThXuX"
                 onChange={onChange}/>
               </div>
-              
-                {verificacionCaptcha === false && <div className="field-error text-danger error">Porfavor completar el reCAPTCHA</div>}
+              <div className="form-group">
+                {verificacionCaptcha === false && <div className="alert alert-danger centrar contenedorError" role="alert">Porfavor completar el RECAPTCHA</div>}
 
-                {errorLogin&&<div className="field-error text-danger error">Error de contaseñao usuario</div>}                
-
-                
-              
+                {errorLogin&&<div className="field-error text-danger error centrar">Error de contaseña o usuario</div>}                  
+              </div>   
           </div>
       </div>
     </>
