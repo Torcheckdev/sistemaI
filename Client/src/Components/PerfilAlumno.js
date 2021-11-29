@@ -1,7 +1,8 @@
 import BtnCerrarSeccion from "./BtnCerrarSeccion";
 import "./perfilAlumno.css";
 
-function PerfilAlumno() {
+function PerfilAlumno({alumno}) {
+    console.log(alumno);
     return ( <>
                 <div className="profile-card-4 z-depth-3 animate__animated animate__fadeInLeft">
      <div className="card">
@@ -9,7 +10,7 @@ function PerfilAlumno() {
         <div className="user-box ">
          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user avatar"/>
        </div>
-       <h5 className="mb-1 text-white">Usuario Prueba</h5>
+       <h5 className="mb-1 text-white">{alumno?.NombreA ? alumno?.NombreA:" "}</h5>
        <h6 className="text-light">Alumno</h6>
       </div>
        <div className="card-body">
@@ -17,19 +18,25 @@ function PerfilAlumno() {
          <li className="list-group-item">
            <div className="list-details">
              <span> Numero cuenta: </span>
-             <span>9910XXXXXX</span>
+             <span>{alumno?.NumCuenta ? alumno?.NumCuenta:" "}</span>
            </div>
          </li>
          <li className="list-group-item">
            <div className="list-details">
-             <span> Email Address: </span>
-             <span>info@example.com</span>
+             <span> Correo electronico: </span>
+             <span>{alumno?.email ? alumno?.email:" "}</span>
            </div>
          </li>
          <li className="list-group-item">
            <div className="list-details">
              <span> carrera: </span>
-             <span>Informatica</span>
+             <span>{alumno?.NombreC ? alumno?.NombreC:" "}</span>
+           </div>
+         </li>
+         <li className="list-group-item">
+           <div className="list-details">
+             <span> Plan estudios: </span>
+             <span>{alumno?.PlanEstudios ? alumno?.PlanEstudios:" "}</span>
            </div>
          </li>
          </ul>

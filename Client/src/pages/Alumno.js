@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Dosificacion from '../Components/Dosificacion';
 import Inscripcion from '../Components/Inscripicion';
 import PerfilAlumno from '../Components/PerfilAlumno';
 import Saturacion from '../Components/Saturacion';
+import useUser from '../hooks/useUser';
+import axios from 'axios';
 
 //import 'react-tabs/style/react-tabs.css';
 import "./alumno.css";
@@ -12,7 +14,8 @@ import dosificacionImg from "./iconos/dosificacion.png";
 import inscripcionImg from "./iconos/inscripcion.png";
 import saturacionImg from "./iconos/saturacion.png";
 function Alumno() {
-
+    const {user,cerrarSeccion} = useUser();
+    const [alumno,setAlumno] = useState({});
     const [active,setActive] = useState({
             tab1: true,
             tab2:false,
@@ -20,6 +23,35 @@ function Alumno() {
             tab4:false
 
     });
+    //peticion a la api alumno
+    useEffect(() => {
+        axios.post(process.env.REACT_APP_ALUMNO, {
+            Email: user.Email,
+            },{withCredentials:true} 
+            ).then((response) => {
+                  console.log(response.data);
+                  const [datos] = response.data;
+                  const { NumCuenta, NombreA,NombreC,PlanEstudios,Periodo,Modalidad}= datos
+                  console.log(datos.NumCuenta,datos.NombreA,datos.NombreC,datos.PlanEstudios,datos.Periodo,datos.Modalidad);
+                  console.log(NumCuenta, NombreA,NombreC,PlanEstudios,Periodo,Modalidad);
+                  setAlumno({
+                    NumCuenta, 
+                    NombreA,
+                    NombreC,
+                    PlanEstudios,
+                    Periodo,
+                    Modalidad,
+                    email: user.Email
+                  });
+                }).catch((error) => {
+                  console.log(error.message);
+                  console.log(error.response);
+                  cerrarSeccion();
+                });
+
+
+    },[]);
+
 
     return ( 
         <>
@@ -75,7 +107,7 @@ function Alumno() {
                 </TabList>
 
                 <TabPanel>
-                    <PerfilAlumno/>
+                    <PerfilAlumno alumno={alumno}/>
                 </TabPanel>
                 <TabPanel>
                     <Dosificacion/>

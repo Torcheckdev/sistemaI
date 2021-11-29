@@ -7,8 +7,9 @@ import useUser from '../hooks/useUser';
 export default function PrivateRouter({component:Component,rol,...rest}){
    const {user} = useUser();
    console.log(rol);
+   console.log(user);
     return <Route{...rest}>
-                {user?.rol === rol ? <Component />
+                {user?.roles[0] === rol ? <Component />
                     : <Redirect to="/login"/>
                 }
             </Route>

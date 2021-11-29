@@ -15,8 +15,8 @@ function handleInputSubmit(e){
         'withCredentials': 'true'};
         
       axios.post(process.env.REACT_APP_HOST_SIGNIN, {
-        usuario: usuario.usuario,
-        pword:usuario.pword,
+        Email: usuario.Email,
+        Pword:usuario.Pword,
         },{withCredentials:true} 
         ).then((response) => {
               console.log(response.data);
@@ -43,11 +43,11 @@ return(
        <table style={{padding:`3vw`}}>
         <tr>
           <td align="right">Usuario:</td>
-          <td align="left"><input id="usuario" onChange={e => handleInputChange(e)}/> </td>
+          <td align="left"><input id="Email" onChange={e => handleInputChange(e)}/> </td>
         </tr>
         <tr>
           <td align="right">Contraseña:</td>
-          <td align="left"><input id="pword"   onChange={e => handleInputChange(e)} /> </td>
+          <td align="left"><input id="Pword"   onChange={e => handleInputChange(e)} /> </td>
         </tr>
         
       

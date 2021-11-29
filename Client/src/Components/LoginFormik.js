@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import ReCAPTCHA from "react-google-recaptcha"; 
 import useUser from '../hooks/useUser';
+import axios from 'axios';
 
 
 export default function Formulario() {
@@ -12,7 +13,14 @@ export default function Formulario() {
   const captcha = useRef(null);//useRef crea una variable adentro de react que podemos modificar y que no es afectada por los render del componente y mantiene su valor 
   
   const [verificacionCaptcha,setVerificacionCaptcha] = useState(true);
-  const [errorLogin,setErrorLogin] = useState(false);
+  const [errorLogin,setErrorLogin] = useState({
+    error:false,
+    mensaje: ""
+  });
+  const [loading,setLoading] = useState(false);
+  
+
+
 
   const onChange = ()=>{  /*para que funcione el recaptcha*/
     console.log(captcha.current.getValue(),verificacionCaptcha)  
@@ -22,7 +30,7 @@ export default function Formulario() {
   }
 
   const formSchema = Yup.object().shape({
-    UserName: Yup.string().email().required("introduzca el email"),
+    Email: Yup.string().email().required("introduzca el email"),
     Password: Yup.string().required("introduzca el usuario"),
   });
 
@@ -40,17 +48,45 @@ export default function Formulario() {
                 {/*LA ETIQUETA FORMIK le pasamos los initialvalues que son los input a usar */}
             <Formik
               initialValues={{
-                UserName: "",
+                Email: "",
                 Password: "",
               }}
               validationSchema={formSchema}
 
               onSubmit={(values) => {
                 if(captcha.current.getValue()){
-                  console.log(values)
+                  console.log(values.Email,values.Password);
                   setVerificacionCaptcha(true);
 
-                  iniciarSeccion({name:'bran',id:1234,rol:2});
+                  //iniciarSeccion({name:'bran',id:1234,rol:2});
+                  const headers = {
+                    'Accept' : '*/*',
+                    'withCredentials': 'true'};
+                    console.log(process.env.REACT_APP_HOST_SIGNIN);
+                    setLoading(true);
+                  axios.post(process.env.REACT_APP_HOST_SIGNIN, {
+                    Email: values.Email,
+                    Pword:values.Password,
+                    },{withCredentials:true} 
+                    ).then((response) => {
+                          console.log(response.data);
+                          console.log(response.data.accessToken)
+                          setLoading(false);
+                          setErrorLogin({
+                            error:false,
+                            mensaje: ""
+                          });
+                          iniciarSeccion(response.data);
+                        }).catch((error) => {
+                          console.log(error.message);
+                          console.log(error.response);
+                          console.log(error.response.data.message);
+                          setLoading(false);
+                          setErrorLogin({
+                            error:true,
+                            mensaje: error.response.data.message
+                          });
+                        });
 
                   /*  if(true){//simulamos un error de catch en la peticion de login
                       setErrorLogin(true);
@@ -73,15 +109,15 @@ export default function Formulario() {
             <Form>
 
             <div className="form-group">
-                <label htmlFor='UserName' className="sr-only">ID Usuario: </label>
+                <label htmlFor='Email' className="sr-only">ID Usuario: </label>
                 <Field
                   className='form-control'
-                  name='UserName'
+                  name='Email'
                   placeholder='Email'
                   type='text'
                 />{/*la etiqueta field  sirve como input y es componente de la libreria */}
                 <ErrorMessage
-                  name='UserName'
+                  name='Email'
                   component='div'
                   className='field-error text-danger'
                 />{/*Error es un componente para que imprima el mensaje de error que mandamos en yup, tiene para poder el name que es input que le sale el error,el tipo de componente como div,span etc, y apra poderle la clase y darle estilos*/}
@@ -125,10 +161,13 @@ export default function Formulario() {
               <div className="form-group">
                 {verificacionCaptcha === false && <div className="alert alert-danger centrar contenedorError" role="alert">Porfavor completar el RECAPTCHA</div>}
 
-                {errorLogin&&<div className="field-error text-danger error centrar">Error de contaseña o usuario</div>}                  
+                {errorLogin.error&&<div className="alert alert-danger centrar contenedorError">{errorLogin.mensaje}</div>}                  
               </div>   
           </div>
       </div>
+                {
+                  loading&&<div className="contenedorLoading"> <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+                }
     </>
   );
 }

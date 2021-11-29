@@ -12,9 +12,8 @@ const[usuario,setUsuario]=useState({
     function handleInputSubmit(e){
         e.preventDefault();
       axios.post(process.env.REACT_APP_HOST_SIGNUP, {
-        usuario: usuario.usuario,
-        email:usuario.email,
-        pword:usuario.pword,
+        Email:usuario.Email,
+        Pword:usuario.Pword,
         },{withCredentials:true}
         ).then((response) => {
               console.log(response);
@@ -39,18 +38,15 @@ return(
     <div style={{display:`flex`,marginTop:`30vh`,height:`40vh`,backgroundColor:`white`,alignItems:`center`,borderRadius:`7px` ,border:` 3px solid black`}}> 
     <form onSubmit={e=> handleInputSubmit(e)}>
        <table style={{padding:`3vw`}}>
-        <tr>
-          <td align="right">Usuario:</td>
-          <td align="left"><input id="usuario" onChange={e => handleInputChange(e)}/> </td>
-        </tr>
+      
         <tr>
           <td align="right">Email:</td>
-          <td align="left"><input id="email" onChange={e => handleInputChange(e)}/> </td>
+          <td align="left"><input id="Email" onChange={e => handleInputChange(e)}/> </td>
         </tr>
 
         <tr>
           <td align="right">Contraseña:</td>
-          <td align="left"><input id="pword"   onChange={e => handleInputChange(e)} /> </td>
+          <td align="left"><input id="Pword"   onChange={e => handleInputChange(e)} /> </td>
         </tr>
         
       

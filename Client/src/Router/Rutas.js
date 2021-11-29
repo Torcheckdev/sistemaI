@@ -23,14 +23,13 @@ function Rutas() {
                 
                 <Route path="/" exact component={Home }/>
 
-                <PrivateRouter exact path="/dashboard" component={Dashboard} rol ={1} />
+                <PrivateRouter exact path="/dashboard" component={Dashboard} rol ={"moderator"} />
                 
-                <PrivateRouter exact path="/coordinacion" component={Coordinacion} rol ={1} />
+                <PrivateRouter exact path="/coordinacion" component={Coordinacion} rol ={"moderator"} />
 
-                <PrivateRouter exact path="/alumno" component={Alumno} rol ={2}/>
+                <PrivateRouter exact path="/alumno" component={Alumno} rol ={"ROLE_USER"}/>
 
-
-                <PublicRoute exact path="/login" component={Login }/>
+                <PublicRoute exact path="/login" component={Login}/>
                 
                 <Route path="*"  component={NotFoundPage }/>
                    
