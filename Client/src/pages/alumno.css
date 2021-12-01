@@ -1,0 +1,114 @@
+
+  /*estilos de alumno*/
+
+  .contenedor{
+      width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-evenly;
+      overflow: hidden;
+  }
+  
+  .colorContenedor{
+    background-color:#fff;
+    color:black;
+    border-radius: 30px;
+    border:solid 7px #fffbf4;
+    overflow: hidden;
+    /*height: 1000px;*/
+  }
+
+  
+  
+  
+  /*efecto de nav*/
+  
+  .efectoNav span:first-child {
+    display: inline-block;
+    padding: 0px;
+  }
+  
+  .efectoNav {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 2px;
+  }
+
+  .efectoNav  span:last-child {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-100%);
+  }
+
+ .efectoNav span {
+    transition: transform 0.2s ease-out;
+    
+  }
+   
+ /*.efectoNav:hover span:first-child {
+    transform: translateY(100%);
+  }
+   
+ .efectoNav:hover span:last-child {
+    transform: none;
+  }*/
+
+
+
+  .efectoNav span:last-child {
+    transform: translateY(-100%);
+  }
+
+  .efecto span:first-child {
+    transform: translateY(100%);
+  }
+
+  .efecto span:last-child {
+    transform: none;
+  }
+
+  @media (max-width: 768px) {
+    .navComponent{
+      width: 35%;
+      display: block;
+      padding:2px;
+      font-size: 14px;
+      color: black;
+      font-weight: 700;
+      /*text-align: center;
+      /*overflow-wrap: break-word;
+      hyphens: auto;*/ 
+    }
+  .contenedor{
+      
+      border-bottom: solid 1px black;
+      padding-bottom: 10px;
+    }
+    .efectoNav span:first-child {
+      padding: 0px;
+    }
+  }
+
+  .efectoNav span img{
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 350px) {
+    .efectoNav {
+      font-size:12px;
+      padding: 1px;
+    }
+  }
+
+  .efectoNav{
+    cursor: pointer;
+  }

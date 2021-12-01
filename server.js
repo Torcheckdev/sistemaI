@@ -31,7 +31,7 @@ app.get("/main", (req, res) => {
 // Db models and roles
 const db = require("./models");
 const Role = db.role;
-db.sequelize.sync({force: false}).then(() => {
+db.sequelize.sync({force: true}).then(() => {
   
   //force: true 
   console.log('Drop and Resync Db');
@@ -180,7 +180,6 @@ var sql_string12 = fs.readFileSync('./models/sqlscripts/4-1insertSeriadas.sql'.t
 
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
-require('./routes/product.routes')(app);
 require('./routes/alumno.routes')(app);
 require('./routes/admin.routes')(app);
 
