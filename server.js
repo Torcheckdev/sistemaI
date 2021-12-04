@@ -31,7 +31,7 @@ app.get("/main", (req, res) => {
 // Db models and roles
 const db = require("./models");
 const Role = db.role;
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({force: false}).then(() => {
   
   //force: true 
   console.log('Drop and Resync Db');
@@ -167,12 +167,15 @@ await db.sequelize.query('CREATE TRIGGER eacademica AFTER INSERT ON historialaca
  'iF (totalaprobados = 0 ) THEN UPDATE calificaciones SET EficienciaAcademica=0 where NumCuenta=NEW.NumCuenta; ELSE  UPDATE calificaciones SET EficienciaAcademica=((sumaaprobadaso - sumaaprobadosext - totalrecurse) / totalaprobados) where NumCuenta=NEW.NumCuenta; END IF;'+' '+ 
 'END;');
 
- /*var sql_string11 = fs.readFileSync('./models/sqlscripts/12insertinscMateria.sql'.toString(), 'utf8');
+ var sql_string11 = fs.readFileSync('./models/sqlscripts/12insertinscMateria.sql'.toString(), 'utf8');
  await db.inscMateria.sequelize.query(sql_string11);
-*/
+
 var sql_string12 = fs.readFileSync('./models/sqlscripts/4-1insertSeriadas.sql'.toString(), 'utf8');
  await db.seriada.sequelize.query(sql_string12)
 
+//carga historial academico
+var sql_string11a = fs.readFileSync('./models/sqlscripts/13inserthistorialpasado.sql'.toString(), 'utf8');
+await db.historialacademico.sequelize.query(sql_string11a);
 
 
 }

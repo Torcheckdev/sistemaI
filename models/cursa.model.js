@@ -19,6 +19,9 @@ module.exports = (sequelize, Sequelize) => {
       Periodo:{
       type:Sequelize.STRING
       },
+      Turno:{
+        type:Sequelize.STRING 
+      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')

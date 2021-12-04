@@ -106,7 +106,7 @@ async function listaMaterias(req,res) {
   var PlanEstudios=req.body.PlanEstudios
   var NumCuenta=req.body.NumCuenta
  
-  var datos= await db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,c5.Semestre as SemestreA from inscAsignatura  a1,materia m2, inscProfe p3, horario h4, cursa c5  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && m2.PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario &&c5.NumCuenta="'+NumCuenta+'" && m2.Semestre <= c5.Semestre) ORDER BY folioAsig;', { raw: true })
+  var datos= await db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,c5.Semestre as SemestreA from inscAsignatura  a1,materia m2, inscProfe p3, horario h4, cursa c5  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && m2.PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario &&c5.NumCuenta="'+NumCuenta+'" && m2.Semestre <= c5.Semestre && h4.Turno = c5.Turno) ORDER BY folioAsig;', { raw: true })
      .catch(err => {
        res.status(500).send({
          message:
@@ -177,6 +177,49 @@ console.log("TAMAÑO DE DATOS : "+datos[0].length)
 
   }
 }
+
+var materiasaprobadas=await db.sequelize.query('select distinct IDmateria   from historialacademico where NumCuenta="'+NumCuenta+'" AND Calificacion >5;', { raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+  });
+}
+);
+
+
+for(var j=0; j<materiasaprobadas[0].length; j++ ){
+for(var i=0; i<datos[0].length; i++){
+if(datos[0][i].IDmateria == materiasaprobadas[0][j]["IDmateria"]){
+  await  datos[0].splice(i, 1); 
+  i--;
+}
+}
+}
+
+var nocursables = await db.sequelize.query('select h.IDmateria ,count(h.IDmateria) as vecescursada from historialacademico h  where NumCuenta="'+NumCuenta+'" && TipoExamen="ORD"   Group by IDmateria HAVING vecescursada >1;', { raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+  });
+}
+);
+
+
+for(var j=0; j<nocursables[0].length; j++ ){
+  for(var i=0; i<datos[0].length; i++){
+  if(datos[0][i].IDmateria == nocursables[0][j]["IDmateria"]){
+    await  datos[0].splice(i, 1); 
+    i--;
+  }
+  }
+  }
+
+//res.send(nocursables[0])
+
+
+
  datos[0].sort( function(a,b){ 
   var x = a.IDmateria < b.IDmateria? -1:1; 
   return x; 
