@@ -1,0 +1,22 @@
+.btnPdf a{
+    color:#fff;
+    letter-spacing:2px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.btnPdf{
+    margin: 10px auto;
+    height:40px;
+    /*width: 80px;*/
+}
+.button.btnPdf {
+    padding:10px 10px;
+    width: 110px;
+    font-size: 14px;
+    
+}
+
+.button.btnPdf span{
+    letter-spacing: 2px;
+}

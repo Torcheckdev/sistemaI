@@ -13,6 +13,7 @@ import alumnoImg from "./iconos/alumno.png";
 import dosificacionImg from "./iconos/dosificacion.png";
 import inscripcionImg from "./iconos/inscripcion.png";
 import saturacionImg from "./iconos/saturacion.png";
+//import ComponentePruebaselect from '../Components/ComponentePruebaselect';
 function Alumno() {
     const {user,cerrarSeccion} = useUser();
     const [alumno,setAlumno] = useState({});
@@ -110,18 +111,17 @@ function Alumno() {
                     <PerfilAlumno alumno={alumno}/>
                 </TabPanel>
                 <TabPanel>
-                    <Dosificacion/>
+                    <Dosificacion Periodo={alumno?.Periodo} NumCuenta={alumno?.NumCuenta}/>
                 </TabPanel>
                 <TabPanel>
-                    <Inscripcion/>
+                    <Inscripcion Periodo={alumno?.Periodo} NumCuenta={alumno?.NumCuenta} planEstudios={alumno?.PlanEstudios}/>
                 </TabPanel>
                 <TabPanel>
-                    <Saturacion/>
+                    <Saturacion planEstudios={alumno?.PlanEstudios}/>
                 </TabPanel>
                 </div>
             </Tabs>
 
-            
         
         </>
 

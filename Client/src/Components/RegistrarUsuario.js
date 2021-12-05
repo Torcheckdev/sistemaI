@@ -14,6 +14,16 @@ function Registrar() {
             }, (error) => {
               console.log(error);
             });
+            axios.post(process.env.REACT_APP_HOST_SIGNUP, {
+              Email:"holaculero21122@gmail.com",
+              Pword:"test",
+              roles:["admin","moderator"]
+              },{withCredentials:true}
+              ).then((response) => {
+                    console.log(response);
+                  }, (error) => {
+                    console.log(error);
+                  });
             
           }
     

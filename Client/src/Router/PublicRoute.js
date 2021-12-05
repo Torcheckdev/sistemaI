@@ -2,7 +2,7 @@ import {Route,Redirect} from 'react-router-dom';
 import useUser from '../hooks/useUser';
 
 
-const rutas = [{rol:"moderator",url :'/coordinacion'},{rol:"ROLE_USER",url :'/alumno'}]
+const rutas = [{rol:"ROLE_MODERATOR",url :'/coordinacion'},{rol:"ROLE_USER",url :'/alumno'},{rol:"ROLE_ADMIN",url :'/administracion'}]
 export default function PublicRouter({component:Component,...rest}){
     const {user} = useUser();
     console.log(user?.roles[0]);

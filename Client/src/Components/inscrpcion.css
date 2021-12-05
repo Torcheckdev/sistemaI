@@ -153,3 +153,9 @@
   .button.inscripcion span{
     letter-spacing: 2px;
 }
+@media (max-width: 400px) {
+  .deconstructed{
+    font-size: 2.6rem;
+  }
+
+}
