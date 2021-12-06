@@ -103,7 +103,7 @@ INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos)VALUES(
 INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos)VALUES(30821103,103,63316,"6103",30,0);
 INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos)VALUES(30821104,104,63416,"6103",30,0);
 INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos)VALUES(30821105,105,63516,"6103",30,0);
-INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos)VALUES(30821106,106,71117,"7101",30,0);
+INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos)VALUES(30821106,106,71117,"7101",8,0);
 INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos)VALUES(30821107,107,71217,"7101",30,0);
 INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos)VALUES(30821108,108,71317,"7101",30,0);
 INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos)VALUES(30821109,109,71417,"7101",30,0);

@@ -123,7 +123,7 @@ INSERT INTO horario(IDhorario,Dia,Horario,Turno,Semestre)VALUES(72517,"Martes,Ju
 INSERT INTO horario(IDhorario,Dia,Horario,Turno,Semestre)VALUES(72617,"Martes,Jueves","12:30-14:00","Matutino","7");
 INSERT INTO horario(IDhorario,Dia,Horario,Turno,Semestre)VALUES(73117,"Lunes,Miercoles,Viernes","7:00-9:00","Matutino","7");
 INSERT INTO horario(IDhorario,Dia,Horario,Turno,Semestre)VALUES(73217,"Lunes,Miercoles,Viernes","9:00-10:00","Matutino","7");
-INSERT INTO horario(IDhorario,Dia,Horario,Turno,Semestre)VALUES(73317,"Lunes,Miercoles,Viernes","11:00-12:30","Matutino","7");
+INSERT INTO horario(IDhorario,Dia,Horario,Turno,Semestre)VALUES(73317,"Lunes,Miercoles,Viernes","16:00-18:30","Vespertino","7");
 INSERT INTO horario(IDhorario,Dia,Horario,Turno,Semestre)VALUES(73417,"Martes,Jueves","12:30-14:30","Matutino","7");
 INSERT INTO horario(IDhorario,Dia,Horario,Turno,Semestre)VALUES(73517,"Martes,Jueves","14:30-15:30","Matutino","7");
 INSERT INTO horario(IDhorario,Dia,Horario,Turno,Semestre)VALUES(73617,"Martes,Jueves","12:00-14:00","Matutino","7");

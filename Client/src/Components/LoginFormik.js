@@ -4,6 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import ReCAPTCHA from "react-google-recaptcha"; 
 import useUser from '../hooks/useUser';
 import axios from 'axios';
+import Loading from "./Loading";
 
 
 export default function Formulario() {
@@ -166,7 +167,7 @@ export default function Formulario() {
           </div>
       </div>
                 {
-                  loading&&<div className="contenedorLoading"> <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+                  loading&&<Loading/>
                 }
     </>
   );

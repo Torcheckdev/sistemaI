@@ -251,7 +251,7 @@ res.send(datos[0])
  exports.consultaSaturacion=(req,res) => {
   
   var PlanEstudios=req.body.PlanEstudios;
-   db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,h4.Semestre from inscAsignatura  a1,materia m2, inscProfe p3, horario h4  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && PlanEstudios ="'+PlanEstudios+'"&& IDpm=a1.IDpm  && h4.IDhorario=a1.IDhorario) ORDER BY folioAsig;', { raw: true }).then(data => {
+   db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,h4.Semestre from inscAsignatura  a1,materia m2, inscProfe p3, horario h4  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && PlanEstudios ="'+PlanEstudios+'"&& IDpm=a1.IDpm  && h4.IDhorario=a1.IDhorario) ORDER BY  m2.Semestre, m2.IDmateria desc;', { raw: true }).then(data => {
        res.send(data[0]);
      })
      .catch(err => {
@@ -319,9 +319,9 @@ var sumCreditosM = 0;
   }
   //res.send(creditos[0])
 
-  {arraylength >8 ? res.status(500).send({ message:
+  {arraylength >8 ? res.status(403).send({ message:
    "No puedes inscribir más de 8 materias"}) :null }
-{sumCreditosM>49 ? res.status(500).send({ message:
+{sumCreditosM>49 ? res.status(403).send({ message:
   "La suma de creditos tiene que ser menor a 50"}) :null }
 
   

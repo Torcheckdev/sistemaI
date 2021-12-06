@@ -61,7 +61,7 @@ INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacio
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10038,30821005,105,"2018-1",9,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10038,30821006,106,"2018-1",8,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10038,30821007,107,"2018-1",9,"ORD");
-INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821001,100,"2018-1",8,"ORD");
+INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821001,100,"2018-1",5,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821002,101,"2018-1",10,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821003,102,"2018-1",6,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821004,104,"2018-1",5,"ORD");
@@ -126,6 +126,7 @@ INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacio
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821023,201,"2018-2",9,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821024,202,"2018-2",10,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821025,203,"2018-2",5,"ORD");
+INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821096,203,"2019-2",5,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821026,204,"2018-2",7,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821027,205,"2018-2",8,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10030,30821040,300,"2019-1",9,"ORD");
@@ -247,7 +248,7 @@ INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacio
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821060,402,"2019-2",8,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821061,403,"2019-2",8,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821062,404,"2019-2",8,"ORD");
-INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821063,405,"2019-2",9,"ORD");
+INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821063,405,"2019-2",5,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10030,30821076,500,"2020-1",6,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10030,30821077,501,"2020-1",6,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10030,30821078,502,"2020-1",6,"ORD");
@@ -297,7 +298,6 @@ INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacio
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821077,501,"2020-1",8,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821078,502,"2020-1",7,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821079,503,"2020-1",9,"ORD");
-INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10039,30821080,504,"2020-1",9,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10030,30821091,600,"2020-2",7,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10030,30821092,601,"2020-2",6,"ORD");
 INSERT INTO historialacademico(NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen)VALUES(10030,30821093,602,"2020-2",8,"ORD");
