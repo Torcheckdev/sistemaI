@@ -1,18 +1,23 @@
 module.exports = (sequelize, Sequelize) => {
     const planestudios = sequelize.define("planestudios",{
-        IDcarrera: {
-            type: Sequelize.INTEGER,
-            primarikey: true
-        },
-        Pestudios: {
+        PlanEstudios: {
             type: Sequelize.STRING,
             primaryKey: true
+        },
+        IDcarrera: {
+            type: Sequelize.INTEGER
         },
         Descripcion: {
             type: Sequelize.STRING
         },
-        //foreign key IDcarrera reference carrera(IDcarrera)
-
+        createdAt: {
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+          },
+          updatedAt:{
+            type: Sequelize.DATE,
+            defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+          },
 
     });
 return planestudios;

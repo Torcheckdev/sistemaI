@@ -11,15 +11,14 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   // Save User to Database
   User.create({
-    Usuario: req.body.usuario,
-    Email: req.body.email,
-    Pword: bcrypt.hashSync(req.body.pword, 8)
+    Email: req.body.Email,
+    Pword: bcrypt.hashSync(req.body.Pword, 8)
   })
   .then(user => {
     if (req.body.roles) {
       Role.findAll({
         where: {
-          name: {
+          Nombre: {
             [Op.or]: req.body.roles
           }
         }
@@ -43,7 +42,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   User.findOne({
     where: {
-      Usuario: req.body.usuario
+      Email: req.body.Email
     }
   })
     .then(user => {
@@ -52,7 +51,7 @@ exports.signin = (req, res) => {
       }
 
       var passwordIsValid = bcrypt.compareSync(
-        req.body.pword,
+        req.body.Pword,
         user.Pword
       );
 
@@ -63,7 +62,7 @@ exports.signin = (req, res) => {
         });
       }
 
-      var token = jwt.sign({ Usuario: user.Usuario }, config.secret, {
+      var token = jwt.sign({ Email: user.Email }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
 
@@ -76,7 +75,6 @@ exports.signin = (req, res) => {
         res.cookie('x-access-token' , token ,{ withCredentials:true,httpOnly: true });
 
         res.status(200).send({
-          Usuario: user.Usuario,
           Email: user.Email,
           roles: authorities,
           accessToken: token

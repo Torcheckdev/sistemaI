@@ -16,15 +16,17 @@ module.exports = (sequelize, Sequelize) => {
       Tipo: {
         type: Sequelize.STRING
       },
-      IDcarrera:{
-          type:Sequelize.INTEGER,
-          primaryKey: true
-      },
       PlanEstudios:{
-        type: Sequelize.STRING,
-        primaryKey: true
+        type: Sequelize.STRING
       },
-      //foreing key IDcarrera references carrera(IDcarrera)
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt:{
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
     });
   
     return materia;

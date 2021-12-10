@@ -13,11 +13,19 @@ module.exports = (sequelize, Sequelize) => {
       Domicilio: {
         type: Sequelize.STRING
       },
-      Correo: {
+      Email: {
         type: Sequelize.STRING
       },
       Telefono: {
         type: Sequelize.STRING
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt:{
+        type: Sequelize.DATE,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
       },
     });
   

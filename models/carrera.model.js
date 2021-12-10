@@ -10,6 +10,9 @@ module.exports = (sequelize, Sequelize) => {
       Area: {
         type: Sequelize.INTEGER
       },
+      IDplantel: {
+        type: Sequelize.INTEGER
+      },
  
       createdAt: {
         type: Sequelize.DATE,
@@ -18,8 +21,8 @@ module.exports = (sequelize, Sequelize) => {
       updatedAt:{
         type: Sequelize.DATE,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-
       },
+      
     });
   
     return carrera;

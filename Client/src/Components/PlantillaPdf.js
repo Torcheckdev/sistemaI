@@ -80,7 +80,11 @@ function PlantillaPdf({informacion}) {
                     </View>
                     <View style={styles.caja}>
                         <Text style={styles.titulo}>nombre:</Text>
+<<<<<<< HEAD
                         <Text style={styles.valor}>MANUEL Hernández Cabrera</Text>
+=======
+                        <Text style={styles.valor}>{informacion?.alumno.NombreA}</Text>
+>>>>>>> main
                     </View>
                     <View style={styles.caja}>
                         <Text style={styles.titulo}>carrera:</Text>

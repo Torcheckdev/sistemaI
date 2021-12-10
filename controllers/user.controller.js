@@ -13,3 +13,7 @@ exports.allAccess = (req, res) => {
   exports.moderatorBoard = (req, res) => {
     res.status(200).send("Moderator Content.");
   };
+
+  exports.siInscribe = (req, res) => {
+    res.status(200).send("Hay cupo para todas las materias.");
+  };
