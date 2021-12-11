@@ -2,33 +2,6 @@ import axios from 'axios';
 
 function Registrar() {
     
-<<<<<<< HEAD
-    function handleInputSubmit(){
-    
-      axios.post(process.env.REACT_APP_HOST_SIGNUP, {
-        Email:"MANUEL12@Email.com",
-        Pword:"12345",
-        roles:["user"]
-        },{withCredentials:true}
-        ).then((response) => {
-              console.log(response);
-            }, (error) => {
-              console.log(error);
-            });
-            axios.post(process.env.REACT_APP_HOST_SIGNUP, {
-              Email:"holaculero21122@gmail.com",
-              Pword:"test",
-              roles:["admin","moderator"]
-              },{withCredentials:true}
-              ).then((response) => {
-                    console.log(response);
-                  }, (error) => {
-                    console.log(error);
-                  });
-            
-          }
-    
-=======
   const usuarios = [
     {
     "Email":"ALICIA23@Email.com",
@@ -95,7 +68,7 @@ function Registrar() {
               axios.post(process.env.REACT_APP_HOST_SIGNUP, {
                 Email:"holaculero21122@gmail.com",
                 Pword:"test",
-                roles:["admin","moderator"]
+                roles:["admin"]
                 },{withCredentials:true}
                 ).then((response) => {
                       console.log(response);
@@ -105,7 +78,6 @@ function Registrar() {
             
             }
           
->>>>>>> main
     return ( <>
        <div className="central btnC">
                 <button
