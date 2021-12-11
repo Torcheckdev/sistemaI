@@ -16,4 +16,31 @@ module.exports = function(app) {
     "/api/admin/generardosificacion",
     controller.generaDosificacion
   );
+
+  app.get("/api/admin/listaMateriaProf",
+  controller.listaMateriaProf);
+
+app.post("/api/admin/inscProfesor",
+controller.inscProf);
+
+
+app.get("/api/admin/listainscAsignatura"
+,controller.listainscAsignatura);
+
+app.post("/api/admin/inscAsignatura",
+controller.inscAsignatura);
+
+app.get("/api/admin/listamodinscAsignatura",
+controller.listamodinscAsignatura);
+
+app.post("/api/admin/modinscAsignatura",
+controller.modinscAsignatura);
+
+
+app.post("/api/admin/borrarinscAsignatura",
+controller.borrarinscAsignatura);
+
+
+
+
   };
