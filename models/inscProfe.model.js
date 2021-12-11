@@ -2,7 +2,9 @@ module.exports = (sequelize, Sequelize) => {
     const inscProfe = sequelize.define("inscProfe",{
         IDpm: {
             type: Sequelize.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
+
         },
         IDmateria: {
             type: Sequelize.INTEGER

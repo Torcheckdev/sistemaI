@@ -67,6 +67,9 @@ db.segcarrera = require ("../models/segcarrera.model.js")(sequelize,Sequelize);
 db.comprobanteinsc = require ("../models/comprobanteinsc.model.js")(sequelize,Sequelize);
 db.comprobantematerias = require ("../models/comprobantematerias.model.js")(sequelize,Sequelize);
 db.seriada  = require ("../models/seriada.model.js")(sequelize,Sequelize);
+db.calendarioEscolar= require ("../models/calendarioEscolar.model.js")(sequelize,Sequelize);
+db.extensionCreditos= require ("../models/extensionCreditos.model.js")(sequelize,Sequelize);
+
 
 //Relación usuario(idusuario) ->roles(idrole) muchos a muchos en nueva tabla "user_roles"
 db.role.belongsToMany(db.usuario, {

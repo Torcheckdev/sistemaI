@@ -318,13 +318,34 @@ var sumCreditosM = 0;
 
   }
   //res.send(creditos[0])
+var bandera = false ; 
 
-  {arraylength >8 ? res.status(403).send({ message:
-   "No puedes inscribir más de 8 materias"}) :null }
-{sumCreditosM>49 ? res.status(403).send({ message:
-  "La suma de creditos tiene que ser menor a 50"}) :null }
+var creditosmax = await db.materia.sequelize.query('select Creditos from materia where IDmateria= "'+arrayMaterias[i]['IDmateria']+'";',
+    { raw: true })
+   .catch(err => {
+     res.status(500).send({
+       message:
+         err.message || "Algun error ocurrio durante la inserción de materias"
+     });
+ });
 
-  
+ //arrayMaterias[0]['Periodo']
+
+
+
+
+{arraylength >8 ? (res.status(403).send({ message:
+   "No puedes inscribir más de 8 materias"}) &&( bandera =true) )   :null }
+
+
+   {sumCreditosM>49 ? (res.status(403).send({ message:
+  "La suma de creditos tiene que ser menor a 50"}) &&  (bandera = true) ) :null }
+
+  if (bandera ==true ){
+
+    return
+  }
+
   for(var i=0; i<arraylength; i++){
 console.log("me ejecute");
    var materiaInscrita = await db.materia.sequelize.query('insert into inscMateria (NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen) values ("'+arrayMaterias[i]['NumCuenta']+'","'+arrayMaterias[i]['folioAsig']+'","'+arrayMaterias[i]['IDmateria']+'","'+arrayMaterias[i]['Periodo']+'","'+arrayMaterias[i]['Calificacion']+'","'+arrayMaterias[i]['TipoExamen']+'")',
