@@ -46,6 +46,15 @@ controller.extensionCreditos);
 
 
 
+app.post("/api/admin/cescolarNMPeriodo",
+controller.cescolarregPeriodo);
+
+
+app.post("/api/admin/seleccionarPeriodoencurso",
+controller.setperiodoencurso);
+
+
+
 
 
   };

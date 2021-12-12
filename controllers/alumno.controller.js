@@ -39,7 +39,7 @@ module.exports.getdatosAlumno = getdatosAlumno;
 
 async function consultaInscripcion(req,res) {
   var NumCuenta=req.body.NumCuenta
-  var Periodo=req.body.Periodo
+  var Periodo=await periodoencurso();
   var datosalumno = await db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,c1.Periodo,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.NumCuenta="'+NumCuenta+'" &&  c1.NumCuenta=a1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta;',{ raw: true })
   .catch(err => {
     res.status(500).send({
@@ -72,7 +72,7 @@ module.exports.consultaInscripcion = consultaInscripcion;
 
 async function consultadosificacion(req,res) {
   var NumCuenta=req.body.NumCuenta
-  var Periodo=req.body.Periodo
+  var Periodo=await periodoencurso();
   var datosalumno = await db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,c1.Periodo,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.NumCuenta="'+NumCuenta+'" &&  c1.NumCuenta=a1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta;',{ raw: true })
   .catch(err => {
     res.status(500).send({
@@ -105,8 +105,8 @@ module.exports.consultadosificacion = consultadosificacion;
 async function listaMaterias(req,res) {
   var PlanEstudios=req.body.PlanEstudios
   var NumCuenta=req.body.NumCuenta
- 
-  var datos= await db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,c5.Semestre as SemestreA from inscAsignatura  a1,materia m2, inscProfe p3, horario h4, cursa c5  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && m2.PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario &&c5.NumCuenta="'+NumCuenta+'" && m2.Semestre <= c5.Semestre && h4.Turno = c5.Turno) ORDER BY folioAsig;', { raw: true })
+ var Periodo=await periodoencurso();
+  var datos= await db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,c5.Semestre as SemestreA from inscAsignatura  a1,materia m2, inscProfe p3, horario h4, cursa c5  where exists (select * from inscProfe  p3  where  p3.Periodo = a1.Periodo && a1.Periodo ="'+Periodo+'" && IDmateria=m2.IDmateria && m2.PlanEstudios ="'+PlanEstudios+'" && IDpm=a1.IDpm && a1.Cupo >a1.Inscritos && h4.IDhorario=a1.IDhorario &&c5.NumCuenta="'+NumCuenta+'" && m2.Semestre <= c5.Semestre && h4.Turno = c5.Turno) ORDER BY folioAsig;', { raw: true })
      .catch(err => {
        res.status(500).send({
          message:
@@ -248,10 +248,10 @@ res.send(datos[0])
 
  module.exports.listaMaterias = listaMaterias;
 
- exports.consultaSaturacion=(req,res) => {
-  
+ async function consultaSaturacion(req,res){
+ var Periodo=await periodoencurso(); 
   var PlanEstudios=req.body.PlanEstudios;
-   db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,h4.Semestre from inscAsignatura  a1,materia m2, inscProfe p3, horario h4  where exists (select * from inscProfe  p3  where IDmateria=m2.IDmateria && PlanEstudios ="'+PlanEstudios+'"&& IDpm=a1.IDpm  && h4.IDhorario=a1.IDhorario) ORDER BY  m2.Semestre, m2.IDmateria desc;', { raw: true }).then(data => {
+   db.sequelize.query('select distinct a1.folioAsig,a1.IDpm,a1.IDhorario,a1.Cupo,a1.Inscritos,a1.Grupo,m2.IDmateria,m2.Nombre,m2.Semestre,m2.Creditos,m2.Tipo,m2.PlanEstudios,h4.Dia,h4.Horario,h4.Turno,h4.Semestre from inscAsignatura  a1,materia m2, inscProfe p3, horario h4  where exists (select * from inscProfe  p3  where a1.Periodo="'+Periodo+'" && p3.Periodo=a1.Periodo && IDmateria=m2.IDmateria && PlanEstudios ="'+PlanEstudios+'"&& IDpm=a1.IDpm  && h4.IDhorario=a1.IDhorario) ORDER BY  m2.Semestre, m2.IDmateria desc;', { raw: true }).then(data => {
        res.send(data[0]);
      })
      .catch(err => {
@@ -264,45 +264,14 @@ res.send(datos[0])
  
  
  }
- /*
- exports.validaCupo= (req,res) => {
-  
-  var arrayMaterias=req.body;
-  var arraylength=arrayMaterias.length;
-   console.log(arraylength);
-for(var i=0; i<arraylength; i++){
-  console.log(arrayMaterias[i]['folioAsig']);
+ module.exports.consultaSaturacion = consultaSaturacion;
 
-  db.sequelize.query('select  folioAsig,Cupo,Inscritos from inscAsignatura where folioAsig="'+arrayMaterias[i]['folioAsig']+'"', { raw: true })
-  .then(data => {
-console.log(data[0][0]);
-
-
-if(data[0][0]['Cupo'] == data[0][0]['Inscritos']){
-  console.log("NO hay cupo");
-  res.status(403).send({
-    message: "NO hay cupo para la materia : "+data[0][0]['folioAsig']
-  });
-  }
-
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-        err.message || "Algun error ocurrio validaCupo"
-    });
-}
-  );
-
-}
-   //res.send(arrayMaterias)
- }
-*/
  async function inscribirMateria(req,res){
   var arrayMaterias=req.body
   var arraylength=arrayMaterias.length;
   var NumCuenta=arrayMaterias[0]['NumCuenta'];
 var sumCreditosM = 0;
+var Periodo=await periodoencurso();
   for (var i = 0; i<arraylength; i++){
     
     var creditos = await db.materia.sequelize.query('select Creditos from materia where IDmateria= "'+arrayMaterias[i]['IDmateria']+'";',
@@ -320,7 +289,18 @@ var sumCreditosM = 0;
   //res.send(creditos[0])
 var bandera = false ; 
 
-var creditosmax = await db.materia.sequelize.query('select Creditos from materia where IDmateria= "'+arrayMaterias[i]['IDmateria']+'";',
+var query= await db.sequelize.query('SELECT COUNT(*) as registro FROM  extensionCreditos WHERE  NumCuenta="'+NumCuenta+'"  && Periodo ="'+Periodo+'"  ').catch(err => {
+  res.status(403).send({
+    message:
+      err.message || "Hubo algun error al borrar Asignatura"
+  });
+}
+);
+const{registro}= query[0][0]
+
+var creditosmax = 58;
+if(registro > 0){
+ creditosmax = await db.materia.sequelize.query('select Creditos from extensionCreditos where NumCuenta="'+NumCuenta+'"  && Periodo ="'+Periodo+'"',
     { raw: true })
    .catch(err => {
      res.status(500).send({
@@ -329,17 +309,14 @@ var creditosmax = await db.materia.sequelize.query('select Creditos from materia
      });
  });
 
- //arrayMaterias[0]['Periodo']
+const {Creditos}= creditosmax[0][0];
+creditosmax=Creditos;
+}
+else {    {arraylength >8 ? (res.status(403).send({ message:
+  "No puedes inscribir más de 8 materias"}) &&( bandera =true) )   :null }    }
 
-
-
-
-{arraylength >8 ? (res.status(403).send({ message:
-   "No puedes inscribir más de 8 materias"}) &&( bandera =true) )   :null }
-
-
-   {sumCreditosM>49 ? (res.status(403).send({ message:
-  "La suma de creditos tiene que ser menor a 50"}) &&  (bandera = true) ) :null }
+   {sumCreditosM>creditosmax ? (res.status(403).send({ message:
+  "La suma de creditos tiene que ser menor o igual a 58"}) &&  (bandera = true) ) :null }
 
   if (bandera ==true ){
 
@@ -348,7 +325,7 @@ var creditosmax = await db.materia.sequelize.query('select Creditos from materia
 
   for(var i=0; i<arraylength; i++){
 console.log("me ejecute");
-   var materiaInscrita = await db.materia.sequelize.query('insert into inscMateria (NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen) values ("'+arrayMaterias[i]['NumCuenta']+'","'+arrayMaterias[i]['folioAsig']+'","'+arrayMaterias[i]['IDmateria']+'","'+arrayMaterias[i]['Periodo']+'","'+arrayMaterias[i]['Calificacion']+'","'+arrayMaterias[i]['TipoExamen']+'")',
+   var materiaInscrita = await db.materia.sequelize.query('insert into inscMateria (NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen) values ("'+arrayMaterias[i]['NumCuenta']+'","'+arrayMaterias[i]['folioAsig']+'","'+arrayMaterias[i]['IDmateria']+'","'+Periodo+'","'+arrayMaterias[i]['Calificacion']+'","'+arrayMaterias[i]['TipoExamen']+'")',
     { raw: true })
    .catch(err => {
      res.status(500).send({
@@ -372,7 +349,7 @@ await db.sequelize.query('select a.IDmateria,a.Nombre,a.Creditos,a.Semestre,i.Gr
 }
 
 
-await db.sequelize.query('insert into comprobanteinsc (NumCuenta,Periodo,Fecha) values("'+NumCuenta+'","'+arrayMaterias[0]['Periodo']+'",NOW());',{ raw: true })
+await db.sequelize.query('insert into comprobanteinsc (NumCuenta,Periodo,Fecha) values("'+NumCuenta+'","'+Periodo+'",NOW());',{ raw: true })
 .catch(err => {
   res.status(500).send({
     message:
@@ -381,7 +358,7 @@ await db.sequelize.query('insert into comprobanteinsc (NumCuenta,Periodo,Fecha) 
 });
 
 
-var IDcomprobante =await db.sequelize.query('SELECT IDcomprobante,Fecha FROM comprobanteinsc where NumCuenta="'+NumCuenta+'" && Periodo="'+arrayMaterias[0]['Periodo']+'";',{ raw: true })
+var IDcomprobante =await db.sequelize.query('SELECT IDcomprobante,Fecha FROM comprobanteinsc where NumCuenta="'+NumCuenta+'" && Periodo="'+Periodo+'";',{ raw: true })
 .catch(err => {
   res.status(500).send({
     message:
@@ -416,3 +393,15 @@ res.send(rescomprobante);
  }
 
  module.exports.inscribirMateria = inscribirMateria;
+
+ async function periodoencurso(req,res) {
+  var query= await db.sequelize.query('SELECT Periodo  FROM  calendarioEscolar WHERE  Encurso="true" ').catch(err => {
+    res.status(403).send({
+      message:
+        err.message || "Hubo algun error al borrar Asignatura"
+    });
+  }
+  );
+  const{Periodo}= query[0][0]
+  return Periodo ;
+}

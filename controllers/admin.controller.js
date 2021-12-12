@@ -5,7 +5,7 @@ var moment = require('moment');
 
 async function generaDosificacion(req,res){
      
-    var Periodo =req.body.Periodo;
+    var Periodo = await periodoencurso();
     var FechaDosificacion=req.body.FechaDosificacion;
     var Horam=req.body.Horam;
     var Sumiteracion=req.body.Sumiteracion
@@ -128,8 +128,8 @@ async function inscProf(req,res){
 
 var IDmateria=req.body.IDmateria; 
 var IDprofesor =req.body.IDprofesor;
-
-await db.sequelize.query('INSERT INTO  inscProfe  (IDmateria,IDprofesor)  VALUES("'+IDmateria+'","'+IDprofesor+'");').catch(err => {
+var Periodo= await periodoencurso();
+await db.sequelize.query('INSERT INTO  inscProfe  (IDmateria,IDprofesor,Periodo)  VALUES("'+IDmateria+'","'+IDprofesor+'","'+Periodo+'");').catch(err => {
   res.status(500).send({
     message:
       err.message || "Algun error ocurrio en la inscripción del profesor"
@@ -153,7 +153,8 @@ module.exports.inscProf = inscProf;
 
 
 async function listainscAsignatura(req,res){
- var pm = await db.sequelize.query('select  ip.IDpm,ip.IDmateria,ip.IDprofesor,m.nombre,p.Nombre as nombreProfesor from inscProfe ip INNER JOIN materia m ON ip.IDmateria=m.IDmateria INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor;')
+  var Periodo= await periodoencurso();
+ var pm = await db.sequelize.query('select  ip.IDpm,ip.IDmateria,ip.IDprofesor,m.nombre,p.Nombre as nombreProfesor from inscProfe ip INNER JOIN materia m ON ip.Periodo="'+Periodo+'" && ip.IDmateria=m.IDmateria INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor order by IDmateria;')
 var horario= await db.sequelize.query('select IDhorario,Dia,Horario,Turno from horario;');
 
 
@@ -172,7 +173,8 @@ var IDpm = req.body.IDpm;
 var IDhorario=req.body.IDhorario; 
 var Grupo =req.body.Grupo;
 var Cupo = req.body.Cupo;
-var existe1=await db.sequelize.query('select count(*) as existe from inscAsignatura where IDpm="'+IDpm+'" && IDhorario="'+IDhorario+'"');
+var Periodo= await periodoencurso();
+var existe1=await db.sequelize.query('select count(*) as existe from inscAsignatura where IDpm="'+IDpm+'" && IDhorario="'+IDhorario+'" && Periodo="'+Periodo+'"');
 console.log(existe1[0][0])
 const{existe}= existe1[0][0]
 
@@ -193,7 +195,7 @@ var {folioAsig}= ultimoFolio[0][0];
 folioAsig++;
 
 
-await db.sequelize.query('INSERT INTO inscAsignatura (folioAsig,IDpm,IDhorario,Grupo,Cupo) VALUES ("'+folioAsig+'","'+IDpm+'","'+IDhorario+'","'+Grupo+'","'+Cupo+'");').catch(err => {
+await db.sequelize.query('INSERT INTO inscAsignatura (folioAsig,IDpm,IDhorario,Grupo,Cupo,Periodo) VALUES ("'+folioAsig+'","'+IDpm+'","'+IDhorario+'","'+Grupo+'","'+Cupo+'","'+Periodo+'");').catch(err => {
   res.status(403).send({
     message:
       err.message || "Hubo algun error al inscribir Asignatura"
@@ -213,8 +215,8 @@ module.exports.inscAsignatura = inscAsignatura;
 
 
 async function listamodinscAsignatura (req,res ){
-
-  var lista = await db.sequelize.query('select ia.folioAsig,ia.Grupo,ia.Cupo,ia.Inscritos,p.Nombre as NombreProf, m.IDmateria, m.Nombre as Nombremateria from inscAsignatura ia INNER JOIN  inscProfe ip ON ia.IDpm=ip.IDpm INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor INNER JOIN materia m ON m.IDmateria=ip.IDmateria ;')
+var Periodo = await periodoencurso();
+  var lista = await db.sequelize.query('select ia.folioAsig,ia.Grupo,ia.Cupo,ia.Inscritos,p.Nombre as NombreProf, m.IDmateria, m.Nombre as Nombremateria from inscAsignatura ia INNER JOIN  inscProfe ip ON  ia.Periodo="'+Periodo+'" && ia.Periodo=ip.Periodo && ia.IDpm=ip.IDpm INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor INNER JOIN materia m ON m.IDmateria=ip.IDmateria order by folioAsig;')
 res.send(lista[0])
 
 }
@@ -244,7 +246,7 @@ async function borrarinscAsignatura(req,res){
 
 var folioAsig= req.body.folioAsig;
 
-  var countfolioM= await db.sequelize.query('SELECT   COUNT(*) as cfm from inscMateria where folioAsig='+folioAsig+'').catch(err => {
+  var countfolioM= await db.sequelize.query('SELECT   COUNT(*) as cfm from inscMateria where folioAsig="'+folioAsig+'"').catch(err => {
     res.status(403).send({
       message:
         err.message || "Hubo algun error al borrar Asignatura"
@@ -252,7 +254,7 @@ var folioAsig= req.body.folioAsig;
   }
   );
 
-  var countfolioH= await db.sequelize.query('SELECT  COUNT(*)   as cfh from historialacademico where folioAsig='+folioAsig+'').catch(err => {
+  var countfolioH= await db.sequelize.query('SELECT  COUNT(*)   as cfh from historialacademico where folioAsig="'+folioAsig+'"').catch(err => {
     res.status(403).send({
       message:
         err.message || "Hubo algun error al borrar Asignatura"
@@ -275,7 +277,7 @@ return
 }
 
 
-var countfolioM= await db.sequelize.query('DELETE  FROM inscAsignatura where folioAsig='+folioAsig+'').catch(err => {
+var countfolioM= await db.sequelize.query('DELETE  FROM inscAsignatura where folioAsig="'+folioAsig+'"').catch(err => {
   res.status(403).send({
     message:
       err.message || "Hubo algun error al borrar Asignatura"
@@ -299,7 +301,7 @@ var NumCuenta=req.body.NumCuenta;
 var Periodo= await periodoencurso(); 
 var Creditos=req.body.Creditos;
 
-var query= await db.sequelize.query('SELECT COUNT(*) as registro FROM  extensionCreditos WHERE  NumCuenta='+NumCuenta+'  && Periodo ='+Periodo+'  ').catch(err => {
+var query= await db.sequelize.query('SELECT COUNT(*) as registro FROM  extensionCreditos WHERE  NumCuenta="'+NumCuenta+'"  && Periodo ="'+Periodo+'"  ').catch(err => {
   res.status(403).send({
     message:
       err.message || "Hubo algun error al borrar Asignatura"
@@ -310,7 +312,7 @@ const{registro}= query[0][0]
 
 
 if (registro>0 ){
-  var query1=await db.sequelize.query('UPDATE  extensionCreditos  set Creditos='+Creditos+' , Periodo= '+Periodo+' WHERE  NumCuenta='+NumCuenta+'  && Periodo ='+Periodo+' ) ').catch(err => {
+  var query1=await db.sequelize.query('UPDATE  extensionCreditos  set Creditos="'+Creditos+'" , Periodo="'+Periodo+'" WHERE  NumCuenta="'+NumCuenta+'"  && Periodo ="'+Periodo+'"  ').catch(err => {
     res.status(403).send({
       message:
         err.message || "Hubo algun error al actualizar los creditos"
@@ -322,7 +324,7 @@ if (registro>0 ){
 return
 
 }else {
-  var query1=await db.sequelize.query('INSERT INTO extensionCreditos (NumCuenta,Creditos,Periodo) VALUES ('+NumCuenta+','+Creditos+','+Periodo+') ').catch(err => {
+  var query1=await db.sequelize.query('INSERT INTO extensionCreditos (NumCuenta,Creditos,Periodo) VALUES ("'+NumCuenta+'","'+Creditos+'","'+Periodo+'") ').catch(err => {
     res.status(403).send({
       message:
         err.message || "Hubo algun error al registrar el nuevo limite de creditos"
@@ -345,7 +347,8 @@ return
     var Fechainicio = req.body.Fechainicio;
     var Fechatermino=req.body.Fechatermino;
 
-    var query= await db.sequelize.query('SELECT COUNT(*) as registro FROM  calendarioEscolar WHERE  Periodo='+Periodo+'').catch(err => {
+    console.log(Periodo  + "       "+  Fechainicio + "       "+ Fechatermino)
+    var query= await db.sequelize.query('SELECT COUNT(*) as registro FROM  calendarioEscolar WHERE  Periodo="'+Periodo+'";').catch(err => {
       res.status(403).send({
         message:
           err.message || "Hubo algun error al borrar Asignatura"
@@ -354,11 +357,10 @@ return
     );
     const{registro}= query[0][0]
     
-    
-    if (registro>0 ){
+    if (registro <1 ){
 
 
-    await db.sequelize.query('INSERT INTO calendarioEscolar (Periodo,Fechainicio,Fechatermino) VALUES ('+Periodo+','+Fechainicio+','+Fechatermino+')').catch(err => {
+    await db.sequelize.query('INSERT INTO calendarioEscolar (Periodo,Fechainicio,Fechatermino) VALUES ("'+Periodo+'","'+Fechainicio+'","'+Fechatermino+'" )').catch(err => {
       res.status(403).send({
         message:
           err.message || "Hubo algun error al insertar en calendario Escolar"
@@ -370,7 +372,7 @@ return
 
   }
   else {
-    await db.sequelize.query('UPDATE calendarioEscolar  SET Periodo= '+Periodo+', Fechainicio= '+Fechainicio+', Fechatermino ='+Fechatermino+' WHERE  Periodo='+Periodo+' )').catch(err => {
+    await db.sequelize.query('UPDATE calendarioEscolar SET Periodo="'+Periodo+'", Fechainicio="'+Fechainicio+'", Fechatermino ="'+Fechatermino+'"  WHERE  Periodo="'+Periodo+'" ').catch(err => {
       res.status(403).send({
         message:
           err.message || "Hubo algun error al insertar en calendario Escolar"
@@ -395,8 +397,7 @@ var Periodo=req.body.Periodo;
 }
 );
 
-
-await db.sequelize.query('UPDATE calendarioEscolar set Encurso="true" WHERE Periodo='+Periodo+'').catch(err => {
+var existe = await db.sequelize.query('SELECT COUNT(*) as registro  from calendarioEscolar WHERE Periodo="'+Periodo+'"').catch(err => {
   res.status(403).send({
     message:
       err.message || "Hubo algun error set periodoen curso"
@@ -404,11 +405,34 @@ await db.sequelize.query('UPDATE calendarioEscolar set Encurso="true" WHERE Peri
 );
 });
 
+const{registro}=existe[0][0]
+
+if (registro >0 ){
+
+await db.sequelize.query('UPDATE calendarioEscolar set Encurso="true" WHERE Periodo="'+Periodo+'"').catch(err => {
+  res.status(403).send({
+    message:
+      err.message || "Hubo algun error set periodoen curso"
+}
+);
+});
+res.send("El periodo en curso es    :"+Periodo )
+}
+else {
+
+  res.status(403).send({
+    message:
+     "No existe un registro para ese periodo"
+}
+);
+}
+
+
 } module.exports.setperiodoencurso = setperiodoencurso;
 
 
 async function periodoencurso(req,res) {
-  var query= await db.sequelize.query('SELECT Periodo  FROM  calendarioEscolar WHERE  Encurso=true ').catch(err => {
+  var query= await db.sequelize.query('SELECT Periodo  FROM  calendarioEscolar WHERE  Encurso="true" ').catch(err => {
     res.status(403).send({
       message:
         err.message || "Hubo algun error al borrar Asignatura"

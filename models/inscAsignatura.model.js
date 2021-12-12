@@ -12,7 +12,6 @@ module.exports = (sequelize, Sequelize) => {
         },
         Grupo:{
             type: Sequelize.STRING
-  
           },
         Cupo: {
             type: Sequelize.INTEGER
@@ -21,7 +20,9 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             defaultValue: 0
         },
-        
+        Periodo:{
+            type: Sequelize.STRING
+          },
         createdAt: {
             type: Sequelize.DATE,
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
