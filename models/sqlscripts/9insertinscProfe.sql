@@ -13,7 +13,7 @@ INSERT INTO inscProfe(IDmateria,IDprofesor,Periodo)VALUES(105,2012,"2021-2");
 INSERT INTO inscProfe(IDmateria,IDprofesor,Periodo)VALUES(106,2013,"2021-2");
 INSERT INTO inscProfe(IDmateria,IDprofesor,Periodo)VALUES(107,2014,"2021-2");
 INSERT INTO inscProfe(IDmateria,IDprofesor,Periodo)VALUES(100,2015,"2021-2");
-INSERT INTO inscProfe(IDmateria,IDprofesor,Periodo)VALUES(101,2016,"2021-2");
+INSERT INTO inscProfe(IDmateria,IDprofesor,Periodo)VALUES(101,2016,"2022-2");
 INSERT INTO inscProfe(IDmateria,IDprofesor,Periodo)VALUES(102,2017,"2021-2");
 INSERT INTO inscProfe(IDmateria,IDprofesor,Periodo)VALUES(104,2018,"2021-2");
 INSERT INTO inscProfe(IDmateria,IDprofesor,Periodo)VALUES(105,2019,"2021-2");

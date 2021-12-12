@@ -312,11 +312,13 @@ if(registro > 0){
 const {Creditos}= creditosmax[0][0];
 creditosmax=Creditos;
 }
-else {    {arraylength >8 ? (res.status(403).send({ message:
+else {   
+  {sumCreditosM>creditosmax ? (res.status(403).send({ message:
+    "La suma de creditos tiene que ser menor o igual a "+creditosmax+""}) &&  (bandera = true) ) :null }
+  {arraylength >8 ? (res.status(403).send({ message:
   "No puedes inscribir más de 8 materias"}) &&( bandera =true) )   :null }    }
 
-   {sumCreditosM>creditosmax ? (res.status(403).send({ message:
-  "La suma de creditos tiene que ser menor o igual a 58"}) &&  (bandera = true) ) :null }
+  
 
   if (bandera ==true ){
 

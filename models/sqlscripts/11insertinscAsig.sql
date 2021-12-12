@@ -170,3 +170,5 @@ INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos,Periodo
 INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos,Periodo)VALUES(30820094,94,61416,"6101",30,0,"2021-2");
 INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos,Periodo)VALUES(30820095,95,61516,"6101",30,0,"2021-2");
 INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos,Periodo)VALUES(30820160,56,61616,"6101",30,0,"2021-2");
+INSERT INTO inscAsignatura(folioAsig,IDpm,IDhorario,Grupo,Cupo,Inscritos,Periodo)VALUES(308201699,16,61616,"6101",30,0,"2022-2");
+
