@@ -75,8 +75,21 @@ function Registrar() {
                     }, (error) => {
                       console.log(error);
                     });
+
+                    axios.post(process.env.REACT_APP_HOST_SIGNUP, {
+                      Email:"jefecordinacion@gmail.com",
+                      Pword:"jefe",
+                      roles:["moderator"]
+                      },{withCredentials:true}
+                      ).then((response) => {
+                            console.log(response);
+                          }, (error) => {
+                            console.log(error);
+                          });
             
             }
+
+            
           
     return ( <>
        <div className="central btnC">
