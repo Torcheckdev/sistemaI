@@ -41,6 +41,11 @@ app.post("/api/admin/borrarinscAsignatura",
 controller.borrarinscAsignatura);
 
 
+app.post("/api/admin/extensionCreditos",
+controller.extensionCreditos);
+
+
+
 
 
   };

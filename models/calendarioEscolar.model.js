@@ -9,6 +9,10 @@ module.exports = (sequelize, Sequelize) => {
         },
      Fechatermino: {
          type: Sequelize.STRING
+         },
+         Encurso:{
+type: Sequelize.STRING,
+defaultValue: "false"
          },  
          createdAt: {
             type: Sequelize.DATE,

@@ -293,3 +293,134 @@ res.send("Se borro la Asignatura");
 
 
 
+async function extensionCreditos(req,res){
+
+var NumCuenta=req.body.NumCuenta;
+var Periodo= await periodoencurso(); 
+var Creditos=req.body.Creditos;
+
+var query= await db.sequelize.query('SELECT COUNT(*) as registro FROM  extensionCreditos WHERE  NumCuenta='+NumCuenta+'  && Periodo ='+Periodo+'  ').catch(err => {
+  res.status(403).send({
+    message:
+      err.message || "Hubo algun error al borrar Asignatura"
+  });
+}
+);
+const{registro}= query[0][0]
+
+
+if (registro>0 ){
+  var query1=await db.sequelize.query('UPDATE  extensionCreditos  set Creditos='+Creditos+' , Periodo= '+Periodo+' WHERE  NumCuenta='+NumCuenta+'  && Periodo ='+Periodo+' ) ').catch(err => {
+    res.status(403).send({
+      message:
+        err.message || "Hubo algun error al actualizar los creditos"
+    });
+  }
+  );
+  
+  res.send("Se Actualizo el numero de creditos");
+return
+
+}else {
+  var query1=await db.sequelize.query('INSERT INTO extensionCreditos (NumCuenta,Creditos,Periodo) VALUES ('+NumCuenta+','+Creditos+','+Periodo+') ').catch(err => {
+    res.status(403).send({
+      message:
+        err.message || "Hubo algun error al registrar el nuevo limite de creditos"
+    });
+  }
+  );
+  
+  res.send("Se Registro el nuevo limite de creditos");
+  return
+}
+  }module.exports.extensionCreditos = extensionCreditos;
+
+
+
+
+
+  async function cescolarregPeriodo(req,res){
+
+    var Periodo=req.body.Periodo;
+    var Fechainicio = req.body.Fechainicio;
+    var Fechatermino=req.body.Fechatermino;
+
+    var query= await db.sequelize.query('SELECT COUNT(*) as registro FROM  calendarioEscolar WHERE  Periodo='+Periodo+'').catch(err => {
+      res.status(403).send({
+        message:
+          err.message || "Hubo algun error al borrar Asignatura"
+      });
+    }
+    );
+    const{registro}= query[0][0]
+    
+    
+    if (registro>0 ){
+
+
+    await db.sequelize.query('INSERT INTO calendarioEscolar (Periodo,Fechainicio,Fechatermino) VALUES ('+Periodo+','+Fechainicio+','+Fechatermino+')').catch(err => {
+      res.status(403).send({
+        message:
+          err.message || "Hubo algun error al insertar en calendario Escolar"
+      });
+    }
+    );
+    res.send("Se agrego el periodo")
+    return
+
+  }
+  else {
+    await db.sequelize.query('UPDATE calendarioEscolar  SET Periodo= '+Periodo+', Fechainicio= '+Fechainicio+', Fechatermino ='+Fechatermino+' WHERE  Periodo='+Periodo+' )').catch(err => {
+      res.status(403).send({
+        message:
+          err.message || "Hubo algun error al insertar en calendario Escolar"
+      });
+    }
+    );
+    res.send("Se modifico el periodo")
+    return
+
+  }
+
+  }module.exports.cescolarregPeriodo = cescolarregPeriodo;
+  
+
+async function setperiodoencurso(req,res){
+var Periodo=req.body.Periodo; 
+ await db.sequelize.query('UPDATE calendarioEscolar set Encurso="false"').catch(err => {
+  res.status(403).send({
+    message:
+      err.message || "Hubo algun error set periodoen curso"
+  });
+}
+);
+
+
+await db.sequelize.query('UPDATE calendarioEscolar set Encurso="true" WHERE Periodo='+Periodo+'').catch(err => {
+  res.status(403).send({
+    message:
+      err.message || "Hubo algun error set periodoen curso"
+}
+);
+});
+
+} module.exports.setperiodoencurso = setperiodoencurso;
+
+
+async function periodoencurso(req,res) {
+  var query= await db.sequelize.query('SELECT Periodo  FROM  calendarioEscolar WHERE  Encurso=true ').catch(err => {
+    res.status(403).send({
+      message:
+        err.message || "Hubo algun error al borrar Asignatura"
+    });
+  }
+  );
+  const{Periodo}= query[0][0]
+  return Periodo ;
+}
+
+
+
+
+
+
