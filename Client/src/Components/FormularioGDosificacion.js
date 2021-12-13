@@ -51,23 +51,6 @@ function FormularioGDosficacion() {
             <Form>
             <EfectoLetrasTitulo titulo={"Generar Dosificacion:"}/>
 
-<<<<<<< HEAD
-            <div className="form-group">
-                <label htmlFor='periodo' className="">periodo: </label>
-                <Field
-                  className='form-control'
-                  name='periodo'
-                  placeholder='periodo'
-                  type='text'
-                />{/*la etiqueta field  sirve como input y es componente de la libreria */}
-                <ErrorMessage
-                  name='periodo'
-                  component='div'
-                  className='field-error text-danger'
-                />{/*Error es un componente para que imprima el mensaje de error que mandamos en yup, tiene para poder el name que es input que le sale el error,el tipo de componente como div,span etc, y apra poderle la clase y darle estilos*/}
-              </div>
-=======
->>>>>>> main
 
               <div className="form-group">
                 <label htmlFor='FechaDosificacion' className="">Fecha Dosificacion: </label>
