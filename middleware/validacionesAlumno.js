@@ -37,16 +37,17 @@ return;
 
 }
 
-validaHoraInscripcion= (req,res,next) => {
+async function validaHoraInscripcion (req,res,next)  {
   var NumCuenta = req.body.NumCuenta;
   var body = req.body
   var isarray =Array.isArray(body);
 {isarray == true ?NumCuenta=req.body[0].NumCuenta:null}
+var Periodo=  await periodoencurso();
 
 
 
 
-db.sequelize.query('select Fecha from dosificacion where NumCuenta="'+NumCuenta+'"', { raw: true })
+db.sequelize.query('select Fecha from dosificacion where NumCuenta="'+NumCuenta+'" && Periodo="'+Periodo+'"', { raw: true })
 .then(data => {
 console.log(data[0][0])
 console.log(data[0][0].Fecha)
@@ -69,9 +70,9 @@ next();
 return;
 
 }
-validaComprobanteInscripcion=(req,res,next) => {
+async function validaComprobanteInscripcion(req,res,next)  {
   var NumCuenta = req.body.NumCuenta;
-  var Periodo = req.body.Periodo
+  var Periodo = await periodoencurso();
 
 db.sequelize.query('select count(*) as existe from comprobanteinsc where NumCuenta="'+NumCuenta+'"&& Periodo="'+Periodo+'";', { raw: true })
 .then(data => {
@@ -94,6 +95,17 @@ if(data[0][0].existe == "1")
 next();
 return;
 
+}
+async function periodoencurso(req,res) {
+  var query= await db.sequelize.query('SELECT Periodo  FROM  calendarioEscolar WHERE  Encurso="true" ').catch(err => {
+    res.status(403).send({
+      message:
+        err.message || "Hubo algun error al borrar Asignatura"
+    });
+  }
+  );
+  const{Periodo}= query[0][0]
+  return Periodo ;
 }
 
 const validacionesAlumno = {

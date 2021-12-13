@@ -2,11 +2,19 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import Loading from "../Loading";
 import MensajeInfo from "../MensajeInfo";
+<<<<<<< HEAD
 import useUser from "../../hooks/useUser";
 
 
 function SaturacionAdministracion() {
     const {cerrarSeccion} = useUser();
+=======
+//import useUser from "../../hooks/useUser";
+
+
+function SaturacionAdministracion() {
+    //const {cerrarSeccion} = useUser();
+>>>>>>> main
     const [ListaMaterias,setListaMaterias] = useState([]);
     const [error,setError] = useState({
         error:false,
@@ -37,10 +45,17 @@ function SaturacionAdministracion() {
                 console.log(error.response);
                 setError({
                     error:true,
+<<<<<<< HEAD
                     mensaje:"saturacion no disponible por el momento"
                 });
                 setLoading(false);
                 cerrarSeccion();
+=======
+                    mensaje:"horario de grupos no disponible por el momento"
+                });
+                setLoading(false);
+                //cerrarSeccion();
+>>>>>>> main
               });
 
 

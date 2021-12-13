@@ -41,6 +41,20 @@ app.post("/api/admin/borrarinscAsignatura",
 controller.borrarinscAsignatura);
 
 
+app.post("/api/admin/extensionCreditos",
+controller.extensionCreditos);
+
+
+
+app.post("/api/admin/cescolarNMPeriodo",
+controller.cescolarregPeriodo);
+
+
+app.post("/api/admin/seleccionarPeriodoencurso",
+controller.setperiodoencurso);
+
+
+
 
 
   };
