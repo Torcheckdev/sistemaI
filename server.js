@@ -167,6 +167,12 @@ await db.sequelize.query('CREATE TRIGGER eacademica AFTER INSERT ON historialaca
  'iF (totalaprobados = 0 ) THEN UPDATE calificaciones SET EficienciaAcademica=0 where NumCuenta=NEW.NumCuenta; ELSE  UPDATE calificaciones SET EficienciaAcademica=((sumaaprobadaso - sumaaprobadosext - totalrecurse) / totalaprobados) where NumCuenta=NEW.NumCuenta; END IF;'+' '+ 
 'END;');
 
+await db.sequelize.query('CREATE TRIGGER ipsemestre  AFTER INSERT ON comprobanteinsc'+' '+ 
+ 'FOR EACH ROW'+' '+
+ 'BEGIN'+ ' '+
+ 'UPDATE cursa  SET Semestre =Semestre+1, Periodo=NEW.Periodo WHERE NumCuenta=NEW.NumCuenta;'+' '+
+ 'END;');
+
  var sql_string11 = fs.readFileSync('./models/sqlscripts/12insertinscMateria.sql'.toString(), 'utf8');
  await db.inscMateria.sequelize.query(sql_string11);
 

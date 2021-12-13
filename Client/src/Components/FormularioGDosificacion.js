@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import BtnCerrarSeccion from "./BtnCerrarSeccion";
 import { useAlert } from "react-alert";
 import axios from "axios";
+import EfectoLetrasTitulo from "./EfectoLetrasTitulo";
 
 
 function FormularioGDosficacion() {
@@ -52,9 +53,10 @@ function FormularioGDosficacion() {
             
 
             <Form>
+            <EfectoLetrasTitulo titulo={"Generar Dosificacion:"}/>
 
             <div className="form-group">
-                <label htmlFor='periodo' className="sr-only">periodo: </label>
+                <label htmlFor='periodo' className="">periodo: </label>
                 <Field
                   className='form-control'
                   name='periodo'
@@ -69,7 +71,7 @@ function FormularioGDosficacion() {
               </div>
 
               <div className="form-group">
-                <label htmlFor='FechaDosificacion' className="sr-only">Fecha Dosificacion: </label>
+                <label htmlFor='FechaDosificacion' className="">Fecha Dosificacion: </label>
                 <Field
                   className='form-control'
                   name='FechaDosificacion'
@@ -84,7 +86,7 @@ function FormularioGDosficacion() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor='Horam' className="sr-only">Hora: </label>
+                <label htmlFor='Horam' className="">Hora: </label>
                 <Field
                   className='form-control'
                   name='Horam'
@@ -99,7 +101,7 @@ function FormularioGDosficacion() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor='Sumiteracion' className="sr-only">Sumiteracion: </label>
+                <label htmlFor='Sumiteracion' className="">Sumiteracion: </label>
                 <Field
                   className='form-control'
                   name='Sumiteracion'

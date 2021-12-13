@@ -1,4 +1,4 @@
-INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10001,"1119","2010","Presencial","1","2021-2","Matutino");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10001,"1119","2010","Presencial","0","2021-2","Matutino");
 INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10002,"1119","2011","Presencial","2","2021-2","Matutino");
 INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10003,"1119","2012","Presencial","3","2021-2","Matutino");
 INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10004,"1119","2013","Presencial","4","2021-2","Matutino");
@@ -16,5 +16,5 @@ INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Peri
 INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10036,"1119","2018","Presencial","7","2021-2","Matutino");
 INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10037,"1119","2018","Presencial","7","2021-2","Matutino");
 INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10038,"1119","2018","Presencial","7","2021-2","Matutino");
-INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10039,"1119","2018","Presencial","7","2021-2","Matutino");
+INSERT INTO cursa(NumCuenta,PlanEstudios,AnioInscripcion,Modalidad,Semestre,Periodo,Turno)VALUES(10039,"1119","2018","Presencial","6","2021-2","Matutino");
 

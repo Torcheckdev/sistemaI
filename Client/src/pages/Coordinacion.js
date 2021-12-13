@@ -1,11 +1,13 @@
-import FormularioGDosficacion from "../Components/FormularioGDosificacion";
+import SaturacionAdministracion from "../Components/administrativo/SaturacionAdministrativo";
+import BtnCerrarSeccion from "../Components/BtnCerrarSeccion";
+
 
 function Coordinacion() {
     return ( <>
         <br />
-        <div className="container colorContenedor animate__animated animate__backInDown">
-            <h1>coordinacion</h1>
-            <FormularioGDosficacion/>
+        <div className="container colorContenedor animate__animated animate__backInDown containerAdministracion">
+            <SaturacionAdministracion/>
+            <BtnCerrarSeccion/>
         </div>
         
     
