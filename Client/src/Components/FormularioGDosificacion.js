@@ -1,6 +1,5 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import BtnCerrarSeccion from "./BtnCerrarSeccion";
 import { useAlert } from "react-alert";
 import axios from "axios";
 import EfectoLetrasTitulo from "./EfectoLetrasTitulo";
@@ -9,7 +8,6 @@ import EfectoLetrasTitulo from "./EfectoLetrasTitulo";
 function FormularioGDosficacion() {
     const alert = useAlert();
     const formSchema = Yup.object().shape({
-        periodo: Yup.string().required("introduzca el periodo"),
         FechaDosificacion: Yup.string().required("introduzca el Fecha Dosificacion"),
         Horam: Yup.string().required("introduzca el Hora"),
         Sumiteracion: Yup.string().required("introduzca Sumiteracion"),
@@ -18,7 +16,6 @@ function FormularioGDosficacion() {
     return ( <>
                 <Formik
               initialValues={{
-                periodo: "",
                 FechaDosificacion: "",
                 Horam:"",
                 Sumiteracion:""
@@ -28,7 +25,6 @@ function FormularioGDosficacion() {
               onSubmit={(values) => {
                 console.log(values);
                 axios.post(process.env.REACT_APP_ADM_GENERARDOSIFICACION, {
-                    Periodo: values.periodo,
                     FechaDosificacion:values.FechaDosificacion,
                     Horam:values.Horam,
                     Sumiteracion:values.Sumiteracion
@@ -55,6 +51,7 @@ function FormularioGDosficacion() {
             <Form>
             <EfectoLetrasTitulo titulo={"Generar Dosificacion:"}/>
 
+<<<<<<< HEAD
             <div className="form-group">
                 <label htmlFor='periodo' className="">periodo: </label>
                 <Field
@@ -69,6 +66,8 @@ function FormularioGDosficacion() {
                   className='field-error text-danger'
                 />{/*Error es un componente para que imprima el mensaje de error que mandamos en yup, tiene para poder el name que es input que le sale el error,el tipo de componente como div,span etc, y apra poderle la clase y darle estilos*/}
               </div>
+=======
+>>>>>>> main
 
               <div className="form-group">
                 <label htmlFor='FechaDosificacion' className="">Fecha Dosificacion: </label>
@@ -128,9 +127,7 @@ function FormularioGDosficacion() {
             </Form>
 
           </Formik>
- 
-          <BtnCerrarSeccion/>
-            
+          
             </> );
 }
 
