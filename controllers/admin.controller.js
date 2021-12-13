@@ -38,11 +38,11 @@ var datosalumno  = [{}];
   
 
 switch(index){
-case index = auxindex+Sumiteracion : 
+case index = auxindex+parseInt(Sumiteracion) : 
 auxindex =index;
 fecha = moment(fecha).add(5, 'm')
+console.log("ME EJECUTE CASEEEEEEEEEE")
 
-;
 break;
 
 }
