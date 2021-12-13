@@ -1,6 +1,6 @@
 import axios from "axios";
 import "./dosificacion.css";
-import moment from 'moment'
+import moment from 'moment';
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import MensajeInfo from "./MensajeInfo";

@@ -1,5 +1,6 @@
 import BtnCerrarSeccion from "./BtnCerrarSeccion";
 import "./perfilAlumno.css";
+import avatar from './avatar Alumno.png';
 
 function PerfilAlumno({alumno}) {
     console.log(alumno);
@@ -8,7 +9,7 @@ function PerfilAlumno({alumno}) {
      <div className="card">
        <div className=" card-body text-center rounded-top colorUser">
         <div className="user-box ">
-         <img src="http://assets.stickpng.com/images/585e4beacb11b227491c3399.png" alt="user avatar"/>
+         <img src={ avatar} alt="user avatar"/>
        </div>
        <h5 className="mb-1 text-white">{alumno?.NombreA ? alumno?.NombreA:" "}</h5>
        <h6 className="text-light">Alumno</h6>

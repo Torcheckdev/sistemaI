@@ -68,15 +68,28 @@ function Registrar() {
               axios.post(process.env.REACT_APP_HOST_SIGNUP, {
                 Email:"holaculero21122@gmail.com",
                 Pword:"test",
-                roles:["admin","moderator"]
+                roles:["admin"]
                 },{withCredentials:true}
                 ).then((response) => {
                       console.log(response);
                     }, (error) => {
                       console.log(error);
                     });
+
+                    axios.post(process.env.REACT_APP_HOST_SIGNUP, {
+                      Email:"jefecordinacion@gmail.com",
+                      Pword:"jefe",
+                      roles:["moderator"]
+                      },{withCredentials:true}
+                      ).then((response) => {
+                            console.log(response);
+                          }, (error) => {
+                            console.log(error);
+                          });
             
             }
+
+            
           
     return ( <>
        <div className="central btnC">

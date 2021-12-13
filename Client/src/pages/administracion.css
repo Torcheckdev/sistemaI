@@ -1,0 +1,30 @@
+.containerAdministracion{
+    height:auto;
+}
+
+.selectProf{
+    height: 200px;
+}
+.contenedor{
+    flex-wrap: nowrap;
+}
+
+@media (max-width: 768px) {
+    .navComponent{
+      width: 25%;
+      display: block;
+      padding:2px;
+      font-size: 14px;
+      color: black;
+      font-weight: 700;
+      /*text-align: center;
+      /*overflow-wrap: break-word;
+      hyphens: auto;*/ 
+    }}
+
+    @media (max-width: 500px) {
+        .contenedor{
+            flex-wrap: nowrap;
+        }
+    }
+
