@@ -5,7 +5,7 @@ var moment = require('moment');
 
 async function generaDosificacion(req,res){
      
-    var Periodo = await periodoencurso();
+    var Periodo = await periodoencurso(req,res);
     var FechaDosificacion=req.body.FechaDosificacion;
     var Horam=req.body.Horam;
     var Sumiteracion=req.body.Sumiteracion
@@ -54,7 +54,13 @@ for (var i=0; i< dosificacion[0].length; i++){
 await  db.sequelize.query('select a.Nombre,p.IDcarrera,c.Nombre  as Ncarrera from alumno a, planestudios p, carrera c where a.NumCuenta="'+dosificacion[0][i].NumCuenta+'" && p.PlanEstudios="'+dosificacion[0][i].PlanEstudios+'" && c.IDcarrera=p.IDcarrera ').then(data => {
  datosalumno [i]= data[0]; 
   }
-)
+).catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio cuando se generaba la dosificación"
+  });
+}
+);
 }
 
  await dosificacion[0].map(async (i,index) =>{
@@ -69,7 +75,13 @@ await  db.sequelize.query('select a.Nombre,p.IDcarrera,c.Nombre  as Ncarrera fro
 })
 console.log(dosificacion[0])
 
-await db.sequelize.query('delete from dosificacion');
+await db.sequelize.query('delete from dosificacion').catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio cuando se generaba la dosificación"
+  });
+}
+);
 
 for(var i=0; i<dosificacion[0].length ; i++){
     var NumCuenta= dosificacion[0][i].NumCuenta;
@@ -105,8 +117,20 @@ module.exports.generaDosificacion = generaDosificacion;
 
 async function listaMateriaProf(req,res){
 
-  const Materias = await db.sequelize.query('select * from materia');
-  const Profesores = await db.sequelize.query('select * from profesor');
+  const Materias = await db.sequelize.query('select * from materia').catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio lista materia prof"
+    });
+}
+  );;
+  const Profesores = await db.sequelize.query('select * from profesor').catch(err => {
+    res.status(500).send({
+      message:
+        err.message ||"Algun error ocurrio lista materia prof"
+    });
+}
+  );;
 
 var respuesta = []
 respuesta[0]=Materias[0];
@@ -128,7 +152,7 @@ async function inscProf(req,res){
 
 var IDmateria=req.body.IDmateria; 
 var IDprofesor =req.body.IDprofesor;
-var Periodo= await periodoencurso();
+var Periodo= await periodoencurso(req,res);
 await db.sequelize.query('INSERT INTO  inscProfe  (IDmateria,IDprofesor,Periodo)  VALUES("'+IDmateria+'","'+IDprofesor+'","'+Periodo+'");').catch(err => {
   res.status(500).send({
     message:
@@ -153,9 +177,21 @@ module.exports.inscProf = inscProf;
 
 
 async function listainscAsignatura(req,res){
-  var Periodo= await periodoencurso();
- var pm = await db.sequelize.query('select  ip.IDpm,ip.IDmateria,ip.IDprofesor,m.nombre,p.Nombre as nombreProfesor from inscProfe ip INNER JOIN materia m ON ip.Periodo="'+Periodo+'" && ip.IDmateria=m.IDmateria INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor order by IDmateria;')
-var horario= await db.sequelize.query('select IDhorario,Dia,Horario,Turno from horario;');
+  var Periodo= await periodoencurso(req,res);
+ var pm = await db.sequelize.query('select  ip.IDpm,ip.IDmateria,ip.IDprofesor,m.nombre,p.Nombre as nombreProfesor from inscProfe ip INNER JOIN materia m ON ip.Periodo="'+Periodo+'" && ip.IDmateria=m.IDmateria INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor order by IDmateria;').catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio en la inscripción del profesor"
+  });
+}
+);
+var horario= await db.sequelize.query('select IDhorario,Dia,Horario,Turno from horario;').catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio en la inscripción del profesor"
+  });
+}
+);
 
 
 var respuesta=[];
@@ -173,8 +209,14 @@ var IDpm = req.body.IDpm;
 var IDhorario=req.body.IDhorario; 
 var Grupo =req.body.Grupo;
 var Cupo = req.body.Cupo;
-var Periodo= await periodoencurso();
-var existe1=await db.sequelize.query('select count(*) as existe from inscAsignatura where IDpm="'+IDpm+'" && IDhorario="'+IDhorario+'" && Periodo="'+Periodo+'"');
+var Periodo= await periodoencurso(req,res);
+var existe1=await db.sequelize.query('select count(*) as existe from inscAsignatura where IDpm="'+IDpm+'" && IDhorario="'+IDhorario+'" && Periodo="'+Periodo+'"').catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio en la inscripción del profesor"
+  });
+}
+);;
 console.log(existe1[0][0])
 const{existe}= existe1[0][0]
 
@@ -190,7 +232,13 @@ return
 
 
 
-var ultimoFolio = await db.sequelize.query('SELECT * FROM inscAsignatura ORDER BY folioAsig DESC LIMIT 1');
+var ultimoFolio = await db.sequelize.query('SELECT * FROM inscAsignatura ORDER BY folioAsig DESC LIMIT 1').catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio en la inscripción del profesor"
+  });
+}
+);;
 var {folioAsig}= ultimoFolio[0][0];
 folioAsig++;
 
@@ -215,9 +263,38 @@ module.exports.inscAsignatura = inscAsignatura;
 
 
 async function listamodinscAsignatura (req,res ){
-var Periodo = await periodoencurso();
-  var lista = await db.sequelize.query('select ia.folioAsig,ia.Grupo,ia.Cupo,ia.Inscritos,p.Nombre as NombreProf, m.IDmateria, m.Nombre as Nombremateria from inscAsignatura ia INNER JOIN  inscProfe ip ON  ia.Periodo="'+Periodo+'" && ia.Periodo=ip.Periodo && ia.IDpm=ip.IDpm INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor INNER JOIN materia m ON m.IDmateria=ip.IDmateria order by folioAsig;')
-res.send(lista[0])
+var Periodo = await periodoencurso(req,res);
+  var lista = await db.sequelize.query('select ia.folioAsig,ia.Grupo,ia.Cupo,ia.Inscritos,ia.IDpm,p.Nombre as NombreProf, m.IDmateria, m.Nombre as Nombremateria, h.Dia,h.Horario from inscAsignatura ia INNER JOIN  inscProfe ip ON  ia.Periodo="'+Periodo+'" && ia.Periodo=ip.Periodo && ia.IDpm=ip.IDpm INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor INNER JOIN materia m ON m.IDmateria=ip.IDmateria INNER JOIN horario  h ON ia.IDhorario=h.IDhorario order by folioAsig;').catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio en la inscripción del profesor"
+    });
+  }
+  );
+
+  var pm = await db.sequelize.query('select  ip.IDpm,ip.IDmateria,ip.IDprofesor,m.nombre,p.Nombre as nombreProfesor from inscProfe ip INNER JOIN materia m ON ip.Periodo="'+Periodo+'" && ip.IDmateria=m.IDmateria INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor order by IDmateria;').catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio en la inscripción del profesor"
+    });
+  }
+  );
+  var horario= await db.sequelize.query('select IDhorario,Dia,Horario,Turno from horario;').catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio en la inscripción del profesor"
+    });
+  }
+  );
+  
+  
+  var respuesta=[];
+  respuesta[0]=lista[0];
+  respuesta[1]=pm[0];
+  respuesta[2]=horario[0];
+
+
+res.send(respuesta)
 
 }
 module.exports.listamodinscAsignatura = listamodinscAsignatura;
@@ -225,11 +302,13 @@ module.exports.listamodinscAsignatura = listamodinscAsignatura;
 
 
 async function modinscAsignatura(req,res){
-
+  var folioAsig=req.body.folioAsig;
+  var IDpm= req.body.IDpm;
+  var IDhorario=req.body.IDhorario;
   var Grupo=req.body.Grupo;
   var Cupo = req.body.Cupo;
-  var folioAsig=req.body.folioAsig;
-  await db.sequelize.query('UPDATE inscAsignatura SET Grupo="'+Grupo+'", Cupo="'+Cupo+'" where folioAsig="'+folioAsig+'"').catch(err => {
+  
+  await db.sequelize.query('UPDATE inscAsignatura SET Grupo="'+Grupo+'", Cupo="'+Cupo+'" , IDpm="'+IDpm+'" ,IDhorario="'+IDhorario+'" where folioAsig="'+folioAsig+'"').catch(err => {
     res.status(403).send({
       message:
         err.message || "Hubo algun error al inscribir Asignatura"
@@ -298,7 +377,7 @@ res.send("Se borro la Asignatura");
 async function extensionCreditos(req,res){
 
 var NumCuenta=req.body.NumCuenta;
-var Periodo= await periodoencurso(); 
+var Periodo= await periodoencurso(req,res); 
 var Creditos=req.body.Creditos;
 
 var query= await db.sequelize.query('SELECT COUNT(*) as registro FROM  extensionCreditos WHERE  NumCuenta="'+NumCuenta+'"  && Periodo ="'+Periodo+'"  ').catch(err => {
@@ -439,6 +518,14 @@ async function periodoencurso(req,res) {
     });
   }
   );
+  if(query[0].length<1 ){
+    res.status(403).send({
+      message:
+        "Primero tienes que seleccionar un periodo"
+    });
+    return 0
+  }
+
   const{Periodo}= query[0][0]
   return Periodo ;
 }
