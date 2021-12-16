@@ -3,3 +3,9 @@
     height: 320px;
     overflow: scroll;
 }
+
+.button.btnEliminar.centrar{
+    margin: 0 auto;
+    font-size:10px;
+
+}

@@ -25,6 +25,9 @@ function ModificarGrupo() {
     const [selectedOption, setSelectedOption] = useState(null);//declaramos el estado para guardar la opcion que escoje en el select
     const [grupos, setGrupos] = useState({estado:false,itemElegido:0,grups:[]});
     const [opciones,setOpciones] = useState([]);
+    const [defaultItem,setDefaultItem] = useState("");
+    const [listas,setListas] = useState({listaProfMa:[],listaHorario:[]});
+
 
     const [error,setError] = useState({
         error:false,
@@ -47,6 +50,13 @@ function ModificarGrupo() {
     
     }
 
+    const restaurarItem = (grupo)=>{
+        setOpciones(opciones.filter((item)=>{
+            return item.value != grupo.folioAsig ;
+          }))
+        setGrupos({...grupos,estado:false});
+        setSelectedOption(null);
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -57,7 +67,10 @@ function ModificarGrupo() {
                     error:false,
                     mensaje:""
                 });
-                const listaGrupos = response.data;
+                const listaGrupos = response.data[0];
+                const maestroMateria = response.data[1];
+                const horarios = response.data[2];
+                setListas({listaProfMa:maestroMateria,listaHorario:horarios});
                 console.log(listaGrupos);
                 setGrupos({...grupos,grups: listaGrupos});
                 const opciones = options(listaGrupos);
@@ -101,12 +114,12 @@ function ModificarGrupo() {
                                 defaultValue={selectedOption}
                                 onChange={handleChangeSelect}
                                 options={opciones}
-                                defaultValue={""}
-                                
+                                defaultValue={defaultItem}
+                                placeholder={"Eligue un grupo"}
                             /> 
                        </div>
 
-                        {grupos.estado&& <FormularioModificarGrupo grupo={grupos.itemElegido} />}  
+                        {grupos.estado&& <FormularioModificarGrupo grupo={grupos.itemElegido}  reset={restaurarItem} listaHorario={listas.listaHorario} listaMaestroMateria={listas.listaProfMa}  />}  
                     </div>     }
 
                     {

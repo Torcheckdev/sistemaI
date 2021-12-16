@@ -264,7 +264,7 @@ module.exports.inscAsignatura = inscAsignatura;
 
 async function listamodinscAsignatura (req,res ){
 var Periodo = await periodoencurso(req,res);
-  var lista = await db.sequelize.query('select ia.folioAsig,ia.Grupo,ia.Cupo,ia.Inscritos,ia.IDpm,p.Nombre as NombreProf, m.IDmateria, m.Nombre as Nombremateria, h.Dia,h.Horario from inscAsignatura ia INNER JOIN  inscProfe ip ON  ia.Periodo="'+Periodo+'" && ia.Periodo=ip.Periodo && ia.IDpm=ip.IDpm INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor INNER JOIN materia m ON m.IDmateria=ip.IDmateria INNER JOIN horario  h ON ia.IDhorario=h.IDhorario order by folioAsig;').catch(err => {
+  var lista = await db.sequelize.query('select ia.folioAsig,ia.IDHorario,ia.Grupo,ia.Cupo,ia.Inscritos,ia.IDpm,p.Nombre as NombreProf, m.IDmateria, m.Nombre as Nombremateria, h.Dia,h.Horario from inscAsignatura ia INNER JOIN  inscProfe ip ON  ia.Periodo="'+Periodo+'" && ia.Periodo=ip.Periodo && ia.IDpm=ip.IDpm INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor INNER JOIN materia m ON m.IDmateria=ip.IDmateria INNER JOIN horario  h ON ia.IDhorario=h.IDhorario order by folioAsig;').catch(err => {
     res.status(500).send({
       message:
         err.message || "Algun error ocurrio en la inscripción del profesor"

@@ -24,7 +24,7 @@
 
     @media (max-width: 500px) {
         .contenedor{
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
     }
 
