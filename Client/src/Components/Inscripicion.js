@@ -99,14 +99,10 @@ function Inscripcion({NumCuenta,Periodo,planEstudios}) {
                   }, {Creditos: 0});
 
                   console.log(creditos);
-<<<<<<< HEAD
-                  if( creditos.Creditos > 50){
-=======
-               /*   if( creditos.Creditos > 50){
->>>>>>> main
+                  /*if( creditos.Creditos > 50){
                     alert.show("No puedes inscribirte porque sobre pasas los 50 creditos");
                     return;
-                  }
+                  }*/
 
                   const arregloIncripcionMaterias = materiasInscrbir.map(materia =>{
                         return {NumCuenta:NumCuenta.toString() ,folioAsig:materia.folioAsig.toString(),Periodo:Periodo,Calificacion:"0",TipoExamen:"ORD",IDmateria:materia.IDmateria.toString() }
