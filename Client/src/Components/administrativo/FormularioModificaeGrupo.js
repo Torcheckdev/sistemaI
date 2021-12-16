@@ -1,21 +1,11 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useAlert } from "react-alert";
-<<<<<<< HEAD
-=======
 import Select from 'react-select';
->>>>>>> main
 import axios from "axios";
 
 
 import "./FormularioModificarGrupo.css";
-<<<<<<< HEAD
-
-function FormularioModificarGrupo({grupo}) {
-   
-    const alert = useAlert();
-
-=======
 import { useEffect, useState } from "react";
 
 const optionsMateriaProfesor =(materiasProf)=>{
@@ -56,17 +46,10 @@ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}
     setSelectedOption1(maestroMateriaActual);
     },[grupo]);//el useEffect se va activar cada vez que la props grupo cambie porque si no los select van a tener siempre los datos del grupo anterior
     
->>>>>>> main
     const formSchema = Yup.object().shape({
         folioAsig: Yup.string().required(""),
         Grupo: Yup.number().required("introduzca el grupo"),
         Cupo: Yup.number().required("introduzca el cupo"),
-<<<<<<< HEAD
-        NombreProf: Yup.string().required(""),
-        Nombremateria: Yup.string().required(""),
-        Inscritos: Yup.string().required(""),
-      });
-=======
         Inscritos: Yup.string().required(""),
       });
 
@@ -85,7 +68,6 @@ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}
               });
 
       };
->>>>>>> main
     
     return ( <>
                 <Formik
@@ -93,28 +75,18 @@ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}
                 folioAsig: grupo?.folioAsig,
                 Grupo: grupo?.Grupo,
                 Cupo:grupo?.Cupo,
-<<<<<<< HEAD
-                NombreProf:grupo?.NombreProf,
-                Nombremateria:grupo?.Nombremateria,
-=======
->>>>>>> main
                 Inscritos:grupo?.Inscritos
               }}
               validationSchema={formSchema}
 
               onSubmit={(values) => {
                 console.log(values);
-<<<<<<< HEAD
-                axios.post(process.env.REACT_APP_ADM_MODINSCASIGNATURA, {
-                    folioAsig: values.folioAsig,
-=======
                 console.log(selectedOption1,selectedOption2);
 
                axios.post(process.env.REACT_APP_ADM_MODINSCASIGNATURA, {
                     folioAsig: values.folioAsig,
                     IDpm: selectedOption1.value,
                     IDhorario:selectedOption2.value,
->>>>>>> main
                     Grupo:values.Grupo,
                     Cupo:values.Cupo
                     },{withCredentials:true} 
@@ -180,43 +152,6 @@ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}
                 />
               </div>
 
-<<<<<<< HEAD
-
-              <div className="form-group">
-                <label htmlFor='NombreProf' className="">Profesor: </label>
-                <Field
-                  className='form-control'
-                  name='NombreProf'
-                  placeholder='Hora'
-                  type='text'
-                  autoComplete="off"
-                  disabled
-                />
-                <ErrorMessage
-                  name='NombreProf'
-                  component='div'
-                  className='field-error text-danger'
-                />
-              </div>
-
-              
-              <div className="form-group">
-                <label htmlFor='Nombremateria' className="">Materia: </label>
-                <Field
-                  className='form-control'
-                  name='Nombremateria'
-                  placeholder='Materia'
-                  type='text'
-                  autoComplete="off"
-                  disabled
-                />
-                <ErrorMessage
-                  name='Nombremateria'
-                  component='div'
-                  className='field-error text-danger'
-                />
-              </div>
-=======
            
               <div className="form-group">
                   <label htmlFor='Profesor/materia' className="">Profesor/materia: </label>
@@ -243,7 +178,6 @@ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}
 
                 </div>
               
->>>>>>> main
 
 
               <div className="form-group">
@@ -285,21 +219,13 @@ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}
                     type='submit'
                     className="button"
                   >
-<<<<<<< HEAD
-                    <span>Enviar</span>
-=======
                     <span>Modificar</span>
->>>>>>> main
                     <div className='liquid'></div>
                   </button>
               </div>
             </Form>
 
           </Formik>
-<<<<<<< HEAD
- 
-          
-=======
               <button
                  className="button btnEliminar centrar"
                   onClick={()=>{
@@ -311,7 +237,6 @@ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}
                   </button>                 
  
 
->>>>>>> main
             
             </> );
 }
