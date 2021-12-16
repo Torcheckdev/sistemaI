@@ -30,8 +30,8 @@ function Dosificacion({NumCuenta,Periodo}) {
                 console.log(response.data);
                 const arregloDosificacion =response.data[0];
                 const arregloAlumno=response.data[1];
-                const {NumCuenta,NombreA,NombreC,Periodo} = arregloDosificacion[0];
-                const {Fecha,NumTurno}=arregloAlumno[0];
+                const {NumCuenta,NombreA,NombreC} = arregloDosificacion[0];
+                const {Fecha,NumTurno,Periodo}=arregloAlumno[0];
                 console.log(NumCuenta,NombreA,NombreC,Periodo,Fecha,NumTurno);
                 const fecha =moment(Fecha).format("MMMM Do YYYY, h:mm:ss a");
                 console.log(fecha);

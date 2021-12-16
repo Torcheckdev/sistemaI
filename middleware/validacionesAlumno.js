@@ -42,7 +42,7 @@ async function validaHoraInscripcion (req,res,next)  {
   var body = req.body
   var isarray =Array.isArray(body);
 {isarray == true ?NumCuenta=req.body[0].NumCuenta:null}
-var Periodo=  await periodoencurso();
+var Periodo=  await periodoencurso(req,res);
 
 
 
@@ -72,7 +72,7 @@ return;
 }
 async function validaComprobanteInscripcion(req,res,next)  {
   var NumCuenta = req.body.NumCuenta;
-  var Periodo = await periodoencurso();
+  var Periodo = await periodoencurso(req,res);
 
 db.sequelize.query('select count(*) as existe from comprobanteinsc where NumCuenta="'+NumCuenta+'"&& Periodo="'+Periodo+'";', { raw: true })
 .then(data => {
@@ -104,6 +104,13 @@ async function periodoencurso(req,res) {
     });
   }
   );
+
+  if(query[0].length<1 ){
+    res.status(403).send({
+      message:
+        "Primero tienes que seleccionar un periodo"
+    });
+  }
   const{Periodo}= query[0][0]
   return Periodo ;
 }

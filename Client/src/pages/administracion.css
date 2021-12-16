@@ -24,7 +24,11 @@
 
     @media (max-width: 500px) {
         .contenedor{
+<<<<<<< HEAD
             flex-wrap: nowrap;
+=======
+            flex-wrap: wrap;
+>>>>>>> main
         }
     }
 

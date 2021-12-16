@@ -2,4 +2,13 @@
     margin-top:10px;
     height: 320px;
     overflow: scroll;
+<<<<<<< HEAD
+=======
+}
+
+.button.btnEliminar.centrar{
+    margin: 0 auto;
+    font-size:10px;
+
+>>>>>>> main
 }
