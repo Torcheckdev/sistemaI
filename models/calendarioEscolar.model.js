@@ -13,7 +13,15 @@ module.exports = (sequelize, Sequelize) => {
          Encurso:{
 type: Sequelize.STRING,
 defaultValue: "false"
-         },  
+         },
+         Inscripcion:{
+          type: Sequelize.STRING,
+          defaultValue: "false"
+                   },  
+                   Aybajas:{
+                    type: Sequelize.STRING,
+                    defaultValue: "false"
+                             },    
          createdAt: {
             type: Sequelize.DATE,
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')

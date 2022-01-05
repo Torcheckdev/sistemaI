@@ -110,10 +110,10 @@ function ConsultaInscrpcion({NumCuenta,Periodo}) {
                                             </thead>
                                             <tbody>
                     
-                                                {materias.map(({IDmateria,nombre,Grupo,Creditos,Semestre})=>{
+                                                {materias.map(({IDmateria,Nombre,Grupo,Creditos,Semestre})=>{
                                                     return <tr>
                                                                 <th scope="row">{IDmateria}</th>
-                                                                <td>{nombre}</td>
+                                                                <td>{Nombre}</td>
                                                                 <td>{Creditos}</td>
                                                                 <td>{Semestre}</td>
                                                                 <td>{Grupo}</td>
@@ -124,7 +124,7 @@ function ConsultaInscrpcion({NumCuenta,Periodo}) {
                                         </table> 
                                     </div>
                              </div>
-                             {btnPdf&&<BotonPdf infoAlumno={{alumno:infoAlumno,materias:materias}}/>}
+                             {btnPdf&&<BotonPdf name={"Inscripcion"} infoAlumno={{alumno:infoAlumno,materias:materias}}/>}
                              </>}
                              {
                  loading&&<div className="tamañoLoading">

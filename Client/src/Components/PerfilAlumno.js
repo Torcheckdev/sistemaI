@@ -1,14 +1,19 @@
 import BtnCerrarSeccion from "./BtnCerrarSeccion";
 import "./perfilAlumno.css";
+import avatar from './avatar Alumno.png';
+import BotonPdfAyb from "./Btnpdfalumno";
+import BotonPdfinsc from "./Btnpdfalumno";
+import "./PDFInscrpcion.css";
 
-function PerfilAlumno({alumno}) {
+
+function PerfilAlumno({alumno,infoAlumno,infoAlumno1}) {
     console.log(alumno);
     return ( <>
                 <div className="profile-card-4 z-depth-3 animate__animated animate__fadeInLeft">
      <div className="card">
        <div className=" card-body text-center rounded-top colorUser">
         <div className="user-box ">
-         <img src="http://assets.stickpng.com/images/585e4beacb11b227491c3399.png" alt="user avatar"/>
+         <img src={ avatar} alt="user avatar"/>
        </div>
        <h5 className="mb-1 text-white">{alumno?.NombreA ? alumno?.NombreA:" "}</h5>
        <h6 className="text-light">Alumno</h6>
@@ -39,6 +44,18 @@ function PerfilAlumno({alumno}) {
              <span>{alumno?.PlanEstudios ? alumno?.PlanEstudios:" "}</span>
            </div>
          </li>
+         
+
+
+         <li className="list-group-item">
+         <div className="list-details">
+         <BotonPdfinsc  infoAlumno={{alumno:infoAlumno1.alumno,materias:infoAlumno1.materias}} name={"Inscripción"} />
+        <BotonPdfAyb   infoAlumno={{alumno:infoAlumno.alumno,materias:infoAlumno.materias}} name={"Altas y bajas"} />
+         </div>
+       </li>
+
+
+
          </ul>
         </div>
         <BtnCerrarSeccion/>

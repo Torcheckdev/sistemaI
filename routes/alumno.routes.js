@@ -41,7 +41,7 @@ module.exports = function(app) {
 
   app.post(
     "/api/alumno/inscribirMateria",
-    [authJwt.verifyToken,validacionesAlumno.validaCupo,validacionesAlumno.validaHoraInscripcion],
+    [authJwt.verifyToken,validacionesAlumno.validaCupo],
 controller.inscribirMateria    
     );
 
@@ -53,6 +53,19 @@ controller.inscribirMateria
       controller.consultaInscripcion
     );
 
+
+    app.post(
+      "/api/alumno/imAltasybajas",
+      [authJwt.verifyToken,validacionesAlumno.validaCupoab],
+  controller.imAltasybajas    
+      );
   
-  
+      app.post(
+        "/api/alumno/consultaAltasybajas",
+        [authJwt.verifyToken],
+    controller.consultaAybajas    
+        );
+    
+
+
 };

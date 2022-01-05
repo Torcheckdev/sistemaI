@@ -79,8 +79,8 @@ function Inscripcion({NumCuenta,Periodo,planEstudios}) {
                   }, {Creditos: 0});
 
                   console.log(creditos);
-                  if( creditos.Creditos > 50){
-                    alert.show("No tienes que pasarte de los 50 creditos");
+                  if( creditos.Creditos > 58){
+                    alert.show("No tienes que pasarte de los 58 creditos");
                   }
             }
             

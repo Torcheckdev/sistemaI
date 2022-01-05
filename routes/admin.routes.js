@@ -14,45 +14,61 @@ module.exports = function(app) {
  
   app.post(
     "/api/admin/generardosificacion",
+    [authJwt.verifyToken, authJwt.isAdmin],
     controller.generaDosificacion
   );
 
   app.get("/api/admin/listaMateriaProf",
+  [authJwt.verifyToken, authJwt.isAdmin],
   controller.listaMateriaProf);
 
 app.post("/api/admin/inscProfesor",
+[authJwt.verifyToken, authJwt.isAdmin],
 controller.inscProf);
 
 
-app.get("/api/admin/listainscAsignatura"
+app.get("/api/admin/listainscAsignatura",
+[authJwt.verifyToken, authJwt.isAdmin]
 ,controller.listainscAsignatura);
 
 app.post("/api/admin/inscAsignatura",
+[authJwt.verifyToken, authJwt.isAdmin],
 controller.inscAsignatura);
 
 app.get("/api/admin/listamodinscAsignatura",
+[authJwt.verifyToken, authJwt.isAdmin],
 controller.listamodinscAsignatura);
 
-app.post("/api/admin/modinscAsignatura",
+app.post("/api/admin/modinscAsignatura",[
+  authJwt.verifyToken, authJwt.isAdmin],
 controller.modinscAsignatura);
 
 
 app.post("/api/admin/borrarinscAsignatura",
+[authJwt.verifyToken, authJwt.isAdmin],
 controller.borrarinscAsignatura);
 
 
 app.post("/api/admin/extensionCreditos",
+[authJwt.verifyToken, authJwt.isAdmin],
 controller.extensionCreditos);
 
 
 
 app.post("/api/admin/cescolarNMPeriodo",
+[authJwt.verifyToken, authJwt.isAdmin],
 controller.cescolarregPeriodo);
 
 
 app.post("/api/admin/seleccionarPeriodoencurso",
+[authJwt.verifyToken, authJwt.isAdmin],
 controller.setperiodoencurso);
 
+
+
+app.get("/api/admin/periodoenCurso",
+[authJwt.verifyToken],
+controller.periodoencurso1);
 
 
 

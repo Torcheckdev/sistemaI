@@ -1,0 +1,18 @@
+.formularioM{
+    margin-top:10px;
+    height: 320px;
+    overflow: scroll;
+}
+
+.button.btnEliminar.centrar{
+    margin: 0 auto;
+    font-size:10px;
+
+}
+.listItem {
+justify-content: space-evenly;
+}
+.MuiButtonBase-root {
+height:40px;
+display: "block !important";
+}

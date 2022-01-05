@@ -2,6 +2,7 @@ module.exports = {
   HOST: process.env.HOSTDB,
   USER: process.env.USERDB,
   PASSWORD:process.env.PWORDDB,
+  socketPath: `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`,
     DB: "sistemainscripciones",
     dialect: "mysql",
     PORT: "3306" ,

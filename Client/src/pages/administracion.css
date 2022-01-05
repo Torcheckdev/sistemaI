@@ -1,0 +1,136 @@
+.containerAdministracion{
+    height:auto;
+}
+
+.selectProf{
+    height: 200px;
+}
+.contenedor{
+    flex-wrap: nowrap;
+}
+
+@media (max-width: 768px) {
+    .navComponent{
+      width: 25%;
+      display: block;
+      padding:2px;
+      font-size: 14px;
+      color: black;
+      font-weight: 700;
+      /*text-align: center;
+      /*overflow-wrap: break-word;
+      hyphens: auto;*/ 
+    }}
+
+    @media (max-width: 500px) {
+        .contenedor{
+            flex-wrap: wrap;
+        }
+    }
+
+    /*.font {
+        color: #fff;
+        text-align: -webkit-center;
+        display: block;
+        font-size: calc(1.5vw + 2vh);
+
+    }
+     .font div{
+        background-color: #38b7fc;
+        width: auto;
+        border: 1px solid white;
+        border-radius: 10px;
+        margin-top: .7rem;
+        max-width: 50%;
+        max-height: 3em;
+        height: auto;
+     }*/
+
+
+
+     @media (min-width: 600px) {
+        .font {
+            color: #0c5460;
+            display: grid;
+            grid-template-columns: repeat(8,1fr);
+            grid-template-areas:
+                "a a a a b b b c"
+                "a a a a d d d c";
+            font-size: calc(1vw + 1vh + .5vmin);
+            grid-row-gap: 15px;
+            row-gap: 15px;
+            
+    
+        }
+    }
+    @media (max-width: 599px) {
+        .font {
+            color: #0c5460;
+            display: grid;
+            grid-template-columns: repeat(8,1fr);
+            grid-template-areas:
+                "a a a a b b b c"
+                "a a a a d d d c";
+            font-size: calc(1.5vw + 1.5vh + .5vmin);
+            grid-row-gap: 15px;
+            row-gap: 15px;
+            
+    
+        }
+    }
+    
+     .font1{
+        background-color: #38b7fc;
+        width: auto;
+        max-width: 35rem;
+        border: 1px solid #fff;
+        border-radius: 10px;
+        height: auto;
+       /* text-align: center;*/
+       grid-area: b;
+opacity: 0.8;
+     }
+
+     .font2{
+        background-color: #38b7fc;
+        width: auto;
+        max-width: 35rem;
+        border: 1px solid #fff;
+        border-radius: 10px;
+        height: auto;
+       /* text-align: center;*/
+      grid-area: d;
+      opacity: 0.8;
+
+     }
+
+     .font1:hover{
+        background-color: #38b7fc;
+        width: auto;
+        max-width: 35rem;
+        border: 1px solid #fff;
+        border-radius: 10px;
+        height: auto;
+       /* text-align: center;*/
+       grid-area: b;
+opacity: 1;
+     }
+
+     .font2:hover{
+        background-color: #38b7fc;
+        width: auto;
+        max-width: 35rem;
+        border: 1px solid #fff;
+        border-radius: 10px;
+        height: auto;
+       /* text-align: center;*/
+       grid-area: d;
+      opacity: 1;
+
+     }
+
+
+
+     
+
+

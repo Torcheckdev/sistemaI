@@ -128,6 +128,13 @@ var sql_string7 = fs.readFileSync('./models/sqlscripts/8insertCursa.sql'.toStrin
  'BEGIN'+ ' '+
  'UPDATE inscAsignatura  SET Inscritos = Inscritos+1 WHERE folioAsig=NEW.folioAsig;'+' '+
  'END;');
+
+ await db.sequelize.query('CREATE TRIGGER bajasinsc  AFTER DELETE ON inscMateria'+' '+ 
+ 'FOR EACH ROW'+' '+
+ 'BEGIN'+ ' '+
+ 'UPDATE inscAsignatura  SET Inscritos = Inscritos - 1  WHERE folioAsig=OLD.folioAsig;'+' '+
+ 'END;');
+
 /*//updatecalificacion de inscmateria a historialcadamico
  await db.sequelize.query('CREATE TRIGGER UPcal  AFTER INSERT ON inscMateria'+' '+ 
  'FOR EACH ROW'+' '+
@@ -166,6 +173,12 @@ await db.sequelize.query('CREATE TRIGGER eacademica AFTER INSERT ON historialaca
 
  'iF (totalaprobados = 0 ) THEN UPDATE calificaciones SET EficienciaAcademica=0 where NumCuenta=NEW.NumCuenta; ELSE  UPDATE calificaciones SET EficienciaAcademica=((sumaaprobadaso - sumaaprobadosext - totalrecurse) / totalaprobados) where NumCuenta=NEW.NumCuenta; END IF;'+' '+ 
 'END;');
+
+await db.sequelize.query('CREATE TRIGGER ipsemestre  AFTER INSERT ON comprobanteinsc'+' '+ 
+ 'FOR EACH ROW'+' '+
+ 'BEGIN'+ ' '+
+ 'UPDATE cursa  SET Semestre =Semestre+1, Periodo=NEW.Periodo WHERE NumCuenta=NEW.NumCuenta;'+' '+
+ 'END;');
 
  var sql_string11 = fs.readFileSync('./models/sqlscripts/12insertinscMateria.sql'.toString(), 'utf8');
  await db.inscMateria.sequelize.query(sql_string11);
