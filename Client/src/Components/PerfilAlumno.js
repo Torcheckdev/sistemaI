@@ -1,8 +1,12 @@
 import BtnCerrarSeccion from "./BtnCerrarSeccion";
 import "./perfilAlumno.css";
 import avatar from './avatar Alumno.png';
+import BotonPdfAyb from "./Btnpdfalumno";
+import BotonPdfinsc from "./Btnpdfalumno";
+import "./PDFInscrpcion.css";
 
-function PerfilAlumno({alumno}) {
+
+function PerfilAlumno({alumno,infoAlumno,infoAlumno1}) {
     console.log(alumno);
     return ( <>
                 <div className="profile-card-4 z-depth-3 animate__animated animate__fadeInLeft">
@@ -40,6 +44,18 @@ function PerfilAlumno({alumno}) {
              <span>{alumno?.PlanEstudios ? alumno?.PlanEstudios:" "}</span>
            </div>
          </li>
+         
+
+
+         <li className="list-group-item">
+         <div className="list-details">
+         <BotonPdfinsc  infoAlumno={{alumno:infoAlumno1.alumno,materias:infoAlumno1.materias}} name={"Inscripción"} />
+        <BotonPdfAyb   infoAlumno={{alumno:infoAlumno.alumno,materias:infoAlumno.materias}} name={"Altas y bajas"} />
+         </div>
+       </li>
+
+
+
          </ul>
         </div>
         <BtnCerrarSeccion/>

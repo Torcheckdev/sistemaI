@@ -37,7 +37,7 @@ function SaturacionAdministracion() {
                 console.log(error.response);
                 setError({
                     error:true,
-                    mensaje:"horario de grupos no disponible por el momento"
+                    mensaje:"Horario de grupos no disponible por el momento"
                 });
                 setLoading(false);
                 //cerrarSeccion();
@@ -76,14 +76,14 @@ function SaturacionAdministracion() {
                                         <th>Folio</th>
 
                                         <th>Materia</th>
-                                        <th>grupo</th>
+                                        <th>Grupo</th>
 
-                                        <th>Dia</th>
+                                        <th>Día</th>
                                         <th>Horario</th>
 
-                                        <th>total lugares</th>
-                                        <th>ocupados</th>
-                                        <th>disponibles</th>
+                                        <th>Total lugares</th>
+                                        <th>Ocupados</th>
+                                        <th>Disponibles</th>
                                     </tr>
                                 </thead>
                                 <tbody>

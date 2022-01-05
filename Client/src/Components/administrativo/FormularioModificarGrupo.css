@@ -9,3 +9,10 @@
     font-size:10px;
 
 }
+.listItem {
+justify-content: space-evenly;
+}
+.MuiButtonBase-root {
+height:40px;
+display: "block !important";
+}

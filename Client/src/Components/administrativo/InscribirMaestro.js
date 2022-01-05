@@ -120,7 +120,7 @@ function InscribirMaestro() {
               </div>
 
               <div className="form-group">
-                     <label htmlFor='materia' className="">materia: </label>
+                     <label htmlFor='materia' className="">Materia: </label>
                
                     <Select
                     defaultValue={selectedOption2}

@@ -45,11 +45,11 @@ function FormularioCreditosAlumnos() {
     >
       <Form>
 
-        <h2 class="card-title text-center">Creditos Alumno:</h2>
+        <h2 class="card-title text-center">Créditos alumno:</h2>
         
         <div className="form-group">
               
-        <label htmlFor="NumCuenta">Numero de Cuenta:</label>
+        <label htmlFor="NumCuenta">Numero de cuenta:</label>
         <Field id="NumCuenta" name="NumCuenta" placeholder="ejemplo: 41705612"  className='form-control'/>
 
             <ErrorMessage
@@ -62,7 +62,7 @@ function FormularioCreditosAlumnos() {
 
         <div className="form-group">
               
-        <label htmlFor="Creditos">Creditos: </label>
+        <label htmlFor="Creditos">Créditos: </label>
         <Field id="Creditos" name="Creditos"  placeholder="ejemplo: 41"  className='form-control'/>
 
               <ErrorMessage

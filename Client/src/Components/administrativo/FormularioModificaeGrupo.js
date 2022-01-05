@@ -3,10 +3,23 @@ import * as Yup from "yup";
 import { useAlert } from "react-alert";
 import Select from 'react-select';
 import axios from "axios";
-
-
 import "./FormularioModificarGrupo.css";
 import { useEffect, useState } from "react";
+import { array } from "yup/lib/locale";
+import Checkbox from "@material-ui/core/Checkbox";
+import TextField from "@material-ui/core/TextField";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import Typography from "@material-ui/core/Typography";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import TimePicker from '@mui/lab/TimePicker';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Selectm from '@mui/material/Select';
+
+
 
 const optionsMateriaProfesor =(materiasProf)=>{
   const arreglo = materiasProf.map(profMat=>{
@@ -22,21 +35,110 @@ const horariolista  =(horarios)=>{
   return arreglo;
 };
 
-function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}) {
-   
+
+ 
+
+
+ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}) {
     const alert = useAlert();
   console.log(grupo,reset,listaHorario,listaMaestroMateria);
     const [selectedOption1, setSelectedOption1] = useState(null);
     const [selectedOption2, setSelectedOption2] = useState(null);
+    const [open, setOpen] = useState(false);
+    const[selectturno,setSelectturno]= useState("");
+    const handleChangeturno = (event) => {
+      setSelectturno(event.target.value);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+  
+    const handleOpen = () => {
+      setOpen(true);
+    };
+
+const [checked, setChecked] =useState({
+      Lunes:false,
+      Martes:false,
+      Miercoles:false,
+      Jueves:false, 
+      Viernes:false,
+    });
+  
+    const[horario,setHorario] = useState({
+      Lunes: "", 
+      Martes:"",
+      Miercoles:"",
+      Jueves:"", 
+      Viernes:""
+    });
+    const [hli, setHli] =useState(new Date());       const [hmii, setHmii] =useState(new Date());
+    const [hlt, setHlt] =useState(new Date());       const [hmit, setHmit] =useState(new Date());
+    const [hmi, setHmi] =useState(new Date());       const [hji, setHji] =useState(new Date());
+    const [hmt, setHmt] =useState(new Date());       const [hjt, setHjt] =useState(new Date());
+    const [hvi, setHvi] =useState(new Date());       
+    const [hvt, setHvt] =useState(new Date());       
+    var l = "",m="",mi="",j="",v="";
+    
+    var diassubmit="";
+    var horariossubmit="";
+
+    const handleChange = (e) => {
+      setChecked({
+        ...checked,
+        [e.target.id] :  e.target.checked
+    });
+    
+    };
+  
+    function setdiasHorarios ()   {
+      l = hli.getHours().toString() + ":" + hli.getMinutes().toString()+"-"+hlt.getHours().toString()+":"+hlt.getMinutes().toString();
+      m = hmi.getHours().toString() + ":" + hmi.getMinutes().toString()+"-"+hmt.getHours().toString()+":"+hmt.getMinutes().toString();
+      mi=hmii.getHours().toString() + ":" + hmii.getMinutes().toString()+"-"+hmit.getHours().toString()+":"+hmit.getMinutes().toString();
+      j=hji.getHours().toString() + ":" + hji.getMinutes().toString()+"-"+hjt.getHours().toString()+":"+hjt.getMinutes().toString();
+      v= hvi.getHours().toString() + ":" + hvi.getMinutes().toString()+"-"+hvt.getHours().toString()+":"+hvt.getMinutes().toString();
+
+      setHorario({...horario,Lunes:l,Martes:m,Miercoles:mi,Jueves:j,Viernes:v })
+
+}
+
+useEffect(() => {
+  setdiasHorarios(); 
+}, [hli,hlt,hmi,hmt,hmii,hmit,hji,hjt,hvi,hvt,checked]);
+
+
+function submitdiasHorarios(){
+    let dias = [];
+    let horario1=[]
+for(var val2 in checked) {
+ if(checked[val2] == true){
+  dias.push(val2);  
+ }
+
+}
+for(var val1 in horario) {
+for(var dia in dias ){
+if (val1 == dias[dia]){
+  horario1.push(horario[val1]);
+}
+}
+}
+diassubmit=dias.toString();
+horariossubmit=horario1.toString();
+
+}
     //setOptions({option1:optionsMateriaProfesor(listaMaestroMateria),option2:horariolista(listaHorario)});// no modificar estados afuera del useEffect porque en cada renderizado se va ejecutar esta linea de codigo
-   
     useEffect(() => {
         const horarioActual = listaHorario.filter(horario=>{
           return horario.IDhorario === grupo.IDHorario
       }).map(horario =>{
+        setSelectturno(horario.Turno);
         return  {value : horario.IDhorario, label :" Dia:"+horario.Dia+" Horario: "+horario.Horario+" Turno:"+horario.Turno}
       })[0];
+
       setSelectedOption2(horarioActual);
+      setChecked({Lunes:false,Martes:false,Miercoles:false,Jueves:false,Viernes:false}); 
       console.log(horarioActual);
       const maestroMateriaActual =listaMaestroMateria.filter(maProf => { 
         return maProf?.IDpm === grupo?.IDpm
@@ -69,26 +171,45 @@ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}
 
       };
     
+
+      
+     
+        
+
+
+
     return ( <>
                 <Formik
               initialValues={{
                 folioAsig: grupo?.folioAsig,
                 Grupo: grupo?.Grupo,
                 Cupo:grupo?.Cupo,
-                Inscritos:grupo?.Inscritos
+                horarios: " Dia:"+grupo?.Dia+" Horario: "+grupo?.Horario+" Turno:"+grupo.Turno,
+                Inscritos:grupo?.Inscritos,
+                checked: [],
+                Turno:"Selecciona un turno"
               }}
               validationSchema={formSchema}
 
               onSubmit={(values) => {
+                {submitdiasHorarios()}
+
+                               alert.show(JSON.stringify(diassubmit, null, 2));
+                               alert.show(JSON.stringify(horariossubmit, null, 2));
+                               alert.show(JSON.stringify(diassubmit.length, null, 2));
+                               alert.show(JSON.stringify(horariossubmit.length, null, 2));
+               // alert.show(JSON.stringify(values, null, 2));
                 console.log(values);
                 console.log(selectedOption1,selectedOption2);
-
                axios.post(process.env.REACT_APP_ADM_MODINSCASIGNATURA, {
                     folioAsig: values.folioAsig,
                     IDpm: selectedOption1.value,
-                    IDhorario:selectedOption2.value,
+                    IDhorario:grupo?.IDHorario,
                     Grupo:values.Grupo,
-                    Cupo:values.Cupo
+                    Cupo:values.Cupo,
+                    Dia:diassubmit,
+                    Horario:horariossubmit,           
+                    Turno:selectturno
                     },{withCredentials:true} 
                     ).then((response) => {
                           console.log(response.data);
@@ -166,18 +287,329 @@ function FormularioModificarGrupo({grupo,reset,listaHorario,listaMaestroMateria}
                 </div>
 
                 <div className="form-group">
-                      <label htmlFor='horarios' className="">horarios: </label>
+                      <label htmlFor='horarios' className="">Horarios: </label>
                 
-                      <Select
-                      defaultValue={selectedOption2}
-                      onChange={setSelectedOption2}
-                      options={horariolista(listaHorario)}
-                      name='horarios'
-                      placeholder={selectedOption2?.label}
-                          />
+                      <Field
+                  className='form-control'
+                  name='horarios'
+                  placeholder='horarios'
+                  type='text'
+                  autoComplete="off"
+                  disabled
+                  component="textarea"
+                  rows="3"
+                />
+                <ErrorMessage
+                  name='horario'
+                  component='div'
+                  className='field-error text-danger'
+                />
 
                 </div>
-              
+                <div> 
+                <List >
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+        <ListItem style= {{justifyContent:`space-evenly`}} alignItems="center" >
+         <div style={{width:`5rem`}}>  
+        <Typography id="" variant="subtitle1" style={{ marginRight: "3px" }}>
+            Lunes
+          </Typography>
+          <Checkbox
+            checked={checked.Lunes}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "primary checkbox" }}
+            id="Lunes"
+            color="primary"
+          />
+          </div> 
+         {checked?.Lunes
+        ? <TimePicker
+        ampm={true}
+        openTo="hours"
+        views={['hours','minutes']}
+        inputFormat="HH:mm"
+        mask="__:__"
+        label="Inicio"
+        value={hli}
+        id="Lunes"
+        onChange={(newValue) => {
+          setHli(newValue);
+        }}
+        renderInput={(params) => <TextField  required  {...params} />}
+      />
+        : null }
+
+
+
+{checked?.Lunes
+        ?<TimePicker
+
+          ampm={true}
+          openTo="hours"
+          views={['hours', 'minutes']}
+          inputFormat="HH:mm"
+          mask="__:__"
+          label="Termino"
+          value={hlt}
+          id="Lunes"
+
+          onChange={(newValue) => {
+            setHlt(newValue);
+          }}
+          renderInput={(params) => <TextField required {...params} />}
+        />:null}
+        </ListItem>
+
+        <ListItem style= {{justifyContent:`space-evenly`}} alignItems="center">
+        <div style={{width:`5rem`}}>  
+
+         <Typography variant="subtitle1" style={{ marginRight: "3px" }}>
+             Martes
+           </Typography>
+           <Checkbox
+             checked={checked.Martes}
+             onChange={handleChange}
+             inputProps={{ "aria-label": "primary checkbox" }}
+             id="Martes"
+             color="primary"
+
+           />
+                 </div>  
+
+{checked?.Martes
+        ? <TimePicker
+        ampm={true}
+        openTo="hours"
+        views={['hours','minutes']}
+        inputFormat="HH:mm"
+        mask="__:__"
+        label="Inicio"
+        value={hmi}
+        id="Martes"
+        onChange={(newValue) => {
+          setHmi(newValue);
+        }}
+        renderInput={(params) => <TextField  required  {...params} />}
+      />
+        : null }
+
+
+
+{checked?.Martes
+        ?<TimePicker
+
+          ampm={true}
+          openTo="hours"
+          views={['hours', 'minutes']}
+          inputFormat="HH:mm"
+          mask="__:__"
+          label="Termino"
+          value={hmt}
+          id="Martes"
+
+          onChange={(newValue) => {
+            setHmt(newValue);
+          }}
+          renderInput={(params) => <TextField required {...params} />}
+        />:null}
+         </ListItem>
+
+         <ListItem style= {{justifyContent:`space-evenly`}} alignItems="center">
+         <div style={{width:`5rem`}}>  
+
+         <Typography variant="subtitle1" style={{ marginRight: "3px" }}>
+             Miercoles
+           </Typography>
+           <Checkbox
+             checked={checked.Miercoles}
+             onChange={handleChange}
+             inputProps={{ "aria-label": "primary checkbox" }}
+             id="Miercoles"
+             color="primary"
+
+           />
+                 </div>  
+
+{checked?.Miercoles
+        ? <TimePicker
+        ampm={true}
+        openTo="hours"
+        views={['hours','minutes']}
+        inputFormat="HH:mm"
+        mask="__:__"
+        label="Inicio"
+        value={hmii}
+        id="Miercoles"
+        onChange={(newValue) => {
+          setHmii(newValue);
+        }}
+        renderInput={(params) => <TextField  required  {...params} />}
+      />
+        : null }
+
+
+
+{checked?.Miercoles
+        ?<TimePicker
+
+          ampm={true}
+          openTo="hours"
+          views={['hours', 'minutes']}
+          inputFormat="HH:mm"
+          mask="__:__"
+          label="Termino"
+          value={hmit}
+          id="Miercoles"
+
+          onChange={(newValue) => {
+            setHmit(newValue);
+          }}
+          renderInput={(params) => <TextField required {...params} />}
+        />:null}
+         </ListItem>
+
+         <ListItem style= {{justifyContent:`space-evenly`}} alignItems="center" >
+         <div style={{width:`5rem`}}>  
+
+         <Typography id="" variant="subtitle1" style={{ marginRight: "3px" }}>
+             Jueves
+           </Typography>
+           <Checkbox
+             checked={checked.Jueves}
+             onChange={handleChange}
+             inputProps={{ "aria-label": "primary checkbox" }}
+             id="Jueves"
+             color="primary"
+
+           />
+                    </div>  
+
+          {checked?.Jueves
+         ? <TimePicker
+         ampm={true}
+         openTo="hours"
+         views={['hours','minutes']}
+         inputFormat="HH:mm"
+         mask="__:__"
+         label="Inicio"
+         value={hji}
+         id="Jueves"
+         onChange={(newValue) => {
+           setHji(newValue);
+         }}
+         renderInput={(params) => <TextField  required  {...params} />}
+       />
+         : null }
+ 
+ 
+ 
+ {checked?.Jueves
+         ?<TimePicker
+ 
+           ampm={true}
+           openTo="hours"
+           views={['hours', 'minutes']}
+           inputFormat="HH:mm"
+           mask="__:__"
+           label="Termino"
+           value={hjt}
+           id="Jueves"
+ 
+           onChange={(newValue) => {
+             setHjt(newValue);
+           }}
+           renderInput={(params) => <TextField required {...params} />}
+         />:null}
+         </ListItem>
+         <ListItem style= {{justifyContent:`space-evenly`}} alignItems="center" >
+         <div style={{width:`5rem`}}>  
+
+         <Typography id="" variant="subtitle1" style={{ marginRight: "3px" }}>
+             Viernes
+           </Typography>
+           <Checkbox
+             checked={checked.Viernes}
+             onChange={handleChange}
+             inputProps={{ "aria-label": "primary checkbox" }}
+             id="Viernes"
+             color="primary"
+
+           />
+                    </div>  
+
+          {checked?.Viernes
+         ? <TimePicker
+         ampm={true}
+         openTo="hours"
+         views={['hours','minutes']}
+         inputFormat="HH:mm"
+         mask="__:__"
+         label="Inicio"
+         value={hvi}
+         id="Viernes"
+         onChange={(newValue) => {
+           setHvi(newValue);
+         }}
+         renderInput={(params) => <TextField  required  {...params} />}
+       />
+         : null }
+ 
+ 
+ 
+ {checked?.Viernes
+         ?<TimePicker
+ 
+           ampm={true}
+           openTo="hours"
+           views={['hours', 'minutes']}
+           inputFormat="HH:mm"
+           mask="__:__"
+           label="Termino"
+           value={hvt}
+           id="Viernes"
+ 
+           onChange={(newValue) => {
+             setHvt(newValue);
+           }}
+           renderInput={(params) => <TextField required {...params} />}
+         />:null}
+         </ListItem>
+ 
+        
+         </LocalizationProvider>
+      </List>
+      </div> 
+<div className="form-group" style={{display:`grid`}}>
+
+   <label htmlFor='Cupo' className="">Turno: </label>
+   
+
+      <FormControl  sx={{ minWidth: '100%' }}>
+        <InputLabel id="Turno">Selecciona un turno</InputLabel>
+        <Selectm
+          labelId="Turno"
+          id="Turno"
+          open={open}
+          onClose={handleClose}
+          onOpen={handleOpen}
+          value={selectturno}
+          label="Turno"
+          onChange={handleChangeturno}
+          sx={{ height:40 }} 
+          required
+        >
+
+          <MenuItem
+ value="" sx={{ height:40,display:'block !important' }}  >
+            <em>Selecciona un turno</em>
+          </MenuItem>
+          <MenuItem  value={"Matutino"} sx={{ height:40,display:'block !important' }}   >Matutino</MenuItem>
+          <MenuItem  value={"Vespertino"}  sx={{ height:40,display:'block !important' }} >Vespertino</MenuItem>
+        </Selectm>
+      </FormControl>
+      </div>
+
 
 
               <div className="form-group">

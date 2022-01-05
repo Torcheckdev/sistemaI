@@ -66,6 +66,11 @@ controller.setperiodoencurso);
 
 
 
+app.get("/api/admin/periodoenCurso",
+[authJwt.verifyToken],
+controller.periodoencurso1);
+
+
 
 
   };

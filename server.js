@@ -128,6 +128,13 @@ var sql_string7 = fs.readFileSync('./models/sqlscripts/8insertCursa.sql'.toStrin
  'BEGIN'+ ' '+
  'UPDATE inscAsignatura  SET Inscritos = Inscritos+1 WHERE folioAsig=NEW.folioAsig;'+' '+
  'END;');
+
+ await db.sequelize.query('CREATE TRIGGER bajasinsc  AFTER DELETE ON inscMateria'+' '+ 
+ 'FOR EACH ROW'+' '+
+ 'BEGIN'+ ' '+
+ 'UPDATE inscAsignatura  SET Inscritos = Inscritos - 1  WHERE folioAsig=OLD.folioAsig;'+' '+
+ 'END;');
+
 /*//updatecalificacion de inscmateria a historialcadamico
  await db.sequelize.query('CREATE TRIGGER UPcal  AFTER INSERT ON inscMateria'+' '+ 
  'FOR EACH ROW'+' '+

@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useContext } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 //import useUser from '../hooks/useUser';
-
 import "./alumno.css";
 import "./administracion.css";
 import alumnoImg from "./iconos/alumno.png";
@@ -17,8 +16,32 @@ import FormularioGDosficacion from '../Components/FormularioGDosificacion';
 import FormularioPeriodo from '../Components/administrativo/FormularioRegistroPeriodo';
 import FormularioElegirPeriodo from '../Components/administrativo/FormularioElegirPeriodo';
 import FormularioCreditosAlumnos from '../Components/administrativo/FormularioCreditosAlumnos';
+import PeriodoActivo from '../context/PeriodoActivo';
+import axios from 'axios';
+
+
+
+  
 function Administracion() {
-   
+    const [periodoActivo,setPeriodoActivo]=useState({});  
+    const value={periodoActivo,setPeriodoActivo};
+    
+    function periodoenCurso(){
+        axios.get(process.env.REACT_APP_ADM_PERIODOSISTEMA).then(json=>
+        {
+          setPeriodoActivo({Periodo:json.data[0].Periodo,Inscripcion: json.data[0].Inscripcion, Aybajas:json.data[0].Aybajas })
+        }
+          
+        ).catch((error)=> {
+          console.log(error);
+        });
+    }
+    useEffect(() => {
+        periodoenCurso();
+        },[])
+
+
+
   /*const {user,cerrarSeccion} = useUser();
     const [alumno,setAlumno] = useState({});*/
     const [active,setActive] = useState({
@@ -31,9 +54,20 @@ function Administracion() {
             tab7:false
 
     });
-   
+  
+ 
+
+
     return ( 
         <>
+   
+   <PeriodoActivo.Provider value={value}>     
+
+        <div className="font">  
+        <div className='font1'>Período activo: {value?.periodoActivo.Periodo? value.periodoActivo.Periodo : " " }</div>
+        <div className='font2'>Proceso activo: {value.periodoActivo.Inscripcion == "true"?"Inscripción":value.periodoActivo.Aybajas == "true"? "Altas y bajas" :null } </div>
+        </div>
+
                 <br />
                 <Tabs>
                     <div className="container colorContenedor animate__animated animate__backInDown containerAdministracion">
@@ -43,18 +77,27 @@ function Administracion() {
                             setActive({tab1:true, tab2: active.tab2===true&&false,
                             tab3: active.tab3===true&&false,tab4: active.tab4===true&&false,tab5: active.tab5===true&&false,tab6: active.tab6===true&&false,tab7: active.tab7===true&&false});}})}>
                             <div className={`efectoNav  ${active.tab1 ? "efecto":""}`}href="#">
-                                <span>periodo</span>
+                                <span>Periodo</span>
                                 <span>
                                     <img src={alumnoImg} alt="icono"/>
                                 </span>
                             </div>
                         </Tab>
-
+                        <Tab className={`nav-link  navComponent`}  onClick={(()=>{ if(active.tab4===false){
+                            setActive({tab4:true, tab2: active.tab2===true&&false,
+                            tab3: active.tab3===true&&false,tab1: active.tab1===true&&false,tab5: active.tab5===true&&false,tab6: active.tab6===true&&false,tab7: active.tab7===true&&false});}})}>
+                                <div className={`efectoNav  ${active.tab4 ? "efecto":""}`}href="#">
+                                <span>Inscribir maestro </span>
+                                <span>
+                                <img src={saturacionImg} alt="icono"/>
+                                </span>
+                            </div>
+                        </Tab>
                         <Tab className={`nav-link  navComponent `}  onClick={(()=>{ if(active.tab2===false){
                             setActive({tab2:true, tab1: active.tab1===true&&false,
                             tab3: active.tab3===true&&false,tab4: active.tab4===true&&false, tab5: active.tab5===true&&false,tab6: active.tab6===true&&false,tab7: active.tab7===true&&false});}})}>
                             <div className={`efectoNav  ${active.tab2 ? "efecto":""}`}href="#">
-                                <span>Crear Grupo</span>
+                                <span>Crear grupo</span>
                                 <span>
                                 <img src={dosificacionImg} alt="icono"/>
                                 </span>
@@ -65,28 +108,19 @@ function Administracion() {
                             setActive({tab3:true, tab2: active.tab2===true&&false,
                             tab1: active.tab1===true&&false,tab4: active.tab4===true&&false,tab5: active.tab5===true&&false,tab6: active.tab6===true&&false,tab7: active.tab7===true&&false});}})}>
                             <div className={`efectoNav  ${active.tab3 ? "efecto":""}`}href="#">
-                                <span>Modificar Grupo</span>
+                                <span>Modificar grupo</span>
                                 <span>
                                 <img src={inscripcionImg} alt="icono"/>
                                 </span>
                             </div>
                         </Tab>
 
-                        <Tab className={`nav-link  navComponent`}  onClick={(()=>{ if(active.tab4===false){
-                            setActive({tab4:true, tab2: active.tab2===true&&false,
-                            tab3: active.tab3===true&&false,tab1: active.tab1===true&&false,tab5: active.tab5===true&&false,tab6: active.tab6===true&&false,tab7: active.tab7===true&&false});}})}>
-                                <div className={`efectoNav  ${active.tab4 ? "efecto":""}`}href="#">
-                                <span>inscribir maestro </span>
-                                <span>
-                                <img src={saturacionImg} alt="icono"/>
-                                </span>
-                            </div>
-                        </Tab>
+                       
                         <Tab className={`nav-link  navComponent`}  onClick={(()=>{ if(active.tab5===false){
                             setActive({tab5:true, tab2: active.tab2===true&&false,
                             tab3: active.tab3===true&&false,tab1: active.tab1===true&&false,tab4: active.tab4===true&&false,tab6: active.tab6===true&&false,tab7: active.tab7===true&&false});}})}>
                                 <div className={`efectoNav  ${active.tab5 ? "efecto":""}`}href="#">
-                                <span>Generar Dosificacion </span>
+                                <span>Generar dosificación </span>
                                 <span>
                                 <img src={saturacionImg} alt="icono"/>
                                 </span>
@@ -96,7 +130,7 @@ function Administracion() {
                             setActive({tab6:true, tab2: active.tab2===true&&false,
                             tab3: active.tab3===true&&false,tab1: active.tab1===true&&false,tab4: active.tab4===true&&false,tab5: active.tab5===true&&false,tab7: active.tab7===true&&false});}})}>
                                 <div className={`efectoNav  ${active.tab6 ? "efecto":""}`}href="#">
-                                <span>lista grupo </span>
+                                <span>Lista grupo </span>
                                 <span>
                                 <img src={saturacionImg} alt="icono"/>
                                 </span>
@@ -106,7 +140,7 @@ function Administracion() {
                             setActive({tab7:true, tab2: active.tab2===true&&false,
                             tab3: active.tab3===true&&false,tab1: active.tab1===true&&false,tab4: active.tab4===true&&false,tab6: active.tab6===true&&false,tab5: active.tab5===true&&false});}})}>
                                 <div className={`efectoNav  ${active.tab7 ? "efecto":""}`}href="#">
-                                <span>creditos alumno</span>
+                                <span>Créditos alumno</span>
                                 <span>
                                 <img src={saturacionImg} alt="icono"/>
                                 </span>
@@ -118,6 +152,10 @@ function Administracion() {
                     <TabPanel>
                     <FormularioPeriodo/>
                     <FormularioElegirPeriodo/>
+
+                    </TabPanel>
+                    <TabPanel>
+                        <InscribirMaestro/>
                     </TabPanel>
                     <TabPanel>
                         <CrearGrupo/>
@@ -125,9 +163,7 @@ function Administracion() {
                     <TabPanel>
                         <ModificarGrupo/>
                     </TabPanel>
-                    <TabPanel>
-                        <InscribirMaestro/>
-                    </TabPanel>
+                   
                     <TabPanel>
                         <FormularioGDosficacion/>
                     </TabPanel>
@@ -140,6 +176,7 @@ function Administracion() {
                     </TabPanel>
                     </div>
                 </Tabs>
+                </PeriodoActivo.Provider>
 
         </>
 

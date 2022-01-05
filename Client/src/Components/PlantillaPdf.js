@@ -68,26 +68,39 @@ const styles = StyleSheet.create({
  }
 
 });
-function PlantillaPdf({informacion}) {
+function PlantillaPdf({informacion,name}) {
     console.log(informacion);
-    return (  <>
+    const [IDcomprobante]=informacion.materias
+return (  <>
           <Document>
                 <Page size="A4" style={styles.page}>
+
                 <View style={styles.encabezado}>
                     <View style={styles.caja}>
-                        <Text style={styles.titulo}>numero cuenta:</Text>
+                        <Text style={styles.titulo}>Comprobante:</Text>
+                        <Text style={styles.valor}>{name}</Text>
+                    </View>
+                    <View style={styles.caja}>
+                        <Text style={styles.titulo}>Folio:</Text>
+                        <Text style={styles.valor}>{IDcomprobante?.IDcomprobante}</Text>
+                    </View>
+                   
+                </View>
+                <View style={styles.encabezado}>
+                    <View style={styles.caja}>
+                        <Text style={styles.titulo}>Numero cuenta:</Text>
                         <Text style={styles.valor}>{informacion?.alumno.NumCuenta}</Text>
                     </View>
                     <View style={styles.caja}>
-                        <Text style={styles.titulo}>nombre:</Text>
+                        <Text style={styles.titulo}>Nombre:</Text>
                         <Text style={styles.valor}>{informacion?.alumno.NombreA}</Text>
                     </View>
                     <View style={styles.caja}>
-                        <Text style={styles.titulo}>carrera:</Text>
+                        <Text style={styles.titulo}>Carrera:</Text>
                         <Text style={styles.valor}>{informacion?.alumno.NombreC}</Text>
                     </View>
                     <View style={styles.caja}>
-                        <Text style={styles.titulo}>año inscripcion:</Text>
+                        <Text style={styles.titulo}>Año inscripcion:</Text>
                         <Text style={styles.valor}>{informacion?.alumno.AnioInscripcion}</Text>
                     </View>
                 </View>
@@ -101,10 +114,11 @@ function PlantillaPdf({informacion}) {
                         <Text style={styles.valor}>{informacion?.alumno.PlanEstudios}</Text>
                     </View>
                     <View style={styles.caja}>
-                        <Text style={styles.titulo}>periodo:</Text>
+                        <Text style={styles.titulo}>Periodo:</Text>
                         <Text style={styles.valor}>{informacion?.alumno.Periodo}</Text>
                     </View>
                 </View>
+
 
                 <View style={styles.tabla}>
                     
@@ -113,7 +127,7 @@ function PlantillaPdf({informacion}) {
                             <Text style={styles.titulo2}>Clave:</Text>
                         </View>
                         <View style={styles.caja2,{flexBasis:"40%"}}>
-                            <Text style={styles.titulo2}> materia:</Text>
+                            <Text style={styles.titulo2}> Materia:</Text>
                         </View>
                         <View style={styles.caja2,{flexBasis:"12%"}}>
                             <Text style={styles.titulo2}>Creditos:</Text>
@@ -130,14 +144,14 @@ function PlantillaPdf({informacion}) {
                     </View>
 
                     {
-                        informacion?.materias.map(({IDmateria,nombre,Grupo,Creditos,Semestre})=>{
+                        informacion?.materias.map(({IDmateria,Nombre,Grupo,Creditos,Semestre,Movimiento})=>{
                             return<View style={styles.fila}>
                             <Text style={styles.columna,{flexBasis:"12%"}}>{ IDmateria}</Text>
-                            <Text style={styles.columna,{flexBasis:"40%"}}> {nombre }</Text>
+                            <Text style={styles.columna,{flexBasis:"40%"}}> {Nombre }</Text>
                             <Text style={styles.columna,{flexBasis:"12%"}}>{Creditos }</Text>
                             <Text style={styles.columna,{flexBasis:"12%"}}>{ Semestre}</Text>
                             <Text style={styles.columna,{flexBasis:"12%"}}>{Grupo }</Text>
-                            <Text style={styles.columna,{flexBasis:"12%"}}>{"ALTA" }</Text>
+                            <Text style={styles.columna,{flexBasis:"12%"}}>{Movimiento? Movimiento:"Alta" }</Text>
                         </View>
                         })
                     }

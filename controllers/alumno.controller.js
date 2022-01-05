@@ -49,7 +49,7 @@ async function consultaInscripcion(req,res) {
 }
   )
 
-  var materiasi= await db.sequelize.query('select c.IDcomprobante,c.Fecha,c.Periodo,m.IDmateria,m.nombre,m.Creditos,m.Semestre,a.Grupo,h.Dia,h.Horario from comprobanteinsc c inner join comprobantematerias cm ON c.NumCuenta="'+NumCuenta+'" && cm.IDcomprobante=c.IDcomprobante && c.Periodo="'+Periodo+'" inner join inscAsignatura a on cm.folioAsig=a.folioAsig inner join inscProfe ip on a.IDpm=ip.IDpm inner join materia m ON m.IDmateria=ip.Idmateria inner join horario h on h.IDhorario=a.IDhorario ;',
+  var materiasi= await db.sequelize.query('select c.IDcomprobante,c.Fecha,c.Periodo,cm.folioAsig,m.IDmateria,m.nombre as Nombre,m.Creditos,m.Semestre,a.Grupo,h.Dia,h.Horario from comprobanteinsc c inner join comprobantematerias cm ON c.NumCuenta="'+NumCuenta+'" && cm.IDcomprobante=c.IDcomprobante && c.Periodo="'+Periodo+'" inner join inscAsignatura a on cm.folioAsig=a.folioAsig inner join inscProfe ip on a.IDpm=ip.IDpm inner join materia m ON m.IDmateria=ip.Idmateria inner join horario h on h.IDhorario=a.IDhorario ;',
    { raw: true })
   .catch(err => {
     res.status(500).send({
@@ -431,3 +431,296 @@ return
   const{Periodo}= query[0][0]
   return Periodo ;
 }
+
+
+async function imAltasybajas(req,res){
+  var arrayMaterias=req.body
+  var arraylength=arrayMaterias[0].length;
+  var arraylengthbaja=0;
+
+  {arrayMaterias.length >1 ? arraylengthbaja= arrayMaterias[1].length: arraylengthbaja = 0}
+  var NumCuenta=arrayMaterias[0][0]['NumCuenta'];
+
+var sumCreditosM = 0;
+var Periodo=await periodoencurso(req,res);
+  for (var i = 0; i<arraylength; i++){
+    
+    var creditos = await db.materia.sequelize.query('select Creditos from materia where IDmateria= "'+arrayMaterias[0][i]['IDmateria']+'";',
+    { raw: true })
+   .catch(err => {
+     res.status(500).send({
+       message:
+         err.message || "Algun error ocurrio durante la inserción de materias"
+     });
+ });
+    
+    sumCreditosM+=parseInt(creditos[0][0]['Creditos'])
+
+  }
+  //res.send(creditos[0])
+var bandera = false ; 
+console.log("ME EJEECUTE BRO")
+var query= await db.sequelize.query('SELECT COUNT(*) as registro FROM  extensionCreditos WHERE  NumCuenta="'+NumCuenta+'"  && Periodo ="'+Periodo+'"  ').catch(err => {
+  res.status(403).send({
+    message:
+      err.message || "Hubo algun error al borrar Asignatura"
+  });
+}
+);
+const{registro}= query[0][0]
+
+var creditosmax = 58;
+if(registro > 0){
+ creditosmax = await db.materia.sequelize.query('select Creditos from extensionCreditos where NumCuenta="'+NumCuenta+'"  && Periodo ="'+Periodo+'"',
+    { raw: true })
+   .catch(err => {
+     res.status(500).send({
+       message:
+         err.message || "Algun error ocurrio durante la inserción de materias"
+     });
+ });
+
+const {Creditos}= creditosmax[0][0];
+creditosmax=Creditos;
+}
+else {   
+  {sumCreditosM>creditosmax ? (res.status(403).send({ message:
+    "La suma de creditos tiene que ser menor o igual a "+creditosmax+""}) &&  (bandera = true) ) :null }
+  {arraylength >8 ? (res.status(403).send({ message:
+  "No puedes inscribir más de 8 materias"}) &&( bandera =true) )   :null }    }
+
+  
+
+  if (bandera ==true ){
+
+    return
+  }
+
+  // ya tenia la materia inscrita (1) , baja de materia(2) , inscribir materia nueva (3)
+  
+
+  //borra de materias inscritas  materias de alta
+  for(var i=0; i<arraylength; i++){
+    console.log("me ejecute");
+       await db.materia.sequelize.query('delete from inscMateria where NumCuenta="'+arrayMaterias[0][i]['NumCuenta']+'"&& folioAsig="'+arrayMaterias[0][i]['folioAsig']+'"&& Periodo="'+Periodo+'"',
+        { raw: true })
+       .catch(err => {
+         res.status(500).send({
+           message:
+             err.message || "Algun error ocurrio durante la inserción de materias"
+         });
+     });
+    }
+  
+    if (arraylengthbaja >0){
+    //borra de materias inscritas materias de baja 
+    for(var i=0; i<arraylengthbaja; i++){
+      console.log("me ejecute");
+         await db.materia.sequelize.query('delete from inscMateria where NumCuenta="'+arrayMaterias[1][i]['NumCuenta']+'"&& folioAsig="'+arrayMaterias[1][i]['folioAsig']+'"&& Periodo="'+Periodo+'"',
+          { raw: true })
+         .catch(err => {
+           res.status(500).send({
+             message:
+               err.message || "Algun error ocurrio durante la inserción de materias"
+           });
+       });
+      };
+    }
+  
+  
+  // INSERTA LAS MATERIAS COMO INSCRITA 
+  for(var i=0; i<arraylength; i++){
+console.log("me ejecute");
+   var materiaInscrita = await db.materia.sequelize.query('insert into inscMateria (NumCuenta,folioAsig,IDmateria,Periodo,Calificacion,TipoExamen) values ("'+arrayMaterias[0][i]['NumCuenta']+'","'+arrayMaterias[0][i]['folioAsig']+'","'+arrayMaterias[0][i]['IDmateria']+'","'+Periodo+'","'+arrayMaterias[0][i]['Calificacion']+'","'+arrayMaterias[0][i]['TipoExamen']+'")',
+    { raw: true })
+   .catch(err => {
+     res.status(500).send({
+       message:
+         err.message || "Algun error ocurrio durante la inserción de materias"
+     });
+ });
+}
+console.log("Se insertaron todas las materias");
+
+// TRAE LOS DATOS DEL ALUMNO PARA EL COMPROBANTE
+var datosalumno = await db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,c1.Periodo,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.NumCuenta="'+NumCuenta+'" &&  c1.NumCuenta=a1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta;').catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio en la inscripción del profesor"
+  });
+}
+);
+// TRAE LOS DATOSDE LAS MATERIAS A INSCRIBIR
+var materiasinscritas = [{}];
+
+for(var i=0; i<arraylength; i++){
+await db.sequelize.query('select a.IDmateria,a.Nombre,a.Creditos,a.Semestre,i.Grupo,h.Horario from materia a inner join inscAsignatura i  ON a.IDmateria="'+arrayMaterias[0][i]['IDmateria']+'" && i.folioAsig="'+arrayMaterias[0][i]['folioAsig']+'" inner join horario h ON i.IDhorario=h.IDhorario').then(data => {
+  materiasinscritas [i]= data[0]; 
+
+}).catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio en la inscripción del profesor"
+  });
+}
+);
+}
+
+// GENERA COMPROBANTE DE ALTAS Y BAJAS
+await db.sequelize.query('insert into comprobanteaybajas (NumCuenta,Periodo,Fecha) values("'+NumCuenta+'","'+Periodo+'",NOW());',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+
+// ID DEL COMPROBANTE DE AB CREADO
+var IDcomprobante =await db.sequelize.query('SELECT IDcomprobante,Fecha FROM comprobanteaybajas where NumCuenta="'+NumCuenta+'" && Periodo="'+Periodo+'";',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+console.log(IDcomprobante[0][0]['IDcomprobante']);
+// INSERT DE LAS MATERIAS DADAS DE ALTA EN COMPROBANTE ALTAS Y BAJAS
+for(var i=0; i<arraylength; i++){
+await db.sequelize.query('insert into comprobanteabmaterias (IDcomprobante,folioAsig,Movimiento) values("'+IDcomprobante[0][0]['IDcomprobante']+'","'+arrayMaterias[0][i]['folioAsig']+'","'+arrayMaterias[0][i]['Movimiento']+'")',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+}
+
+// INSERT DE LAS MATERIAS DADAS DE BAJA EN COMPROBANTE ALTAS Y BAJAS
+if(arraylengthbaja>0){
+for(var i=0; i<arraylengthbaja; i++){
+await db.sequelize.query('insert into comprobanteabmaterias (IDcomprobante,folioAsig,Movimiento) values("'+IDcomprobante[0][0]['IDcomprobante']+'","'+arrayMaterias[1][i]['folioAsig']+'","Baja")',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+}
+}
+//CHECA SI EXISTE UNA INSCRIPCION
+var query= await db.sequelize.query('(SELECT COUNT(*) as registro1, (SELECT IDcomprobante  as IDcomprobante1 from comprobanteinsc WHERE NumCuenta="'+NumCuenta+'"  && Periodo ="'+Periodo+'") as IDcomprobante1  from comprobanteinsc where NumCuenta="'+NumCuenta+'"  && Periodo="'+Periodo+'")').catch(err => {
+  res.status(403).send({
+    message:
+      err.message || "Hubo algun error al borrar Asignatura"
+  });
+}
+);
+const{registro1}= query[0][0]
+const{IDcomprobante1}=query[1][0]
+
+//////////////////////////////////////////////////////////////INSERT EN INSCRIPCIÒN SI NO EXISTE  
+if (registro1 < 1 ){
+// GENERA COMPROBANTE DE INSCRIPCION
+await db.sequelize.query('insert into comprobanteinsc (NumCuenta,Periodo,Fecha) values("'+NumCuenta+'","'+Periodo+'",NOW());',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+
+// ID DEL COMPROBANTE DE INSCRIPCION CREADO
+var IDcomprobante =await db.sequelize.query('SELECT IDcomprobante,Fecha FROM comprobanteinsc where NumCuenta="'+NumCuenta+'" && Periodo="'+Periodo+'";',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+console.log(IDcomprobante[0][0]['IDcomprobante']);
+// INSERT DE LAS MATERIAS DADAS DE ALTA EN COMPROBANTE INSCRIPCION
+for(var i=0; i<arraylength; i++){
+await db.sequelize.query('insert into comprobantematerias (IDcomprobante,folioAsig) values("'+IDcomprobante[0][0]['IDcomprobante']+'","'+arrayMaterias[0][i]['folioAsig']+'")',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+}
+}else {
+/////////////////////////////////////////EXISTE INSCRIPCION
+//Borra las materias de comprobantematerias
+
+await db.sequelize.query('delete from comprobantematerias where IDcomprobante="'+IDcomprobante1+'"',{ raw: true })
+.catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio durante la inserción de materias"
+  });
+});
+
+// INSERTA LAS NUEVAS ALTAS EN EL COMPROBANTEMATERIAS CON EL IDEXISTENTE
+
+for(var i=0; i<arraylength; i++){
+  await db.sequelize.query('insert into comprobantematerias (IDcomprobante,folioAsig) values("'+IDcomprobante1+'","'+arrayMaterias[0][i]['folioAsig']+'")',{ raw: true })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio durante la inserción de materias"
+    });
+  });
+  }
+
+
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var rescomprobante=[{}];
+rescomprobante[0]=datosalumno[0];
+rescomprobante[1]=IDcomprobante[0];
+for(var i=0; i<materiasinscritas.length; i++){
+rescomprobante[i+2]=materiasinscritas[i];
+}
+console.log(datosalumno[0]);
+console.log(materiasinscritas[1]);
+console.log(rescomprobante);
+
+
+res.send(rescomprobante);
+
+ }
+
+ module.exports.imAltasybajas = imAltasybajas;
+
+
+
+async function consultaAybajas(req,res) {
+  var NumCuenta=req.body.NumCuenta
+  var Periodo=await periodoencurso(req,res);
+  var datosalumno = await db.sequelize.query('select a1.NumCuenta,a1.Nombre as NombreA,c1.PlanEstudios,c1.AnioInscripcion,c1.Modalidad,c1.Periodo,p2.IDcarrera,c3.Nombre as NombreC,c3.IDplantel,p4.Nombre as NombreP from alumno a1  INNER JOIN cursa c1 ON  a1.NumCuenta="'+NumCuenta+'" &&  c1.NumCuenta=a1.NumCuenta INNER JOIN planestudios p2  ON c1.PlanEstudios=p2.PlanEstudios INNER JOIN carrera c3 ON p2.IDcarrera = c3.IDcarrera INNER JOIN plantel p4 ON c3.IDplantel=p4.IDplantel GROUP BY a1.NumCuenta;',{ raw: true })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+    });
+}
+  )
+
+  var materiasi= await db.sequelize.query('select c.IDcomprobante,c.Fecha,c.Periodo,cm.folioAsig,cm.Movimiento,m.IDmateria,m.nombre as Nombre,m.Creditos,m.Semestre,a.Grupo,h.Dia,h.Horario from comprobanteaybajas c inner join comprobanteabmaterias cm ON c.NumCuenta="'+NumCuenta+'" && cm.IDcomprobante=c.IDcomprobante && c.Periodo="'+Periodo+'" inner join inscAsignatura a on cm.folioAsig=a.folioAsig inner join inscProfe ip on a.IDpm=ip.IDpm inner join materia m ON m.IDmateria=ip.Idmateria inner join horario h on h.IDhorario=a.IDhorario order by Movimiento;',
+   { raw: true })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Algun error ocurrio cuando traiamos los datos del alumno"
+    });
+}
+  )
+var consultainscripcion = [{}]
+consultainscripcion[0]=datosalumno[0];
+consultainscripcion[1]=materiasi[0];
+{materiasi[0] == 0? res.status(404).send("No hay registro de inscripcion en altas y bajas"):null}
+res.status(200).send(consultainscripcion);
+
+}
+module.exports.consultaAybajas = consultaAybajas;

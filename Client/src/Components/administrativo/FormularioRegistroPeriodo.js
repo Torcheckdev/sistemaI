@@ -53,11 +53,11 @@ function FormularioPeriodo() {
     >
       <Form>
 
-        <h2 class="card-title text-center">Regristro de perido:</h2>
+        <h2 class="card-title text-center">Registro de período:</h2>
         
         <div className="form-group">
               
-        <label htmlFor="periodo">periodo:</label>
+        <label htmlFor="periodo">Período:</label>
         <Field id="periodo" name="periodo" placeholder="periodo"  className='form-control'/>
 
             <ErrorMessage
@@ -70,7 +70,7 @@ function FormularioPeriodo() {
 
         <div className="form-group">
               
-        <label htmlFor="fechaInicio">fecha Inicio:</label>
+        <label htmlFor="fechaInicio">Fecha de inicio:</label>
         <Field id="fechaInicio" name="fechaInicio" type="date"  className='form-control'/>
 
               <ErrorMessage
@@ -82,7 +82,7 @@ function FormularioPeriodo() {
 
         <div className="form-group">
            
-            <label htmlFor="fechatermino">fecha termino:</label>
+            <label htmlFor="fechatermino">Fecha de termino:</label>
             <Field  id="fechatermino" name="fechatermino"  type="date"  className='form-control'/> 
              
              <ErrorMessage

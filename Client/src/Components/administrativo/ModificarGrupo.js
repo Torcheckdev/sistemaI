@@ -115,7 +115,7 @@ function ModificarGrupo() {
                                 onChange={handleChangeSelect}
                                 options={opciones}
                                 defaultValue={defaultItem}
-                                placeholder={"Eligue un grupo"}
+                                placeholder={"Elige un grupo"}
                             /> 
                        </div>
 

@@ -206,10 +206,13 @@ res.send(respuesta);
 
 async function inscAsignatura(req,res){
 var IDpm = req.body.IDpm;
-var IDhorario=req.body.IDhorario; 
 var Grupo =req.body.Grupo;
 var Cupo = req.body.Cupo;
 var Periodo= await periodoencurso(req,res);
+var Dia= req.body.Dia;
+var Horario=req.body.Horario;
+var Turno=req.body.Turno; 
+
 var existe1=await db.sequelize.query('select count(*) as existe from inscAsignatura where IDpm="'+IDpm+'" && IDhorario="'+IDhorario+'" && Periodo="'+Periodo+'"').catch(err => {
   res.status(500).send({
     message:
@@ -242,6 +245,27 @@ var ultimoFolio = await db.sequelize.query('SELECT * FROM inscAsignatura ORDER B
 var {folioAsig}= ultimoFolio[0][0];
 folioAsig++;
 
+var ultimoIDhorario= await db.sequelize.query('SELECT * FROM horario ORDER BY IDhorario DESC LIMIT 1').catch(err => {
+  res.status(500).send({
+    message:
+      err.message || "Algun error ocurrio en la inscripción del profesor"
+  });
+}
+);;
+var {IDhorario}= ultimoIDhorario[0][0];
+IDhorario++;
+
+
+if(Dia.length>1 && Horario.length>1){
+  await db.sequelize.query('INSERT INTO  horario   (IDhorario,Dia,Horario,Turno,Semestre) VALUES ("'+IDhorario+'","'+Dia+'","'+Horario+'","'+Turno+'","1") ').catch(err => {
+    res.status(403).send({
+      message:
+        err.message || "Hubo algun error al inscribir Asignatura"
+    });
+  }
+  );
+  }
+
 
 await db.sequelize.query('INSERT INTO inscAsignatura (folioAsig,IDpm,IDhorario,Grupo,Cupo,Periodo) VALUES ("'+folioAsig+'","'+IDpm+'","'+IDhorario+'","'+Grupo+'","'+Cupo+'","'+Periodo+'");').catch(err => {
   res.status(403).send({
@@ -264,7 +288,7 @@ module.exports.inscAsignatura = inscAsignatura;
 
 async function listamodinscAsignatura (req,res ){
 var Periodo = await periodoencurso(req,res);
-  var lista = await db.sequelize.query('select ia.folioAsig,ia.IDHorario,ia.Grupo,ia.Cupo,ia.Inscritos,ia.IDpm,p.Nombre as NombreProf, m.IDmateria, m.Nombre as Nombremateria, h.Dia,h.Horario from inscAsignatura ia INNER JOIN  inscProfe ip ON  ia.Periodo="'+Periodo+'" && ia.Periodo=ip.Periodo && ia.IDpm=ip.IDpm INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor INNER JOIN materia m ON m.IDmateria=ip.IDmateria INNER JOIN horario  h ON ia.IDhorario=h.IDhorario order by folioAsig;').catch(err => {
+  var lista = await db.sequelize.query('select ia.folioAsig,ia.IDHorario,ia.Grupo,ia.Cupo,ia.Inscritos,ia.IDpm,p.Nombre as NombreProf, m.IDmateria, m.Nombre as Nombremateria, h.Dia,h.Horario ,h.Turno from inscAsignatura ia INNER JOIN  inscProfe ip ON  ia.Periodo="'+Periodo+'" && ia.Periodo=ip.Periodo && ia.IDpm=ip.IDpm INNER JOIN profesor p ON p.IDprofesor=ip.IDprofesor INNER JOIN materia m ON m.IDmateria=ip.IDmateria INNER JOIN horario  h ON ia.IDhorario=h.IDhorario order by folioAsig;').catch(err => {
     res.status(500).send({
       message:
         err.message || "Algun error ocurrio en la inscripción del profesor"
@@ -307,14 +331,38 @@ async function modinscAsignatura(req,res){
   var IDhorario=req.body.IDhorario;
   var Grupo=req.body.Grupo;
   var Cupo = req.body.Cupo;
-  
-  await db.sequelize.query('UPDATE inscAsignatura SET Grupo="'+Grupo+'", Cupo="'+Cupo+'" , IDpm="'+IDpm+'" ,IDhorario="'+IDhorario+'" where folioAsig="'+folioAsig+'"').catch(err => {
+  var Dia= req.body.Dia;
+  var Horario=req.body.Horario;
+  var Turno=req.body.Turno;
+  await db.sequelize.query('UPDATE inscAsignatura SET Grupo="'+Grupo+'", Cupo="'+Cupo+'" , IDpm="'+IDpm+'"  where folioAsig="'+folioAsig+'"').catch(err => {
     res.status(403).send({
       message:
         err.message || "Hubo algun error al inscribir Asignatura"
     });
   }
   );
+
+  if(Dia.length>1 && Horario.length>1){
+  await db.sequelize.query('UPDATE horario SET Dia="'+Dia+'", Horario="'+Horario+'" , Turno="'+Turno+'" where IDhorario="'+IDhorario+'"').catch(err => {
+    res.status(403).send({
+      message:
+        err.message || "Hubo algun error al inscribir Asignatura"
+    });
+  }
+  );
+  }
+  else {
+    await db.sequelize.query('UPDATE horario SET Turno="'+Turno+'" where IDhorario="'+IDhorario+'"').catch(err => {
+      res.status(403).send({
+        message:
+          err.message || "Hubo algun error al inscribir Asignatura"
+      });
+    }
+    );
+
+
+
+  }
   res.send("Se modifico con exito la asignatura")
   
 }module.exports.modinscAsignatura = modinscAsignatura;
@@ -467,15 +515,9 @@ return
   
 
 async function setperiodoencurso(req,res){
-var Periodo=req.body.Periodo; 
- await db.sequelize.query('UPDATE calendarioEscolar set Encurso="false"').catch(err => {
-  res.status(403).send({
-    message:
-      err.message || "Hubo algun error set periodoen curso"
-  });
-}
-);
-
+var Periodo=req.body.Periodo;
+var Inscripcion=req.body.Inscripcion;
+var Aybajas=req.body.Aybajas; 
 var existe = await db.sequelize.query('SELECT COUNT(*) as registro  from calendarioEscolar WHERE Periodo="'+Periodo+'"').catch(err => {
   res.status(403).send({
     message:
@@ -484,11 +526,21 @@ var existe = await db.sequelize.query('SELECT COUNT(*) as registro  from calenda
 );
 });
 
+
+
 const{registro}=existe[0][0]
 
 if (registro >0 ){
 
-await db.sequelize.query('UPDATE calendarioEscolar set Encurso="true" WHERE Periodo="'+Periodo+'"').catch(err => {
+  await db.sequelize.query('UPDATE calendarioEscolar set Encurso="false"').catch(err => {
+    res.status(403).send({
+      message:
+        err.message || "Hubo algun error set periodoen curso"
+    });
+  }
+  );
+  
+await db.sequelize.query('UPDATE calendarioEscolar set Encurso="true",Inscripcion="'+Inscripcion+'",Aybajas="'+Aybajas+'" WHERE Periodo="'+Periodo+'"').catch(err => {
   res.status(403).send({
     message:
       err.message || "Hubo algun error set periodoen curso"
@@ -529,6 +581,29 @@ async function periodoencurso(req,res) {
   const{Periodo}= query[0][0]
   return Periodo ;
 }
+module.exports.periodoencurso=periodoencurso;
+
+
+async function periodoencurso1(req,res) {
+  var query= await db.sequelize.query('SELECT Periodo,Inscripcion,Aybajas FROM  calendarioEscolar WHERE  Encurso="true" ').catch(err => {
+    res.status(403).send({
+      message:
+        err.message || "Hubo algun error al borrar Asignatura"
+    });
+  }
+  );
+  if(query[0].length<1 ){
+    res.status(403).send({
+      message:
+        "Primero tienes que seleccionar un periodo"
+    });
+    return 0
+  }
+
+  const{Periodo}= query[0][0]
+  res.send(query[0])
+}
+module.exports.periodoencurso1=periodoencurso1;
 
 
 
