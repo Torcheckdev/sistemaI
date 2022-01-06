@@ -194,10 +194,10 @@ horariossubmit=horario1.toString();
               onSubmit={(values) => {
                 {submitdiasHorarios()}
 
-                               alert.show(JSON.stringify(diassubmit, null, 2));
+                              /* alert.show(JSON.stringify(diassubmit, null, 2));
                                alert.show(JSON.stringify(horariossubmit, null, 2));
                                alert.show(JSON.stringify(diassubmit.length, null, 2));
-                               alert.show(JSON.stringify(horariossubmit.length, null, 2));
+                               alert.show(JSON.stringify(horariossubmit.length, null, 2));*/
                // alert.show(JSON.stringify(values, null, 2));
                 console.log(values);
                 console.log(selectedOption1,selectedOption2);
